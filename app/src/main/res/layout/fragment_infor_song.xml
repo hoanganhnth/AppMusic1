@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.InforSongFragment"
+    >
+
+<!--   </RelativeLayout>-->
+    <LinearLayout
+        android:id="@+id/infoSongLn"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp"
+        android:background="@drawable/shape_info_song_bg"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
+        >
+
+        <!-- Thông tin bài hát -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp">
+            <TextView
+                android:id="@+id/nameSongLabelTv"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="Bài hát"
+
+                />
+            <TextView
+
+                android:id="@+id/nameSongTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tên bài hát"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginEnd="20dp"
+                />
+        </LinearLayout>
+
+        <!-- Thông tin album -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="5dp">
+            <TextView
+                android:id="@+id/albumSongLabelTv"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="Album"
+
+               />
+            <TextView
+                android:id="@+id/albumSongTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tên album"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginEnd="20dp"
+                />
+        </LinearLayout>
+
+        <!-- Thông tin nghệ sĩ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="5dp">
+            <TextView
+                android:id="@+id/authorSongLabelTv"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="Nghệ sĩ"
+                 />
+            <TextView
+                android:id="@+id/authorSongTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tên nghệ sĩ"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginEnd="20dp"/>
+        </LinearLayout>
+
+        <!-- Thông tin thể loại -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="5dp">
+            <TextView
+                android:id="@+id/categorySongLabelTv"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="Thể loại"
+                 />
+            <TextView
+                android:id="@+id/categorySongTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thể loại"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginEnd="20dp"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/favalisLn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/infoSongLn"
+        android:padding="15dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp">
+        <LinearLayout
+            android:id="@+id/numberFaLn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:gravity="start"
+            >
+            <ImageButton
+                android:id="@+id/favoritePlIb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_favorite_gray"
+                android:background="@android:color/transparent"
+
+
+                />
+            <TextView
+                android:id="@+id/numberFaTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8.4M"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/numberLisLn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:gravity="end"
+            >
+            <ImageButton
+                android:id="@+id/lisPlIb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_headphones_gray"
+                android:background="@android:color/transparent"
+
+                />
+            <TextView
+                android:id="@+id/numberLiTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8.4M"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>
