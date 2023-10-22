@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ViewPaperMainFragmentAdapter adapter;
 
-    private String[] labelFragment = new String[]{"Songs", "Playlist", "Author"};
+    private String[] labelFragment = new String[]{"Playlist", "Author", "Song"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,11 +66,11 @@ public class MainActivity extends AppCompatActivity {
         public Fragment createFragment(int position) {
             switch (position) {
                 case 0:
-                    return new SongsFragment();
-                case 1:
                     return new PlaylistFragment();
-                case 2:
+                case 1:
                     return new AuthorsFragment();
+                case 3:
+                    return new SongsFragment();
             }
             return new SongsFragment();
         }
