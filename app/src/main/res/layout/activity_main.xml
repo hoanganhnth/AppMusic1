@@ -56,5 +56,12 @@
         android:layout_below="@+id/tabLayout"
         android:layout_marginTop="20dp"
         />
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/playingFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       android:layout_alignParentBottom="true"
+        android:name="com.example.appmusictest.fragment.NowPlayingFragment"
+        tools:layout="@layout/fragment_now_playing" />
 
 </RelativeLayout>

@@ -9,12 +9,15 @@
     <!-- TODO: Update blank fragment layout -->
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgPlayCiv"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
-        android:src="@mipmap/ic_launcher_round"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        app:civ_border_width="2dp"
-        app:civ_border_color="#000000"/>
+        android:src="@mipmap/ic_launcher_round"
+        app:civ_border_color="#000000"
+        app:civ_border_width="1dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginRight="20dp"
+        />
 
 
 </RelativeLayout>

@@ -133,7 +133,9 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    musicPlayerService.mediaPlayer.seekTo(progress);
+                    if (musicPlayerService.isPlaying()) {
+                        musicPlayerService.mediaPlayer.seekTo(progress);
+                    }
                 }
             }
 
@@ -153,15 +155,14 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
 
 
     public static void prevNextSong(boolean b) {
-        setSongPosition(b);
-        setLayout();
-        diskFragment.updateImage();
         if (musicPlayerService != null) {
-            musicPlayerService.playMusicFromUrl(songs.get(songPosition).getPathUrl());
+            musicPlayerService.nextSong(b);
+            setLayout();
+            diskFragment.updateImage();
         }
     }
 
-    private static void setSongPosition(boolean b) {
+    public static void setSongPosition(boolean b) {
         if (b) {
             if (songPosition == songs.size() - 1) {
                 songPosition = 0;
@@ -196,7 +197,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         nameSongTv.setText(songs.get(songPosition).getTitle());
         authorSongTv.setText(songs.get(songPosition).getNameAuthor());
         diskFragment.setArtUrl(songs.get(songPosition).getArtUrl());
-//        diskFragment.setImageView(songs.get(songPosition).getArtUrl());
         playIb.setImageResource(R.drawable.ic_pause_gray);
         startDirectionTv.setText("00:00");
         endDirectionTv.setText("Loading...");
@@ -298,11 +298,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
     }
 
 
-    public static void timeSong(int direction) {
-            endDirectionTv.setText(TimeFormatterUtility.formatTime(direction));
-            seekBar.setMax(direction);
 
-    }
 
 
 

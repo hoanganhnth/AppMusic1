@@ -9,6 +9,7 @@ import static com.example.appmusictest.activity.MusicPlayerActivity.seekBar;
 import static com.example.appmusictest.activity.MusicPlayerActivity.songPosition;
 import static com.example.appmusictest.activity.MusicPlayerActivity.songs;
 import static com.example.appmusictest.activity.MusicPlayerActivity.startDirectionTv;
+import static com.example.appmusictest.fragment.DiskFragment.circleImageView;
 
 import android.app.Notification;
 import android.app.Service;
@@ -19,12 +20,16 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
+import android.widget.SeekBar;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.bumptech.glide.Glide;
 import com.example.appmusictest.R;
 import com.example.appmusictest.activity.MusicPlayerActivity;
+import com.example.appmusictest.fragment.NowPlayingFragment;
 import com.example.appmusictest.utilities.TimeFormatterUtility;
 
 
@@ -127,13 +132,13 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
             setDuration();
             nowPlayingId = songs.get(songPosition).getId();
             updateSeekbar.run();
-            // Bắt đầu phát nhạc sau khi chuẩn bị xong
-            mediaPlayer.setOnErrorListener((mp1, what, extra) -> {
-                Log.e("MediaPlayer Error", "what: " + what + ", extra: " + extra);
-                return false; // Trả về true nếu bạn đã xử lý lỗi, ngược lại trả về false.
-            });
+            Intent intent = new Intent("music_control");
+            intent.putExtra("action", "play");
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
         });
     }
+
 
     private void setDuration() {
         endDirectionTv.setText(TimeFormatterUtility.formatTime(getDuration()));
@@ -147,7 +152,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
     public Runnable updateSeekbar = new Runnable() {
         @Override
         public void run() {
-            if (isPlaying()) {
+            if (isPlaying) {
                 seekBar.setProgress(getCurrentPosition());
                 startDirectionTv.setText(TimeFormatterUtility.formatTime(getCurrentPosition()));
             }
@@ -180,9 +185,18 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
         }
     }
 
+    public void nextSong(Boolean b) {
+        MusicPlayerActivity.setSongPosition(b);
+        playMusicFromUrl(songs.get(songPosition).getPathUrl());
+    }
+
     @Override
     public void onCompletion(MediaPlayer mp) {
-        prevNextSong(true);
+        MusicPlayerActivity.prevNextSong(true);
+        Intent intent = new Intent("music_control");
+        intent.putExtra("action", "next");
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        Log.e("MUSIC SERVICE", "da hoan thanh bai hat");
     }
 
     @Nullable

@@ -54,15 +54,17 @@ public class DiskFragment extends Fragment {
 //        setImageView(artUrl);
         Glide.with(view)
                 .load(artUrl)
+                .placeholder(R.mipmap.ic_launcher_round)
                 .into(circleImageView);
         objectAnimator.start();
         return view;
     }
 
     public void updateImage() {
-        if (circleImageView != null) {
-            Glide.with(this)
+        if (circleImageView != null && getView() != null) {
+            Glide.with(getView())
                     .load(artUrl)
+                    .placeholder(R.mipmap.ic_launcher_round)
                     .into(circleImageView);
         }
     }
