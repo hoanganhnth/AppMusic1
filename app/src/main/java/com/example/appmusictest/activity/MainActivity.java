@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 
 import com.example.appmusictest.R;
 import com.example.appmusictest.fragment.AuthorsFragment;
+import com.example.appmusictest.fragment.NowPlayingFragment;
 import com.example.appmusictest.fragment.PlaylistFragment;
 import com.example.appmusictest.fragment.SongsFragment;
 import com.google.android.material.tabs.TabLayout;
@@ -31,6 +33,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        if (savedInstanceState == null) {
+//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//            NowPlayingFragment yourFragment = new NowPlayingFragment(); // Tạo một đối tượng Fragment
+//            transaction.replace(R.id.playingFragment, yourFragment);
+//            transaction.addToBackStack(null); // Thêm Fragment vào back stack
+//            transaction.commit();
+//        }
         init();
         new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
             tab.setText(labelFragment[position]);
@@ -38,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager2.setCurrentItem(0, false);
 
     }
+
     private void init() {
         tabLayout = findViewById(R.id.tabLayout);
         viewPager2 = findViewById(R.id.viewPaper);
@@ -45,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ViewPaperMainFragmentAdapter(this);
         viewPager2.setAdapter(adapter);
     }
+
     private class ViewPaperMainFragmentAdapter extends FragmentStateAdapter {
 
 

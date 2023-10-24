@@ -1,6 +1,7 @@
 package com.example.appmusictest.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.appmusictest.R;
 import com.example.appmusictest.adapter.SongAdapter;
+import com.example.appmusictest.fragment.NowPlayingFragment;
 import com.example.appmusictest.model.Playlist;
 import com.example.appmusictest.model.Song;
 import com.example.appmusictest.service.ApiService;
@@ -40,7 +42,13 @@ public class SongListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song_list);
         initView();
-
+//        if (savedInstanceState == null) {
+//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//            NowPlayingFragment yourFragment = new NowPlayingFragment(); // Tạo một đối tượng Fragment
+//            transaction.replace(R.id.playingFragment, yourFragment);
+//            transaction.addToBackStack(null); // Thêm Fragment vào back stack
+//            transaction.commit();
+//        }
 
         getDataIntent();
         getDataFromServer(playlist.getId());
@@ -49,17 +57,6 @@ public class SongListActivity extends AppCompatActivity {
 
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        // Kiểm tra xem có Fragment trong ngăn xếp không
-//        if (getFragmentManager().getBackStackEntryCount() > 0) {
-//            // Quay trở lại Fragment trước đó
-//            getFragmentManager().popBackStack();
-//        } else {
-//            // Nếu không có Fragment nào, thực hiện hành động mặc định khi bấm nút Back
-//            super.onBackPressed();
-//        }
-//    }
     private void setViewData() {
 
 
@@ -74,7 +71,12 @@ public class SongListActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
 
+        startActivity(new Intent(this, MainActivity.class));
+    }
 
     private void initView() {
         songArrayList = new ArrayList<>();

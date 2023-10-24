@@ -51,6 +51,12 @@ public class SongsFragment extends Fragment {
         arrayList.add(new Song("","Chúng ta không thuộc về nhau", "Sơn Tùng", "","","", "", "" ));
         arrayList.add(new Song("","Hãy trao cho anh", "Sơn Tùng", "","", "", "", ""));
         arrayList.add(new Song("","Remember me", "Sơn Tùng", "","", "", "", ""));
+        arrayList.add(new Song("","Remember me", "Sơn Tùng", "","", "", "", ""));
+        arrayList.add(new Song("","Remember me", "Sơn Tùng", "","", "", "", ""));
+        arrayList.add(new Song("","Remember me", "Sơn Tùng", "","", "", "", ""));
+        arrayList.add(new Song("","Remember me", "Sơn Tùng", "","", "", "", ""));
+        arrayList.add(new Song("","Remember me", "Sơn Tùng", "","", "", "", ""));
+        arrayList.add(new Song("","Remember me", "Sơn Tùng", "","", "", "", ""));
 
 
     }
