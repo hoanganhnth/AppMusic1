@@ -43,14 +43,14 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
     private ImageButton listSongIb;
     private ImageButton shuffleIb;
     private ImageButton previousIb;
-    private static ImageButton playIb;
+    public static ImageButton playIb;
     private ImageButton nextIb;
     private ImageButton repeatIb;
     public static SeekBar seekBar;
     private ViewPager2 viewPager2;
     private ViewPaperPlaylistFragmentAdapter viewPaperPlaylistFragmentAdapter;
     private ArrayList<Fragment> fragmentArrayList;
-    private static DiskFragment diskFragment;
+    public static DiskFragment diskFragment;
     private InforSongFragment inforSongFragment;
     public static MusicPlayerService musicPlayerService;
     public static ArrayList<Song> songs;
@@ -103,7 +103,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
 
     private void setViewData() {
         songPosition = getIntent().getIntExtra("index", 0);
-        Log.d("MUSIC PLAYER ACTIVITY", getIntent().getStringExtra("class"));
         switch (getIntent().getStringExtra("class")) {
             case "SongAdapter":
                 initServiceAndPlaylist(SongListActivity.songArrayList,false,false);
@@ -268,9 +267,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
             MusicPlayerService.LocalBinder binder = (MusicPlayerService.LocalBinder) service;
             musicPlayerService = binder.getService();
 
-            if (musicPlayerService != null) {
-
-            }
         }
         if (songs.get(songPosition).getId().equals(nowPlayingId)) {
             Log.d("MUSIC PLAYER ACTIVITY", "musicPlayerService is not null");
@@ -286,8 +282,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         }
         else {
             musicPlayerService.playMusicFromUrl(songs.get(songPosition).getPathUrl());
-//            musicPlayerService.showNotification();
-//            musicPlayerService.updateSeekbar.run();
         }
 
     }

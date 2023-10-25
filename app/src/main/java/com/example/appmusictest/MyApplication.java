@@ -5,9 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
 
-import java.text.SimpleDateFormat;
-
-public class ApplicationClass extends Application {
+public class MyApplication extends Application {
     public static String CHANNEL_ID = "channel";
     public static String PLAY = "play";
     public static String NEXT = "next";

@@ -46,8 +46,8 @@ public class NowPlayingFragment extends Fragment {
     public static TextView nameSongTv;
     public static TextView authorSongTv;
     private DiskFragment imgPlFragment;
-    public CircleImageView circleImageView;
-    private ImageButton pausePlIb,nextPlIb;
+    public static CircleImageView circleImageView;
+    public static ImageButton pausePlIb,nextPlIb;
     ObjectAnimator objectAnimator;
     private BroadcastReceiver broadcastReceiver;
     private boolean isReceiverRegistered = false;

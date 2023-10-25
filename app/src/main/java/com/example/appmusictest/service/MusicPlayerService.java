@@ -1,32 +1,36 @@
 package com.example.appmusictest.service;
 
-import static com.example.appmusictest.ApplicationClass.CHANNEL_ID;
+import static com.example.appmusictest.MyApplication.CHANNEL_ID;
 import static com.example.appmusictest.activity.MusicPlayerActivity.endDirectionTv;
 
 import static com.example.appmusictest.activity.MusicPlayerActivity.nowPlayingId;
-import static com.example.appmusictest.activity.MusicPlayerActivity.prevNextSong;
 import static com.example.appmusictest.activity.MusicPlayerActivity.seekBar;
 import static com.example.appmusictest.activity.MusicPlayerActivity.songPosition;
 import static com.example.appmusictest.activity.MusicPlayerActivity.songs;
 import static com.example.appmusictest.activity.MusicPlayerActivity.startDirectionTv;
-import static com.example.appmusictest.fragment.DiskFragment.circleImageView;
 
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
-import android.widget.SeekBar;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
+import com.example.appmusictest.MyApplication;
+import com.example.appmusictest.NotificationReceiver;
 import com.example.appmusictest.R;
 import com.example.appmusictest.activity.MusicPlayerActivity;
 import com.example.appmusictest.fragment.NowPlayingFragment;
@@ -81,18 +85,54 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
         }
     }
 
-    public void showNotification() {
+    public void showNotification(int playPauseBtn) {
+        Intent intent = new Intent(getBaseContext(), MusicPlayerActivity.class);
+        int flag;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            flag = PendingIntent.FLAG_IMMUTABLE;
+        } else {
+            flag = PendingIntent.FLAG_UPDATE_CURRENT;
+        }
+
+//        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+//        retriever.setDataSource(songs.get(songPosition).getPathUrl());
+//        byte[] imgArt = retriever.getEmbeddedPicture();
+////                .setDataSource(songs.get(songPosition).getArtUrl());
+//
+//        Bitmap image = null;
+//
+//        if (imgArt != null) {
+//            image = BitmapFactory.decodeByteArray(imgArt, 0, imgArt.length);
+//        }
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, flag);
+
+        Intent playIntent = new Intent(getBaseContext(), NotificationReceiver.class).setAction(MyApplication.PLAY);
+        PendingIntent playPendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, playIntent, flag);
+
+        Intent nextIntent = new Intent(getBaseContext(), NotificationReceiver.class).setAction(MyApplication.NEXT);
+        PendingIntent nextPendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, nextIntent, flag);
+
+        Intent prevIntent = new Intent(getBaseContext(), NotificationReceiver.class).setAction(MyApplication.PREVIOUS);
+        PendingIntent prevPendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, prevIntent, flag);
+
+        Intent exitIntent = new Intent(getBaseContext(), NotificationReceiver.class).setAction(MyApplication.EXIT);
+        PendingIntent exitPendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, exitIntent, flag);
+
+
         Notification builder = new NotificationCompat.Builder(getBaseContext(), CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_play)
+                .setContentIntent(contentIntent)
+                .setSmallIcon(R.drawable.ic_music_cyan)
+//                 .setLargeIcon(image)
                 .setContentTitle(MusicPlayerActivity.songs.get(MusicPlayerActivity.songPosition).getTitle())
                 .setContentText(MusicPlayerActivity.songs.get(MusicPlayerActivity.songPosition).getNameAuthor())
+                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle().setMediaSession(mediaSessionCompat.getSessionToken()))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setOnlyAlertOnce(true)
-                .addAction(R.drawable.ic_previous, "Previous", null)
-                .addAction(R.drawable.ic_play, "Play", null)
-                .addAction(R.drawable.ic_next, "Next", null)
-                .addAction(R.drawable.ic_exit_gray, "Exit", null)
+                .addAction(R.drawable.ic_previous, "Previous", prevPendingIntent)
+                .addAction(playPauseBtn, "Play", playPendingIntent)
+                .addAction(R.drawable.ic_next, "Next", nextPendingIntent)
+                .addAction(R.drawable.ic_exit_gray, "Exit", exitPendingIntent)
                 .build();
         startForeground(13,builder);
     }
@@ -114,7 +154,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
                     mediaPlayer.setDataSource(musicUrl);
                     mediaPlayer.prepareAsync();
                     mediaPlayer.setOnCompletionListener(this);
-
+                    showNotification(R.drawable.ic_play);
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -135,6 +175,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
             Intent intent = new Intent("music_control");
             intent.putExtra("action", "play");
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+            showNotification(R.drawable.ic_pause_gray);
 
         });
     }
@@ -169,6 +210,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
             isPlaying = false;
+            showNotification(R.drawable.ic_play);
         }
     }
 
@@ -176,6 +218,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
         if (!mediaPlayer.isPlaying()) {
             mediaPlayer.start();
             isPlaying = true;
+            showNotification(R.drawable.ic_pause_gray);
         }
     }
 
@@ -188,6 +231,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
     public void nextSong(Boolean b) {
         MusicPlayerActivity.setSongPosition(b);
         playMusicFromUrl(songs.get(songPosition).getPathUrl());
+
     }
 
     @Override
@@ -202,6 +246,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
+        mediaSessionCompat = new MediaSessionCompat(getBaseContext(), "My Music");
         return binder;
     }
 }
