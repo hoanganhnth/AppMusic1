@@ -9,9 +9,11 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -59,6 +61,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
     public static String nowPlayingId = "";
     public boolean isFavorite = false;
     private int direction = 0;
+    private BroadcastReceiver finishAllActivitiesReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +71,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         initView();
         initFragment();
         setViewData();
-//        evenClick();
+        finishActivity();
 
     }
 
@@ -152,7 +155,18 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
 
     }
 
+    private void finishActivity() {
+        finishAllActivitiesReceiver = new BroadcastReceiver() {
 
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                finish();
+            }
+        };
+
+        IntentFilter intentFilter = new IntentFilter("finish_all_activities");
+        registerReceiver(finishAllActivitiesReceiver, intentFilter);
+    }
     public static void prevNextSong(boolean b) {
         if (musicPlayerService != null) {
             musicPlayerService.nextSong(b);
@@ -291,6 +305,11 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
             musicPlayerService = null;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(finishAllActivitiesReceiver);
+    }
 
 
 

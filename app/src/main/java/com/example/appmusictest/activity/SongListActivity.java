@@ -1,12 +1,15 @@
 package com.example.appmusictest.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,15 +17,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.appmusictest.R;
 import com.example.appmusictest.adapter.SongAdapter;
-import com.example.appmusictest.fragment.NowPlayingFragment;
 import com.example.appmusictest.model.Playlist;
 import com.example.appmusictest.model.Song;
 import com.example.appmusictest.service.ApiService;
 import com.example.appmusictest.service.DataService;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -35,25 +36,18 @@ public class SongListActivity extends AppCompatActivity {
     public static ArrayList<Song> songArrayList;
     private Playlist playlist;
     private ImageButton backIb, favoriteIb, menuIb;
-    private TextView shuffleTv, titlePlIv, numberSongTv;
+    private TextView shuffleBtn, titlePlIv, numberSongTv;
     private ImageView imgPlIv;
+    private BroadcastReceiver finishAllActivitiesReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song_list);
         initView();
-//        if (savedInstanceState == null) {
-//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//            NowPlayingFragment yourFragment = new NowPlayingFragment(); // Tạo một đối tượng Fragment
-//            transaction.replace(R.id.playingFragment, yourFragment);
-//            transaction.addToBackStack(null); // Thêm Fragment vào back stack
-//            transaction.commit();
-//        }
-
         getDataIntent();
         getDataFromServer(playlist.getId());
         setViewData();
-
+        finishActivity();
 
     }
 
@@ -68,14 +62,11 @@ public class SongListActivity extends AppCompatActivity {
         backIb.setOnClickListener(v -> {
             onBackPressed();
         });
-
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
-        startActivity(new Intent(this, MainActivity.class));
     }
 
     private void initView() {
@@ -84,7 +75,7 @@ public class SongListActivity extends AppCompatActivity {
         backIb = findViewById(R.id.backIb);
         favoriteIb = findViewById(R.id.favoriteIb);
         menuIb = findViewById(R.id.moreIv);
-        shuffleTv = findViewById(R.id.buttonShuffleTv);
+        shuffleBtn = findViewById(R.id.buttonShuffleTv);
         numberSongTv = findViewById(R.id.numberSongTv);
         imgPlIv = findViewById(R.id.imgPlIv);
         titlePlIv = findViewById(R.id.titlePlTv);
@@ -98,6 +89,19 @@ public class SongListActivity extends AppCompatActivity {
         }
     }
 
+    private void finishActivity() {
+        finishAllActivitiesReceiver = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                finish();
+            }
+        };
+
+        IntentFilter intentFilter = new IntentFilter("finish_all_activities");
+        registerReceiver(finishAllActivitiesReceiver, intentFilter);
+    }
+
     private void getDataFromServer(String idPlaylist) {
         DataService dataService = ApiService.getService();
         Call<List<Song>> callback = dataService.getSongByPlaylist(idPlaylist);
@@ -108,19 +112,6 @@ public class SongListActivity extends AppCompatActivity {
                 songArrayList = (ArrayList<Song>) response.body();
                 recyclerView.setAdapter(new SongAdapter(songArrayList));
                 numberSongTv.setText(songArrayList.size() + " bài hát bởi Music App");
-//                if (response.isSuccessful()) {
-//                    // Chuyển đổi phản hồi thành dữ liệu JSON đẹp hơn bằng Gson
-//                    Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//                    String jsonResponse = gson.toJson(response.body());
-//
-//                    // In dữ liệu JSON ra Logcat
-//                    Log.d("JSON Response", jsonResponse);
-//
-//                    // Xử lý dữ liệu JSON dưới đây
-//                } else {
-//                    // Xử lý lỗi nếu có
-//                    Log.e("API Error", "Error: " + response.code());
-//                }
             }
 
             @Override
@@ -128,6 +119,11 @@ public class SongListActivity extends AppCompatActivity {
                 Log.d("SongListA", "fail to get data from server due to:" + t.getMessage() );
             }
         });
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(finishAllActivitiesReceiver);
     }
 
 }

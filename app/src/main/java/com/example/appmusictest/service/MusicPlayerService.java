@@ -32,6 +32,7 @@ import com.bumptech.glide.Glide;
 import com.example.appmusictest.MyApplication;
 import com.example.appmusictest.NotificationReceiver;
 import com.example.appmusictest.R;
+import com.example.appmusictest.activity.MainActivity;
 import com.example.appmusictest.activity.MusicPlayerActivity;
 import com.example.appmusictest.fragment.NowPlayingFragment;
 import com.example.appmusictest.utilities.TimeFormatterUtility;
@@ -73,6 +74,9 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
         mediaPlayer = new MediaPlayer();
     }
 
+    public void stopService() {
+        stopSelf();
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -83,10 +87,12 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
             mediaPlayer.release();
             mediaPlayer = null;
         }
+        seekBarUpdateHandler.removeCallbacks(updateSeekbar);
+
     }
 
     public void showNotification(int playPauseBtn) {
-        Intent intent = new Intent(getBaseContext(), MusicPlayerActivity.class);
+        Intent intent = new Intent(getBaseContext(), MainActivity.class);
         int flag;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             flag = PendingIntent.FLAG_IMMUTABLE;
@@ -202,8 +208,10 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
     };
 
     public int getCurrentPosition() {
-        return mediaPlayer.getCurrentPosition();
-
+        if (mediaPlayer != null) {
+            return mediaPlayer.getCurrentPosition();
+        }
+        return 0;
     }
 
     public void pauseMusic() {
@@ -249,4 +257,6 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
         mediaSessionCompat = new MediaSessionCompat(getBaseContext(), "My Music");
         return binder;
     }
+
+
 }

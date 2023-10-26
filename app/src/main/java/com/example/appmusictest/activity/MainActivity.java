@@ -10,6 +10,10 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
 import com.example.appmusictest.R;
@@ -24,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
+    private Fragment nowPlayingFragment;
+    private BroadcastReceiver finishAllActivitiesReceiver;
+
 
     private ViewPaperMainFragmentAdapter adapter;
 
@@ -33,20 +40,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        if (savedInstanceState == null) {
-//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//            NowPlayingFragment yourFragment = new NowPlayingFragment(); // Tạo một đối tượng Fragment
-//            transaction.replace(R.id.playingFragment, yourFragment);
-//            transaction.addToBackStack(null); // Thêm Fragment vào back stack
-//            transaction.commit();
-//        }
         init();
         new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
             tab.setText(labelFragment[position]);
         }).attach();
         viewPager2.setCurrentItem(0, false);
 
+        finishActivity();
     }
+
+    private void finishActivity() {
+        finishAllActivitiesReceiver = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                finish();
+            }
+        };
+
+        IntentFilter intentFilter = new IntentFilter("finish_all_activities");
+        registerReceiver(finishAllActivitiesReceiver, intentFilter);
+    }
+
 
     private void init() {
         tabLayout = findViewById(R.id.tabLayout);
@@ -91,4 +106,12 @@ public class MainActivity extends AppCompatActivity {
             return labelFragment.length;
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Đảm bảo hủy đăng ký BroadcastReceiver khi hoạt động bị hủy.
+        unregisterReceiver(finishAllActivitiesReceiver);
+    }
+
 }

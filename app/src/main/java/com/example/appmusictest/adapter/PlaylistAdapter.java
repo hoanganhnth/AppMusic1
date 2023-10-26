@@ -25,12 +25,12 @@ import java.util.ArrayList;
 public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHolder> {
     private ArrayList<Playlist> playlistArrayList;
     private Context context;
-    private FragmentManager fragmentManager;
 
-    public PlaylistAdapter(ArrayList<Playlist> playlistArrayList, Context context, FragmentManager fragmentManager) {
+
+    public PlaylistAdapter(ArrayList<Playlist> playlistArrayList, Context context) {
         this.playlistArrayList = playlistArrayList;
         this.context = context;
-        this.fragmentManager = fragmentManager;
+
     }
 
     @NonNull
@@ -53,9 +53,6 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
             Bundle bundle = new Bundle();
             bundle.putSerializable("playlist", playlistArrayList.get(position));
             intent.putExtras(bundle);
-//            fragmentManager.beginTransaction()
-//                            .addToBackStack(null)
-//                            .commit();
             context.startActivity(intent);
 
         });

@@ -55,23 +55,10 @@ public class NowPlayingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_now_playing, container, false);
-        nameSongTv = view.findViewById(R.id.nameSongTv);
-        authorSongTv = view.findViewById(R.id.authorSongTv);
-        pausePlIb = view.findViewById(R.id.pausePlIb);
-        nextPlIb = view.findViewById(R.id.nextPlIb);
-        circleImageView = view.findViewById(R.id.imgPlayPlCiv);
-        nameSongTv.setSelected(true);
-//        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-//        transaction.replace(R.id.)
-////        imgPlFragment = new DiskFragment();
-//        objectAnimator = ObjectAnimator.ofFloat(circleImageView, "rotation", 0f,360f);
-//        objectAnimator.setDuration(10000);
-//        objectAnimator.setRepeatCount(ValueAnimator.INFINITE);
-//        objectAnimator.setRepeatMode(ValueAnimator.RESTART);
-//        objectAnimator.setInterpolator(new LinearInterpolator());
-//        objectAnimator.start();
+        initView(view);
         view.setVisibility(View.INVISIBLE);
 
         pausePlIb.setOnClickListener( v -> {
@@ -103,6 +90,16 @@ public class NowPlayingFragment extends Fragment {
 
     }
 
+    private void initView(View view) {
+        nameSongTv = view.findViewById(R.id.nameSongTv);
+        authorSongTv = view.findViewById(R.id.authorSongTv);
+        pausePlIb = view.findViewById(R.id.pausePlIb);
+        nextPlIb = view.findViewById(R.id.nextPlIb);
+        circleImageView = view.findViewById(R.id.imgPlayPlCiv);
+        nameSongTv.setSelected(true);
+    }
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +109,7 @@ public class NowPlayingFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        initView(getView());
         if (MusicPlayerActivity.musicPlayerService != null) {
             this.getView().setVisibility(View.VISIBLE);
             setViewData();
@@ -153,9 +151,11 @@ public class NowPlayingFragment extends Fragment {
             authorSongTv.setText(songs.get(songPosition).getNameAuthor());
             Glide.with(getView())
                     .load(songs.get(songPosition).getArtUrl())
-                    .placeholder(R.mipmap.ic_launcher_round)
                     .into(circleImageView);
-
-             }
+            Log.d("Now playing fragment", "getView is null");
+        }
+        Log.d("Now playing fragment", "setView");
     }
+
+
 }

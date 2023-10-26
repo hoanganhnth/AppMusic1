@@ -52,7 +52,7 @@ public class PlaylistFragment extends Fragment {
             public void onResponse(Call<List<Playlist>> call, Response<List<Playlist>> response) {
 
                 playlists = (ArrayList<Playlist>) response.body();
-                playlistRv.setAdapter(new PlaylistAdapter(playlists,getActivity(),getChildFragmentManager()));
+                playlistRv.setAdapter(new PlaylistAdapter(playlists,getActivity()));
             }
 
             @Override

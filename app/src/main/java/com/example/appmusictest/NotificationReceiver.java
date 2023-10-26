@@ -38,19 +38,26 @@ public class NotificationReceiver extends BroadcastReceiver {
                     prevNextSong(true, context);
                 }
             } else if (MyApplication.EXIT.equals(action)) {
-                exitApplication();
+                exitApplication(context);
             }
         }
-
     }
 
-    private void exitApplication() {
+    private void exitApplication(Context context) {
         if (MusicPlayerActivity.musicPlayerService != null) {
+            Intent finishIntent = new Intent("finish_all_activities");
+            context.sendBroadcast(finishIntent);
             MusicPlayerActivity.musicPlayerService.mediaPlayer.release();
             MusicPlayerActivity.musicPlayerService.stopForeground(true);
-            MusicPlayerActivity.musicPlayerService = null;
+            MusicPlayerActivity.musicPlayerService.stopService();
+
         }
-        System.exit(0);
+
+
+
+
+//        Intent finishIntent = new Intent("finish_all_activities");
+//        context.sendBroadcast(finishIntent);
     }
 
     private void prevNextSong(boolean b, Context context) {
