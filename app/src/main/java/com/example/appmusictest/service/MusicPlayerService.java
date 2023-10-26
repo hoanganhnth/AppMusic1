@@ -99,17 +99,6 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
         } else {
             flag = PendingIntent.FLAG_UPDATE_CURRENT;
         }
-
-//        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-//        retriever.setDataSource(songs.get(songPosition).getPathUrl());
-//        byte[] imgArt = retriever.getEmbeddedPicture();
-////                .setDataSource(songs.get(songPosition).getArtUrl());
-//
-//        Bitmap image = null;
-//
-//        if (imgArt != null) {
-//            image = BitmapFactory.decodeByteArray(imgArt, 0, imgArt.length);
-//        }
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, flag);
 
         Intent playIntent = new Intent(getBaseContext(), NotificationReceiver.class).setAction(MyApplication.PLAY);
@@ -128,7 +117,6 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
         Notification builder = new NotificationCompat.Builder(getBaseContext(), CHANNEL_ID)
                 .setContentIntent(contentIntent)
                 .setSmallIcon(R.drawable.ic_music_cyan)
-//                 .setLargeIcon(image)
                 .setContentTitle(MusicPlayerActivity.songs.get(MusicPlayerActivity.songPosition).getTitle())
                 .setContentText(MusicPlayerActivity.songs.get(MusicPlayerActivity.songPosition).getNameAuthor())
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle().setMediaSession(mediaSessionCompat.getSessionToken()))
