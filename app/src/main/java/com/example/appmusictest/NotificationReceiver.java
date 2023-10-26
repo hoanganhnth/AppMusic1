@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.bumptech.glide.Glide;
 import com.example.appmusictest.activity.MusicPlayerActivity;
 import com.example.appmusictest.fragment.NowPlayingFragment;
@@ -46,18 +48,12 @@ public class NotificationReceiver extends BroadcastReceiver {
     private void exitApplication(Context context) {
         if (MusicPlayerActivity.musicPlayerService != null) {
             Intent finishIntent = new Intent("finish_all_activities");
-            context.sendBroadcast(finishIntent);
+            LocalBroadcastManager.getInstance(context).sendBroadcast(finishIntent);
             MusicPlayerActivity.musicPlayerService.mediaPlayer.release();
             MusicPlayerActivity.musicPlayerService.stopForeground(true);
             MusicPlayerActivity.musicPlayerService.stopService();
 
         }
-
-
-
-
-//        Intent finishIntent = new Intent("finish_all_activities");
-//        context.sendBroadcast(finishIntent);
     }
 
     private void prevNextSong(boolean b, Context context) {

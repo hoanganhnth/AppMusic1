@@ -64,7 +64,6 @@
         android:name="com.example.appmusictest.fragment.NowPlayingFragment"
         tools:layout="@layout/fragment_now_playing"
         />
-    <!--        android:name="com.example.appmusictest.fragment.NowPlayingFragment"-->
 
 
 </RelativeLayout>
