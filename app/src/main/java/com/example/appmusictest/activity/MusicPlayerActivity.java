@@ -32,6 +32,7 @@ import com.example.appmusictest.model.Song;
 import com.example.appmusictest.service.MusicPlayerService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class MusicPlayerActivity extends AppCompatActivity implements ServiceConnection {
@@ -58,7 +59,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
     public static MusicPlayerService musicPlayerService;
     public static ArrayList<Song> songs;
     public static int songPosition = 0;
-    public boolean repeat = false;
+    public static boolean repeat = false;
     public static String nowPlayingId = "";
     public boolean isFavorite = false;
     private int direction = 0;
@@ -113,6 +114,9 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
                 Intent intent = new Intent(this, MusicPlayerService.class);
                 bindService(intent, this, Context.BIND_AUTO_CREATE);
                 setLayoutPlaying();
+                break;
+            case "SonsListActivity":
+                initServiceAndPlaylist(SongListActivity.songArrayList, true, false);
                 break;
         }
 
@@ -183,7 +187,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         songs = new ArrayList();
         songs.addAll(playlist);
         if (shuffle) {
-            // shuffe music
+            Collections.shuffle(songs);
         }
         setLayout();
         if (!playNext) {

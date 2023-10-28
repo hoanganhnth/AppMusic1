@@ -60,6 +60,13 @@ public class SongListActivity extends AppCompatActivity {
         backIb.setOnClickListener(v -> {
             onBackPressed();
         });
+
+        shuffleBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MusicPlayerActivity.class);
+            intent.putExtra("class","SonsListActivity");
+            intent.putExtra("index", 0);
+            startActivity(intent);
+        });
     }
 
     @Override
