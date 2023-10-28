@@ -16,9 +16,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
-
-
-        />
+        android:contentDescription="@string/back_btn" />
 
     <TextView
         android:id="@+id/nameSongTv"
@@ -26,7 +24,7 @@
         android:layout_height="wrap_content"
         android:text="Song"
         android:textStyle="bold"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:textColor="@color/black"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
@@ -41,7 +39,7 @@
         android:layout_below="@id/nameSongTv"
         android:text="Author"
         android:layout_centerHorizontal="true"
-        android:textSize="15dp"
+        android:textSize="15sp"
         />
     <ImageButton
         android:id="@+id/menuIb"
@@ -68,19 +66,20 @@
         android:id="@+id/seeBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_above="@+id/playMusicLl"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="9dp"
         android:layout_marginTop="9dp"
         android:layout_marginEnd="9dp"
-        android:layout_marginBottom="9dp" />
+        android:layout_marginBottom="9dp"
+        android:progressTint="@color/purple_500"
+        android:thumbTint="@color/purple_500" />
 
     <TextView
         android:id="@+id/startDirection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="00:00"
+        android:text="@string/start_direction_title"
         android:layout_alignParentStart="true"
         android:layout_alignBottom="@+id/seeBar"
         android:layout_marginBottom="20dp"
@@ -90,7 +89,7 @@
         android:id="@+id/endDirection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="00:00"
+        android:text="@string/end_direction_title"
         android:layout_alignParentEnd="true"
         android:layout_alignBottom="@+id/seeBar"
         android:layout_marginBottom="20dp"
@@ -114,7 +113,7 @@
             android:background="@android:color/transparent"
             android:src="@drawable/ic_shuffle_gray"
             android:scaleType="fitXY"
-            android:layout_marginRight="30dp"/>
+            android:layout_marginEnd="30dp"/>
 
         <ImageButton
             android:id="@+id/previousIb"
@@ -122,9 +121,8 @@
             android:layout_height="50dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_previous"
-
             android:scaleType="fitXY"
-            android:layout_marginRight="30dp"
+            android:layout_marginEnd="30dp"
             />
         <ImageButton
             android:id="@+id/playIb"
@@ -132,9 +130,8 @@
             android:layout_height="50dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_play"
-
             android:scaleType="fitXY"
-            android:layout_marginRight="30dp"
+            android:layout_marginEnd="30dp"
             />
         <ImageButton
             android:id="@+id/nextIb"
@@ -142,9 +139,8 @@
             android:layout_height="50dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_next"
-
             android:scaleType="fitXY"
-            android:layout_marginRight="30dp"
+            android:layout_marginEnd="30dp"
             />
         <ImageButton
             android:id="@+id/repeatIb"
@@ -190,9 +186,9 @@
         android:layout_alignTop="@+id/listSongIb"
         android:layout_alignBottom="@+id/listSongIb"
         android:layout_toStartOf="@id/listSongIb"
-        android:text="@string/list_song_text"
+        android:text="@string/list_song_hint"
         android:gravity="center"
         android:layout_marginEnd="20dp"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:textColor="@color/black"/>
 </RelativeLayout>

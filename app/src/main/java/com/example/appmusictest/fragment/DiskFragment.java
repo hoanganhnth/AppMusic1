@@ -30,14 +30,9 @@ public class DiskFragment extends Fragment {
 
     }
 
-    public String getArtUrl() {
-        return artUrl;
-    }
-
     public void setArtUrl(String artUrl) {
         this.artUrl = artUrl;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,7 +46,6 @@ public class DiskFragment extends Fragment {
         objectAnimator.setRepeatMode(ValueAnimator.RESTART);
         objectAnimator.setInterpolator(new LinearInterpolator());
         circleImageView = view.findViewById(R.id.imgPlayCiv);
-//        setImageView(artUrl);
         Glide.with(view)
                 .load(artUrl)
                 .placeholder(R.mipmap.ic_launcher_round)
@@ -64,7 +58,6 @@ public class DiskFragment extends Fragment {
         if (circleImageView != null && getView() != null) {
             Glide.with(getView())
                     .load(artUrl)
-                    .placeholder(R.mipmap.ic_launcher_round)
                     .into(circleImageView);
         }
     }

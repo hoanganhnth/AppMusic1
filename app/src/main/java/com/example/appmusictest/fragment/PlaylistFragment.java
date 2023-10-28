@@ -2,6 +2,7 @@ package com.example.appmusictest.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +29,7 @@ public class PlaylistFragment extends Fragment {
 
     private ArrayList<Playlist> playlists;
     private RecyclerView playlistRv;
+    private static final String TAG = "Playlist_Fragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,15 +51,15 @@ public class PlaylistFragment extends Fragment {
         Call<List<Playlist>> callback = dataService.getPlaylistCurrentDay();
         callback.enqueue(new Callback<List<Playlist>>() {
             @Override
-            public void onResponse(Call<List<Playlist>> call, Response<List<Playlist>> response) {
+            public void onResponse(@NonNull Call<List<Playlist>> call, @NonNull Response<List<Playlist>> response) {
 
                 playlists = (ArrayList<Playlist>) response.body();
                 playlistRv.setAdapter(new PlaylistAdapter(playlists,getActivity()));
             }
 
             @Override
-            public void onFailure(Call<List<Playlist>> call, Throwable t) {
-                Log.d("PlF", "fail get data due to: " + t.getMessage() );
+            public void onFailure(@NonNull Call<List<Playlist>> call, @NonNull Throwable t) {
+                Log.d(TAG, "Fail get data due to: " + t.getMessage() );
 
             }
         });

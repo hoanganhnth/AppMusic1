@@ -1,7 +1,6 @@
 package com.example.appmusictest.service;
 
 import static com.example.appmusictest.MyApplication.CHANNEL_ID;
-import static com.example.appmusictest.activity.MusicPlayerActivity.endDirectionTv;
 
 import static com.example.appmusictest.activity.MusicPlayerActivity.nowPlayingId;
 import static com.example.appmusictest.activity.MusicPlayerActivity.seekBar;
@@ -16,9 +15,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.Build;
@@ -31,15 +27,12 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.bumptech.glide.Glide;
 import com.example.appmusictest.MyApplication;
 import com.example.appmusictest.NotificationReceiver;
 import com.example.appmusictest.R;
 import com.example.appmusictest.activity.MainActivity;
 import com.example.appmusictest.activity.MusicPlayerActivity;
-import com.example.appmusictest.fragment.NowPlayingFragment;
 import com.example.appmusictest.utilities.TimeFormatterUtility;
-
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -56,6 +49,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
     private final Handler seekBarUpdateHandler = new Handler();
     public boolean destroyMain = false;
     private boolean isPlaying = false;
+    private static final String TAG = "Music_Player_Service";
 
     public boolean isPlaying() {
         return isPlaying;
@@ -118,7 +112,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
     }
 
     public void showNotification(int playPauseBtn) {
-        Log.d("Music service", "dang o " + getBaseContext().toString());
+        Log.d(TAG, "show notification");
         Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         int flag;
@@ -166,6 +160,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
     }
 
     public void playMusicFromUrl(String musicUrl) {
+
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
             isPlaying = false;
@@ -182,34 +177,30 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
                     mediaPlayer.prepareAsync();
                     mediaPlayer.setOnCompletionListener(this);
                     showNotification(R.drawable.ic_play);
+                    Log.d(TAG, "Prepare music");
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         result -> {
-                            // Xử lý khi việc phát nhạc đã được chuẩn bị sẵn
+
                         },
                         error -> {
-                            // Xử lý khi có lỗi xảy ra
+
                         }
                 );
         mediaPlayer.setOnPreparedListener(mp -> {
             mediaPlayer.start();
             isPlaying = true;
-            setDuration();
-            nowPlayingId = songs.get(songPosition).getId();
             updateSeekbar.run();
+
             Intent intent = new Intent("music_control");
             intent.putExtra("action", "play");
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
             showNotification(R.drawable.ic_pause_gray);
+            Log.d(TAG, "Start music");
 
         });
-    }
-
-    private void setDuration() {
-        endDirectionTv.setText(TimeFormatterUtility.formatTime(getDuration()));
-        seekBar.setMax(getDuration());
     }
 
     public int getDuration() {
@@ -220,7 +211,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
     public Runnable updateSeekbar = new Runnable() {
         @Override
         public void run() {
-            if (isPlaying) {
+            if (isPlaying && nowPlayingId.equals(songs.get(songPosition).getId())) {
                 seekBar.setProgress(getCurrentPosition());
                 startDirectionTv.setText(TimeFormatterUtility.formatTime(getCurrentPosition()));
             }
@@ -240,6 +231,10 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
             mediaPlayer.pause();
             isPlaying = false;
             showNotification(R.drawable.ic_play);
+            Intent intent = new Intent("music_control");
+            intent.putExtra("action", "pause");
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+            Log.d("MUSIC SERVICE", "Pause music");
         }
     }
 
@@ -248,27 +243,27 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
             mediaPlayer.start();
             isPlaying = true;
             showNotification(R.drawable.ic_pause_gray);
-        }
-    }
-
-    public void stopMusic() {
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.stop();
+            Intent intent = new Intent("music_control");
+            intent.putExtra("action", "resume");
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+            Log.d("MUSIC SERVICE", "Resume music");
         }
     }
 
     public void nextSong(Boolean b) {
         MusicPlayerActivity.setSongPosition(b);
         playMusicFromUrl(songs.get(songPosition).getPathUrl());
+        Intent intent = new Intent("music_control");
+        intent.putExtra("action", "next");
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        Log.d(TAG, "Next song");
     }
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-        MusicPlayerActivity.prevNextSong(true);
-        Intent intent = new Intent("music_control");
-        intent.putExtra("action", "next");
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-        Log.e("MUSIC SERVICE", "da hoan thanh bai hat");
+
+        Log.d(TAG, "Complete song");
+        nextSong(true);
     }
 
     @Nullable

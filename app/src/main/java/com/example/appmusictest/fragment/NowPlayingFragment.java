@@ -4,36 +4,25 @@ import static com.example.appmusictest.activity.MusicPlayerActivity.nowPlayingId
 import static com.example.appmusictest.activity.MusicPlayerActivity.songPosition;
 import static com.example.appmusictest.activity.MusicPlayerActivity.songs;
 
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.drawable.Drawable;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.example.appmusictest.R;
 import com.example.appmusictest.activity.MusicPlayerActivity;
 
@@ -43,13 +32,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class NowPlayingFragment extends Fragment {
 
 
-    public static TextView nameSongTv;
-    public static TextView authorSongTv;
-    public static CircleImageView circleImageView;
-    public static ImageButton pausePlIb,nextPlIb;
+    private TextView nameSongTv;
+    private TextView authorSongTv;
+    private CircleImageView circleImageView;
+    private ImageButton pausePlIb,nextPlIb;
     private BroadcastReceiver broadcastReceiver;
-    private boolean isReceiverRegistered = false;
     IntentFilter intentFilter;
+    private static final String TAG = "Now_Playing_Fragment";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -82,7 +72,7 @@ public class NowPlayingFragment extends Fragment {
             intent.putExtra("class", "NowPlaying");
             startActivity(intent);
         });
-        Log.d("Now playing fragment", "createview");
+        Log.d(TAG, "createView");
         return view;
 
 
@@ -101,16 +91,15 @@ public class NowPlayingFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("Now playing fragment", "create");
+        Log.d(TAG, "create");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (MusicPlayerActivity.musicPlayerService != null) {
-            Log.d("Now playing fragment", "musicPlayerService in playing not null");
+        if (MusicPlayerActivity.musicPlayerService != null && getView() != null) {
             initView(getView());
-            this.getView().setVisibility(View.VISIBLE);
+            getView().setVisibility(View.VISIBLE);
             setViewData();
             if (MusicPlayerActivity.musicPlayerService.isPlaying()) {
                 pausePlIb.setImageResource(R.drawable.ic_pause_gray);
@@ -118,28 +107,32 @@ public class NowPlayingFragment extends Fragment {
                 pausePlIb.setImageResource(R.drawable.ic_play);
             }
 
-            if (!isReceiverRegistered) {
-                broadcastReceiver = new BroadcastReceiver() {
-                    @Override
-                    public void onReceive(Context context, Intent intent) {
-                        if (intent.getAction().equals("music_control")) {
-                            String action = intent.getStringExtra("action");
+            broadcastReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    if (intent.getAction().equals("music_control")) {
+                        String action = intent.getStringExtra("action");
 
-                            if (action.equals("next")) {
+                        switch (action) {
+                            case "next":
                                 setViewData();
-                            } else if (action.equals("play")) {
+                                break;
+                            case "play":
+                            case "resume":
                                 pausePlIb.setImageResource(R.drawable.ic_pause_gray);
-                            }
+                                break;
+                            case "pause":
+                                pausePlIb.setImageResource(R.drawable.ic_play);
+                                break;
                         }
                     }
-                };
-                intentFilter = new IntentFilter("music_control");
-                LocalBroadcastManager.getInstance(requireContext()).registerReceiver(broadcastReceiver, intentFilter);
-                isReceiverRegistered = true;
-            }
-
+                }
+            };
+            intentFilter = new IntentFilter("music_control");
+            LocalBroadcastManager.getInstance(requireContext()).registerReceiver(broadcastReceiver, intentFilter);
+            Log.d(TAG, "show fragment");
         }
-        Log.d("Now playing fragment", "resume");
+        Log.d(TAG, "resume");
     }
 
     public void setViewData() {
@@ -150,12 +143,12 @@ public class NowPlayingFragment extends Fragment {
                     .load(songs.get(songPosition).getArtUrl())
                     .into(circleImageView);
         }
-        Log.d("Now playing fragment", "setView");
+        Log.d(TAG, "setView");
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDestroy() {
+        super.onDestroy();
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver);
     }
 }

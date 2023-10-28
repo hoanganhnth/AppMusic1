@@ -1,8 +1,7 @@
 package com.example.appmusictest.service;
 
-import com.google.gson.Gson;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -19,14 +18,14 @@ public class APIRetrofitClient {
                 .writeTimeout(10000, TimeUnit.MILLISECONDS)
                 .connectTimeout(10000, TimeUnit.MILLISECONDS)
                 .retryOnConnectionFailure(true)
-                .protocols(Arrays.asList(Protocol.HTTP_1_1))
+                .protocols(Collections.singletonList(Protocol.HTTP_1_1))
                 .build();
 
 
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(baseUrl)
-//                    .client(okHttpClient)
+                    .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

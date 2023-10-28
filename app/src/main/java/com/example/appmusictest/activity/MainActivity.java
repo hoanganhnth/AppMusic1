@@ -4,23 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Lifecycle;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.example.appmusictest.R;
 import com.example.appmusictest.fragment.AuthorsFragment;
-import com.example.appmusictest.fragment.NowPlayingFragment;
 import com.example.appmusictest.fragment.PlaylistFragment;
 import com.example.appmusictest.fragment.SongsFragment;
 import com.google.android.material.tabs.TabLayout;
@@ -30,25 +23,23 @@ public class MainActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
-    private ViewPaperMainFragmentAdapter adapter;
 
-    private String[] labelFragment = new String[]{"Playlist", "Author", "Song"};
+    private final String[] labelFragment = new String[]{"Playlist", "Author", "Song"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         init();
-        new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
-            tab.setText(labelFragment[position]);
-        }).attach();
+        new TabLayoutMediator(tabLayout, viewPager2, (tab, position)
+                -> tab.setText(labelFragment[position])).attach();
         viewPager2.setCurrentItem(0, false);
     }
 
     private void init() {
         tabLayout = findViewById(R.id.tabLayout);
         viewPager2 = findViewById(R.id.viewPaper);
-        adapter = new ViewPaperMainFragmentAdapter(this);
+        ViewPaperMainFragmentAdapter adapter = new ViewPaperMainFragmentAdapter(this);
         viewPager2.setAdapter(adapter);
     }
 
@@ -56,14 +47,6 @@ public class MainActivity extends AppCompatActivity {
 
         public ViewPaperMainFragmentAdapter(@NonNull FragmentActivity fragmentActivity) {
             super(fragmentActivity);
-        }
-
-        public ViewPaperMainFragmentAdapter(@NonNull Fragment fragment) {
-            super(fragment);
-        }
-
-        public ViewPaperMainFragmentAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
-            super(fragmentManager, lifecycle);
         }
 
         @NonNull

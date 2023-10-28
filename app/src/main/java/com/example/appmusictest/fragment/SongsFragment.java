@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import com.example.appmusictest.R;
 import com.example.appmusictest.model.Song;
 import com.example.appmusictest.adapter.SongAdapter;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -22,7 +21,6 @@ public class SongsFragment extends Fragment {
 
     private RecyclerView songRv;
     private ArrayList<Song> arrayList;
-    private FirebaseAuth firebaseAuth;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

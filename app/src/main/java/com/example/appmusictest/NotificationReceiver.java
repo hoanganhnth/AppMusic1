@@ -8,14 +8,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import com.bumptech.glide.Glide;
 import com.example.appmusictest.activity.MusicPlayerActivity;
-import com.example.appmusictest.fragment.NowPlayingFragment;
 
 public class NotificationReceiver extends BroadcastReceiver {
+
+    private static final String TAG = "Notification_Receiver";
     @Override
     public void onReceive(Context context, Intent intent) {
 
@@ -24,7 +21,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 
             if (MyApplication.PREVIOUS.equals(action)) {
                 if (MusicPlayerActivity.songs.size() > 1) {
-                    prevNextSong(false, context);
+                    prevNextSong(false);
                 }
             } else if (MyApplication.PLAY.equals(action)) {
                 if (nowPlayingId.equals(songs.get(songPosition).getId())) {
@@ -37,51 +34,37 @@ public class NotificationReceiver extends BroadcastReceiver {
 
             } else if (MyApplication.NEXT.equals(action)) {
                 if (MusicPlayerActivity.songs.size() > 1) {
-                    prevNextSong(true, context);
+                    prevNextSong(true);
                 }
             } else if (MyApplication.EXIT.equals(action)) {
-                exitApplication(context);
+                exitApplication();
             }
         }
     }
 
-    private void exitApplication(Context context) {
+    private void exitApplication() {
         if (MusicPlayerActivity.musicPlayerService != null) {
             MusicPlayerActivity.musicPlayerService.mediaPlayer.release();
             MusicPlayerActivity.musicPlayerService.mediaPlayer = null;
             MusicPlayerActivity.musicPlayerService.stopForeground(true);
             MusicPlayerActivity.musicPlayerService.stopService();
             MusicPlayerActivity.musicPlayerService = null;
+            Log.d(TAG, "Stop service");
         }
     }
 
-    private void prevNextSong(boolean b, Context context) {
+    private void prevNextSong(boolean b) {
         MusicPlayerActivity.musicPlayerService.nextSong(b);
-        Log.d("Notification Receiver", "next:" + b);
-        MusicPlayerActivity.nameSongTv.setText(songs.get(songPosition).getTitle());
-        MusicPlayerActivity.authorSongTv.setText(songs.get(songPosition).getNameAuthor());
-        MusicPlayerActivity.diskFragment.setArtUrl(songs.get(songPosition).getArtUrl());
-        MusicPlayerActivity.diskFragment.updateImage();
-
-        NowPlayingFragment.nameSongTv.setText(songs.get(songPosition).getTitle());
-        NowPlayingFragment.authorSongTv.setText(songs.get(songPosition).getNameAuthor());
-        Glide.with(context)
-                .load(songs.get(songPosition).getArtUrl())
-                .placeholder(R.mipmap.ic_launcher_round)
-                .into(NowPlayingFragment.circleImageView);
-    }
+        Log.d(TAG, "next: " + b);
+}
 
     private void playMusic() {
         MusicPlayerActivity.musicPlayerService.resumeMusic();
-        MusicPlayerActivity.playIb.setImageResource(R.drawable.ic_pause_gray);
-        NowPlayingFragment.pausePlIb.setImageResource(R.drawable.ic_pause_gray);
         Log.d("Notification Receiver", "play");
     }
 
     private void pauseMusic() {
         MusicPlayerActivity.musicPlayerService.pauseMusic();
-        MusicPlayerActivity.playIb.setImageResource(R.drawable.ic_play);
-        NowPlayingFragment.pausePlIb.setImageResource(R.drawable.ic_play);
         Log.d("Notification Receiver", "pause");
     }
 }

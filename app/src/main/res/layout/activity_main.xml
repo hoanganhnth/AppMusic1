@@ -15,9 +15,9 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="32dp"
-        android:text="Your Song"
+        android:text="@string/main_activity_title"
         android:textStyle="bold"
-        android:textSize="25dp"
+        android:textSize="25sp"
         android:textColor="@color/black"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="30dp"/>
@@ -33,12 +33,13 @@
         android:layout_marginEnd="23dp"
         android:background="@drawable/shape_edittext1"
         android:elevation="4dp"
-        android:hint="Search your favorite song"
+        android:hint="@string/search_main_activity_hint"
         android:padding="10dp"
         android:textColorHint="#B0B0B0"
         android:drawableEnd="@drawable/ic_search"
+        android:autofillHints=""
+        android:inputType="" />
 
-        />
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"

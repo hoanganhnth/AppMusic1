@@ -2,5 +2,18 @@
     <string name="app_name">App Music Test</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="list_song_text">Danh Sách bài hát</string>
+    <string name="list_song_hint">Danh Sách bài hát</string>
+    <string name="start_direction_title">00:00</string>
+    <string name="end_direction_title">Loading...</string>
+    <string name="playlist_title">bài hát bởi Music App</string>
+    <string name="main_activity_title">Your Song</string>
+    <string name="search_main_activity_hint">Search your favorite song</string>
+    <string name="back_btn">back</string>
+    <string name="shuffle_title_btn">Phát ngẫu nhiên</string>
+    <string name="list_song_title">Danh sách bài hát</string>
+    <string name="name_song_title">Bài hát</string>
+    <string name="album_song_title">Album</string>
+    <string name="author_song_title">Nghệ sĩ</string>
+    <string name="category_song_title">Thể loại</string>
+    <string name="playlist_fragment_title">Playlist gợi ý</string>
 </resources>

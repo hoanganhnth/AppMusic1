@@ -60,12 +60,12 @@
                 android:id="@+id/titlePlTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chill hits"
+                android:text="Playlist"
                 android:layout_below="@+id/imgPlIv"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:textColor="@color/black"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textStyle="bold"
 
                 />
@@ -76,8 +76,8 @@
                 android:layout_below="@+id/titlePlTv"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
-                android:text="0 bài hát bởi Music App"
-                android:textSize="15dp"
+                android:text="@string/playlist_title"
+                android:textSize="15sp"
                 android:textColor="@color/black"
                 />
         </RelativeLayout>
@@ -85,11 +85,11 @@
             android:id="@+id/buttonShuffleTv"
             android:layout_width="240dp"
             android:layout_height="50dp"
-            android:text="Phát ngẫu nhiên"
+            android:text="@string/shuffle_title_btn"
             android:layout_below="@+id/inforRl"
             android:layout_centerHorizontal="true"
             android:gravity="center"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/black"
             android:background="@drawable/shape_button1"
             android:layout_marginTop="20dp"
@@ -101,10 +101,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/buttonShuffleTv"
-            android:text="Danh sách bài hát"
+            android:text="@string/list_song_title"
             android:layout_marginTop="30dp"
             android:textColor="@color/black"
-            android:textSize="16dp"
+            android:textSize="16sp"
             />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listsongRv"

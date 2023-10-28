@@ -1,16 +1,12 @@
 package com.example.appmusictest.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,7 +20,6 @@ import com.example.appmusictest.service.ApiService;
 import com.example.appmusictest.service.DataService;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -39,6 +34,7 @@ public class SongListActivity extends AppCompatActivity {
     private ImageButton backIb, favoriteIb, menuIb;
     private TextView shuffleBtn, titlePlIv, numberSongTv;
     private ImageView imgPlIv;
+    private static final String TAG = "Song_List_Activity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +53,7 @@ public class SongListActivity extends AppCompatActivity {
                 .load(playlist.getArtUrl())
                 .placeholder(R.mipmap.ic_launcher_round)
                 .into(imgPlIv);
-        backIb.setOnClickListener(v -> {
-            onBackPressed();
-        });
+        backIb.setOnClickListener(v -> onBackPressed());
 
         shuffleBtn.setOnClickListener(v -> {
             Intent intent = new Intent(this, MusicPlayerActivity.class);
@@ -98,16 +92,16 @@ public class SongListActivity extends AppCompatActivity {
         Call<List<Song>> callback = dataService.getSongByPlaylist(idPlaylist);
         callback.enqueue(new Callback<List<Song>>() {
             @Override
-            public void onResponse(Call<List<Song>> call, Response<List<Song>> response) {
+            public void onResponse(@NonNull Call<List<Song>> call, @NonNull Response<List<Song>> response) {
 
                 songArrayList = (ArrayList<Song>) response.body();
                 recyclerView.setAdapter(new SongAdapter(songArrayList));
-                numberSongTv.setText(songArrayList.size() + " bài hát bởi Music App");
+                numberSongTv.setText(songArrayList.size() + R.string.playlist_title);
             }
 
             @Override
-            public void onFailure(Call<List<Song>> call, Throwable t) {
-                Log.d("SongListA", "fail to get data from server due to:" + t.getMessage() );
+            public void onFailure(@NonNull Call<List<Song>> call, @NonNull Throwable t) {
+                Log.d(TAG, "Fail to get data from server due to:" + t.getMessage() );
             }
         });
     }
