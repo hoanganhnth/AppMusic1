@@ -45,10 +45,8 @@ public class NowPlayingFragment extends Fragment {
 
     public static TextView nameSongTv;
     public static TextView authorSongTv;
-    private DiskFragment imgPlFragment;
     public static CircleImageView circleImageView;
     public static ImageButton pausePlIb,nextPlIb;
-    ObjectAnimator objectAnimator;
     private BroadcastReceiver broadcastReceiver;
     private boolean isReceiverRegistered = false;
     IntentFilter intentFilter;
@@ -109,8 +107,9 @@ public class NowPlayingFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        initView(getView());
         if (MusicPlayerActivity.musicPlayerService != null) {
+            Log.d("Now playing fragment", "musicPlayerService in playing not null");
+            initView(getView());
             this.getView().setVisibility(View.VISIBLE);
             setViewData();
             if (MusicPlayerActivity.musicPlayerService.isPlaying()) {
@@ -141,9 +140,7 @@ public class NowPlayingFragment extends Fragment {
 
         }
         Log.d("Now playing fragment", "resume");
-//        Log.d("Now playing fragment", nameSongTv.getText().toString());
     }
-
 
     public void setViewData() {
         if (getView() != null) {
@@ -152,10 +149,13 @@ public class NowPlayingFragment extends Fragment {
             Glide.with(getView())
                     .load(songs.get(songPosition).getArtUrl())
                     .into(circleImageView);
-            Log.d("Now playing fragment", "getView is null");
         }
         Log.d("Now playing fragment", "setView");
     }
 
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver);
+    }
 }

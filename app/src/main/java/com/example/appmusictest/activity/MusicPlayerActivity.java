@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -61,7 +62,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
     public static String nowPlayingId = "";
     public boolean isFavorite = false;
     private int direction = 0;
-    private BroadcastReceiver finishAllActivitiesReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +71,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         initView();
         initFragment();
         setViewData();
-        finishActivity();
 
     }
 
@@ -143,30 +142,16 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
         });
 
 
     }
 
-    private void finishActivity() {
-        finishAllActivitiesReceiver = new BroadcastReceiver() {
-
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                finish();
-            }
-        };
-
-        IntentFilter intentFilter = new IntentFilter("finish_all_activities");
-        registerReceiver(finishAllActivitiesReceiver, intentFilter);
-    }
     public static void prevNextSong(boolean b) {
         if (musicPlayerService != null) {
             musicPlayerService.nextSong(b);
@@ -237,9 +222,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         }
     }
 
-
-
-
     private class ViewPaperPlaylistFragmentAdapter extends FragmentStateAdapter {
 
         private ArrayList<Fragment> fragments;
@@ -280,7 +262,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         if (musicPlayerService == null) {
             MusicPlayerService.LocalBinder binder = (MusicPlayerService.LocalBinder) service;
             musicPlayerService = binder.getService();
-
         }
         if (songs.get(songPosition).getId().equals(nowPlayingId)) {
             Log.d("MUSIC PLAYER ACTIVITY", "musicPlayerService is not null");
@@ -308,11 +289,5 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(finishAllActivitiesReceiver);
     }
-
-
-
-
-
 }

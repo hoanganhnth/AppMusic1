@@ -1,6 +1,7 @@
 package com.example.appmusictest.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.BroadcastReceiver;
@@ -38,7 +39,7 @@ public class SongListActivity extends AppCompatActivity {
     private ImageButton backIb, favoriteIb, menuIb;
     private TextView shuffleBtn, titlePlIv, numberSongTv;
     private ImageView imgPlIv;
-    private BroadcastReceiver finishAllActivitiesReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,13 +48,10 @@ public class SongListActivity extends AppCompatActivity {
         getDataIntent();
         getDataFromServer(playlist.getId());
         setViewData();
-        finishActivity();
 
     }
 
     private void setViewData() {
-
-
         titlePlIv.setText(playlist.getTitle());
         Glide.with(this)
                 .load(playlist.getArtUrl())
@@ -79,7 +77,6 @@ public class SongListActivity extends AppCompatActivity {
         numberSongTv = findViewById(R.id.numberSongTv);
         imgPlIv = findViewById(R.id.imgPlIv);
         titlePlIv = findViewById(R.id.titlePlTv);
-
     }
 
     private void getDataIntent() {
@@ -87,19 +84,6 @@ public class SongListActivity extends AppCompatActivity {
         if (bundle != null) {
             playlist = (Playlist) bundle.getSerializable("playlist");
         }
-    }
-
-    private void finishActivity() {
-        finishAllActivitiesReceiver = new BroadcastReceiver() {
-
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                finish();
-            }
-        };
-
-        IntentFilter intentFilter = new IntentFilter("finish_all_activities");
-        registerReceiver(finishAllActivitiesReceiver, intentFilter);
     }
 
     private void getDataFromServer(String idPlaylist) {
@@ -123,7 +107,6 @@ public class SongListActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(finishAllActivitiesReceiver);
     }
 
 }

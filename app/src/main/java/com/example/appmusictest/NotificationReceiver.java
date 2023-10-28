@@ -47,12 +47,11 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     private void exitApplication(Context context) {
         if (MusicPlayerActivity.musicPlayerService != null) {
-            Intent finishIntent = new Intent("finish_all_activities");
-            LocalBroadcastManager.getInstance(context).sendBroadcast(finishIntent);
             MusicPlayerActivity.musicPlayerService.mediaPlayer.release();
+            MusicPlayerActivity.musicPlayerService.mediaPlayer = null;
             MusicPlayerActivity.musicPlayerService.stopForeground(true);
             MusicPlayerActivity.musicPlayerService.stopService();
-
+            MusicPlayerActivity.musicPlayerService = null;
         }
     }
 

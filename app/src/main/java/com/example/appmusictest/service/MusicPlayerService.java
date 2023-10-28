@@ -12,7 +12,10 @@ import static com.example.appmusictest.activity.MusicPlayerActivity.startDirecti
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
@@ -49,13 +52,14 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
     private Disposable disposable;
     private final IBinder binder = new LocalBinder();
     private MediaSessionCompat mediaSessionCompat;
+    private BroadcastReceiver onDestroyReceiver;
     private final Handler seekBarUpdateHandler = new Handler();
+    public boolean destroyMain = false;
+    private boolean isPlaying = false;
 
     public boolean isPlaying() {
         return isPlaying;
     }
-
-    private boolean isPlaying = false;
 
     public class LocalBinder extends Binder {
         public MusicPlayerService getService() {
@@ -68,18 +72,39 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
 
         return super.onStartCommand(intent, flags, startId);
     }
+
     @Override
     public void onCreate() {
         super.onCreate();
         mediaPlayer = new MediaPlayer();
+        checkMainActivityDestroy();
+
+    }
+
+    private void checkMainActivityDestroy() {
+        onDestroyReceiver = new BroadcastReceiver() {
+
+
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                destroyMain = true;
+                if (isPlaying) {
+                    showNotification(R.drawable.ic_pause_gray);
+                } else {
+                    showNotification(R.drawable.ic_play);
+                }
+            }
+        };
+        LocalBroadcastManager.getInstance(this).registerReceiver(onDestroyReceiver, new IntentFilter("your.package.name.MainActivityDestroyed"));
     }
 
     public void stopService() {
         stopSelf();
     }
+
     @Override
     public void onDestroy() {
-        super.onDestroy();
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
         }
@@ -88,11 +113,14 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
             mediaPlayer = null;
         }
         seekBarUpdateHandler.removeCallbacks(updateSeekbar);
-
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(onDestroyReceiver);
+        super.onDestroy();
     }
 
     public void showNotification(int playPauseBtn) {
+        Log.d("Music service", "dang o " + getBaseContext().toString());
         Intent intent = new Intent(getBaseContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         int flag;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             flag = PendingIntent.FLAG_IMMUTABLE;
@@ -109,10 +137,16 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
 
         Intent prevIntent = new Intent(getBaseContext(), NotificationReceiver.class).setAction(MyApplication.PREVIOUS);
         PendingIntent prevPendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, prevIntent, flag);
-
-        Intent exitIntent = new Intent(getBaseContext(), NotificationReceiver.class).setAction(MyApplication.EXIT);
-        PendingIntent exitPendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, exitIntent, flag);
-
+        PendingIntent exitPendingIntent;
+        int exit;
+        if (destroyMain) {
+            Intent exitIntent = new Intent(getBaseContext(), NotificationReceiver.class).setAction(MyApplication.EXIT);
+            exitPendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, exitIntent, flag);
+            exit = R.drawable.ic_exit_gray;
+        } else {
+            exitPendingIntent = null;
+            exit = 0;
+        }
 
         Notification builder = new NotificationCompat.Builder(getBaseContext(), CHANNEL_ID)
                 .setContentIntent(contentIntent)
@@ -126,7 +160,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
                 .addAction(R.drawable.ic_previous, "Previous", prevPendingIntent)
                 .addAction(playPauseBtn, "Play", playPendingIntent)
                 .addAction(R.drawable.ic_next, "Next", nextPendingIntent)
-                .addAction(R.drawable.ic_exit_gray, "Exit", exitPendingIntent)
+                .addAction(exit, "Exit", exitPendingIntent)
                 .build();
         startForeground(13,builder);
     }
@@ -140,7 +174,6 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
         }
-
 
         disposable = Observable.create((ObservableOnSubscribe<Boolean>) emitter -> {
 
@@ -174,13 +207,13 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
         });
     }
 
-
     private void setDuration() {
         endDirectionTv.setText(TimeFormatterUtility.formatTime(getDuration()));
         seekBar.setMax(getDuration());
     }
 
     public int getDuration() {
+        if (mediaPlayer == null) return 0;
         return mediaPlayer.getDuration();
     }
 
@@ -227,7 +260,6 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
     public void nextSong(Boolean b) {
         MusicPlayerActivity.setSongPosition(b);
         playMusicFromUrl(songs.get(songPosition).getPathUrl());
-
     }
 
     @Override
@@ -245,6 +277,4 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
         mediaSessionCompat = new MediaSessionCompat(getBaseContext(), "My Music");
         return binder;
     }
-
-
 }
