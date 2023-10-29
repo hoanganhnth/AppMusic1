@@ -2,7 +2,7 @@ package com.example.appmusictest.fragment;
 
 import static com.example.appmusictest.activity.MusicPlayerActivity.nowPlayingId;
 import static com.example.appmusictest.activity.MusicPlayerActivity.songPosition;
-import static com.example.appmusictest.activity.MusicPlayerActivity.songs;
+import static com.example.appmusictest.activity.MusicPlayerActivity.currentSongs;
 
 
 import android.content.BroadcastReceiver;
@@ -50,20 +50,19 @@ public class NowPlayingFragment extends Fragment {
         view.setVisibility(View.INVISIBLE);
 
         pausePlIb.setOnClickListener( v -> {
-            if (nowPlayingId.equals(songs.get(songPosition).getId())) {
+            if (nowPlayingId.equals(currentSongs.get(songPosition).getId())) {
                 if (MusicPlayerActivity.musicPlayerService.isPlaying()) {
                     MusicPlayerActivity.musicPlayerService.pauseMusic();
-                    pausePlIb.setImageResource(R.drawable.ic_play);
+//                    pausePlIb.setImageResource(R.drawable.ic_play);
                 } else {
                     MusicPlayerActivity.musicPlayerService.resumeMusic();
-                    pausePlIb.setImageResource(R.drawable.ic_pause_gray);
+//                    pausePlIb.setImageResource(R.drawable.ic_pause_gray);
                 }
             }
         });
 
         nextPlIb.setOnClickListener(v -> {
             MusicPlayerActivity.musicPlayerService.nextSong(true);
-            setViewData();
         });
 
         view.setOnClickListener(v -> {
@@ -137,10 +136,10 @@ public class NowPlayingFragment extends Fragment {
 
     public void setViewData() {
         if (getView() != null) {
-            nameSongTv.setText(songs.get(songPosition).getTitle());
-            authorSongTv.setText(songs.get(songPosition).getNameAuthor());
+            nameSongTv.setText(currentSongs.get(songPosition).getTitle());
+            authorSongTv.setText(currentSongs.get(songPosition).getNameAuthor());
             Glide.with(getView())
-                    .load(songs.get(songPosition).getArtUrl())
+                    .load(currentSongs.get(songPosition).getArtUrl())
                     .into(circleImageView);
         }
         Log.d(TAG, "setView");

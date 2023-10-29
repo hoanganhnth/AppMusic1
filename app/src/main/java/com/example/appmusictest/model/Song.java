@@ -42,6 +42,9 @@ public class Song implements Serializable {
         this.pathUrl = pathUrl;
     }
 
+    public Song() {
+    }
+
     public String getId() {
         return id;
     }

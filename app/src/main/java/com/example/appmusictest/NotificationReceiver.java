@@ -2,7 +2,7 @@ package com.example.appmusictest;
 
 import static com.example.appmusictest.activity.MusicPlayerActivity.nowPlayingId;
 import static com.example.appmusictest.activity.MusicPlayerActivity.songPosition;
-import static com.example.appmusictest.activity.MusicPlayerActivity.songs;
+import static com.example.appmusictest.activity.MusicPlayerActivity.currentSongs;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -20,11 +20,11 @@ public class NotificationReceiver extends BroadcastReceiver {
             String action = intent.getAction();
 
             if (MyApplication.PREVIOUS.equals(action)) {
-                if (MusicPlayerActivity.songs.size() > 1) {
+                if (MusicPlayerActivity.currentSongs.size() > 1) {
                     prevNextSong(false);
                 }
             } else if (MyApplication.PLAY.equals(action)) {
-                if (nowPlayingId.equals(songs.get(songPosition).getId())) {
+                if (nowPlayingId.equals(currentSongs.get(songPosition).getId())) {
                     if (MusicPlayerActivity.musicPlayerService.isPlaying()) {
                         pauseMusic();
                     } else {
@@ -33,7 +33,7 @@ public class NotificationReceiver extends BroadcastReceiver {
                 }
 
             } else if (MyApplication.NEXT.equals(action)) {
-                if (MusicPlayerActivity.songs.size() > 1) {
+                if (MusicPlayerActivity.currentSongs.size() > 1) {
                     prevNextSong(true);
                 }
             } else if (MyApplication.EXIT.equals(action)) {

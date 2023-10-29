@@ -31,6 +31,8 @@ import com.example.appmusictest.service.MusicPlayerService;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 
 public class MusicPlayerActivity extends AppCompatActivity implements ServiceConnection {
@@ -52,17 +54,19 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
     private ViewPager2 viewPager2;
     private ViewPaperPlaylistFragmentAdapter viewPaperPlaylistFragmentAdapter;
     private ArrayList<Fragment> fragmentArrayList;
-    public static DiskFragment diskFragment;
+    private DiskFragment diskFragment;
     private InfoSongFragment infoSongFragment;
     public static MusicPlayerService musicPlayerService;
-    public static ArrayList<Song> songs;
+    public static ArrayList<Song> originalSongs;
+    public static ArrayList<Song> currentSongs;
     public static int songPosition = 0;
     public static boolean repeat = false;
     public static String nowPlayingId = "";
     public boolean isFavorite = false;
     private BroadcastReceiver broadcastReceiver;
-    //    private boolean isReceiverRegistered = false;
+    public static boolean activeShuffle = false;
     private static final String TAG = "Music_Player_Activity";
+    private boolean isShuffled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +76,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         initView();
         initFragment();
         setViewData();
-
     }
 
     private void initView() {
@@ -135,12 +138,26 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
                 repeatIb.setColorFilter(ContextCompat.getColor(this,R.color.purple_500));
             }
         });
+        shuffleIb.setOnClickListener(v -> {
+            if (!activeShuffle) {
+                activeShuffle = true;
+                shuffleSongs();
+                shuffleIb.setColorFilter(ContextCompat.getColor(this,R.color.purple_500));
+                Log.d(TAG, "Active shuffle");
+            }
+            else {
+                activeShuffle = false;
+                refreshSongs();
+                shuffleIb.setColorFilter(ContextCompat.getColor(this,R.color.grayBt));
+                Log.d(TAG, "Refresh songs");
+            }
+        });
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    if (musicPlayerService.isPlaying()) {
+                    if (nowPlayingId.equals(currentSongs.get(songPosition).getId())) {
                         musicPlayerService.mediaPlayer.seekTo(progress);
                     }
                 }
@@ -168,7 +185,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
                                 break;
                             case "play":
                                 setDuration();
-                                nowPlayingId = songs.get(songPosition).getId();
                                 break;
                             case "pause":
                                 playIb.setImageResource(R.drawable.ic_play);
@@ -184,6 +200,29 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(broadcastReceiver, intentFilter);
 //            isReceiverRegistered = true;
 //        }
+    }
+
+    private void refreshSongs() {
+        currentSongs.clear();
+        currentSongs.addAll(originalSongs);
+        for (int i = 0; i < currentSongs.size(); i++) {
+            if (currentSongs.get(i).getId().equals(nowPlayingId)) {
+                songPosition = i;
+                break;
+            }
+        }
+    }
+
+    private void shuffleSongs() {
+        Song song1 = currentSongs.get(0);
+        currentSongs.set(0, currentSongs.get(songPosition));
+        currentSongs.set(songPosition, song1);
+        List<Song> remainingSongs = currentSongs.subList(1, currentSongs.size());
+        Collections.shuffle(remainingSongs, new Random());
+        songPosition = 0;
+        nowPlayingId = currentSongs.get(0).getId();
+        Log.d(TAG, "Shuffle list");
+
     }
 
     private void setDuration() {
@@ -202,14 +241,14 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
     public static void setSongPosition(boolean b) {
         if (!repeat) {
             if (b) {
-                if (songPosition == songs.size() - 1) {
+                if (songPosition == currentSongs.size() - 1) {
                     songPosition = 0;
                 } else {
                     songPosition++;
                 }
             } else {
                 if (songPosition == 0) {
-                    songPosition = songs.size() - 1;
+                    songPosition = currentSongs.size() - 1;
                 } else {
                     songPosition --;
                 }
@@ -221,28 +260,22 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         Intent intent = new Intent(this, MusicPlayerService.class);
         startService(intent);
         bindService(intent, this, Context.BIND_AUTO_CREATE);
-        songs = new ArrayList<>();
-        songs.addAll(playlist);
+        currentSongs = new ArrayList<>();
+        originalSongs = new ArrayList<>();
+        currentSongs.addAll(playlist);
+        originalSongs.addAll(playlist);
         if (shuffle) {
-            Collections.shuffle(songs);
+            activeShuffle = true;
+            Collections.shuffle(currentSongs);
+            isShuffled = true;
+            Log.d(TAG, "isShuffled is " + isShuffled);
         }
         initLayout();
-        if (!playNext) {
-            // play next music
-        }
     }
 
     private void initLayout() {
 
-        nameSongTv.setText(songs.get(songPosition).getTitle());
-        authorSongTv.setText(songs.get(songPosition).getNameAuthor());
-        diskFragment.setArtUrl(songs.get(songPosition).getArtUrl());
-
-        if (repeat) {
-            repeatIb.setColorFilter(ContextCompat.getColor(getApplicationContext(),R.color.purple_500));
-        } else {
-            repeatIb.setColorFilter(ContextCompat.getColor(getApplicationContext(),R.color.grayBt));
-        }
+        setLayoutPlaying();
         playIb.setImageResource(R.drawable.ic_pause_gray);
         startDirectionTv.setText(R.string.start_direction_title);
         endDirectionTv.setText(R.string.end_direction_title);
@@ -251,18 +284,23 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
     }
 
     private void setLayoutPlaying() {
-        nameSongTv.setText(songs.get(songPosition).getTitle());
-        authorSongTv.setText(songs.get(songPosition).getNameAuthor());
-        diskFragment.setArtUrl(songs.get(songPosition).getArtUrl());
+        nameSongTv.setText(currentSongs.get(songPosition).getTitle());
+        authorSongTv.setText(currentSongs.get(songPosition).getNameAuthor());
+        diskFragment.setArtUrl(currentSongs.get(songPosition).getArtUrl());
         if (repeat) {
             repeatIb.setColorFilter(ContextCompat.getColor(getApplicationContext(),R.color.purple_500));
         } else {
             repeatIb.setColorFilter(ContextCompat.getColor(getApplicationContext(),R.color.grayBt));
         }
+        if (activeShuffle) {
+            shuffleIb.setColorFilter(ContextCompat.getColor(getApplicationContext(),R.color.purple_500));
+        } else {
+            shuffleIb.setColorFilter(ContextCompat.getColor(getApplicationContext(),R.color.grayBt));
+        }
     }
 
     private void clickPauseOrResume() {
-        if (nowPlayingId.equals(songs.get(songPosition).getId())) {
+        if (nowPlayingId.equals(currentSongs.get(songPosition).getId())) {
             if (musicPlayerService.isPlaying()) {
                 musicPlayerService.pauseMusic();
                 playIb.setImageResource(R.drawable.ic_play);
@@ -311,7 +349,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
             MusicPlayerService.LocalBinder binder = (MusicPlayerService.LocalBinder) service;
             musicPlayerService = binder.getService();
         }
-        if (songs.get(songPosition).getId().equals(nowPlayingId)) {
+        if (currentSongs.get(songPosition).getId().equals(nowPlayingId) && !isShuffled) {
             Log.d(TAG, "Service is connected");
             if (musicPlayerService.isPlaying()) {
                 playIb.setImageResource(R.drawable.ic_pause_gray);
@@ -324,7 +362,11 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
             seekBar.setProgress(musicPlayerService.getCurrentPosition());
         }
         else {
-            musicPlayerService.playMusicFromUrl(songs.get(songPosition).getPathUrl());
+            musicPlayerService.playMusicFromUrl(currentSongs.get(songPosition).getPathUrl());
+            Log.d(TAG, "play new music ");
+            if (activeShuffle) {
+                shuffleSongs();
+            }
         }
 
     }

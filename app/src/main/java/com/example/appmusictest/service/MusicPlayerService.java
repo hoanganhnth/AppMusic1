@@ -5,7 +5,7 @@ import static com.example.appmusictest.MyApplication.CHANNEL_ID;
 import static com.example.appmusictest.activity.MusicPlayerActivity.nowPlayingId;
 import static com.example.appmusictest.activity.MusicPlayerActivity.seekBar;
 import static com.example.appmusictest.activity.MusicPlayerActivity.songPosition;
-import static com.example.appmusictest.activity.MusicPlayerActivity.songs;
+import static com.example.appmusictest.activity.MusicPlayerActivity.currentSongs;
 import static com.example.appmusictest.activity.MusicPlayerActivity.startDirectionTv;
 
 import android.app.Notification;
@@ -145,8 +145,8 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
         Notification builder = new NotificationCompat.Builder(getBaseContext(), CHANNEL_ID)
                 .setContentIntent(contentIntent)
                 .setSmallIcon(R.drawable.ic_music_cyan)
-                .setContentTitle(MusicPlayerActivity.songs.get(MusicPlayerActivity.songPosition).getTitle())
-                .setContentText(MusicPlayerActivity.songs.get(MusicPlayerActivity.songPosition).getNameAuthor())
+                .setContentTitle(MusicPlayerActivity.currentSongs.get(MusicPlayerActivity.songPosition).getTitle())
+                .setContentText(MusicPlayerActivity.currentSongs.get(MusicPlayerActivity.songPosition).getNameAuthor())
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle().setMediaSession(mediaSessionCompat.getSessionToken()))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -193,7 +193,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
             mediaPlayer.start();
             isPlaying = true;
             updateSeekbar.run();
-
+            nowPlayingId = currentSongs.get(songPosition).getId();
             Intent intent = new Intent("music_control");
             intent.putExtra("action", "play");
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
@@ -211,7 +211,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
     public Runnable updateSeekbar = new Runnable() {
         @Override
         public void run() {
-            if (isPlaying && nowPlayingId.equals(songs.get(songPosition).getId())) {
+            if ( nowPlayingId.equals(currentSongs.get(songPosition).getId())) {
                 seekBar.setProgress(getCurrentPosition());
                 startDirectionTv.setText(TimeFormatterUtility.formatTime(getCurrentPosition()));
             }
@@ -252,7 +252,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
 
     public void nextSong(Boolean b) {
         MusicPlayerActivity.setSongPosition(b);
-        playMusicFromUrl(songs.get(songPosition).getPathUrl());
+        playMusicFromUrl(currentSongs.get(songPosition).getPathUrl());
         Intent intent = new Intent("music_control");
         intent.putExtra("action", "next");
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);

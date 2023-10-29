@@ -96,7 +96,7 @@ public class SongListActivity extends AppCompatActivity {
 
                 songArrayList = (ArrayList<Song>) response.body();
                 recyclerView.setAdapter(new SongAdapter(songArrayList));
-                numberSongTv.setText(songArrayList.size() + R.string.playlist_title);
+                numberSongTv.setText(songArrayList.size() + " " + getString(R.string.playlist_title));
             }
 
             @Override
