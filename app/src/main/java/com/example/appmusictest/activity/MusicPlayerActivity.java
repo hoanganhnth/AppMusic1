@@ -23,6 +23,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.example.appmusictest.R;
+import com.example.appmusictest.fragment.ListPlayFragment;
 import com.example.appmusictest.utilities.TimeFormatterUtility;
 import com.example.appmusictest.fragment.DiskFragment;
 import com.example.appmusictest.fragment.InfoSongFragment;
@@ -56,6 +57,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
     private ArrayList<Fragment> fragmentArrayList;
     private DiskFragment diskFragment;
     private InfoSongFragment infoSongFragment;
+    private ListPlayFragment listPlayFragment;
     public static MusicPlayerService musicPlayerService;
     public static ArrayList<Song> originalSongs;
     public static ArrayList<Song> currentSongs;
@@ -99,9 +101,11 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
     private void initFragment() {
         fragmentArrayList = new ArrayList<>();
         diskFragment = new DiskFragment();
+        listPlayFragment = new ListPlayFragment();
         infoSongFragment = new InfoSongFragment();
         fragmentArrayList.add(infoSongFragment);
         fragmentArrayList.add(diskFragment);
+        fragmentArrayList.add(listPlayFragment);
         viewPaperPlaylistFragmentAdapter = new ViewPaperPlaylistFragmentAdapter(this, fragmentArrayList);
         viewPager2.setAdapter(viewPaperPlaylistFragmentAdapter);
         viewPager2.setCurrentItem(1);
@@ -111,15 +115,13 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         songPosition = getIntent().getIntExtra("index", 0);
         switch (getIntent().getStringExtra("class")) {
             case "SongAdapter":
-                initServiceAndPlaylist(SongListActivity.songArrayList,false,false);
+                initServiceAndPlaylist(SongListActivity.songArrayList,false,true);
                 break;
             case "NowPlaying":
-                Intent intent = new Intent(this, MusicPlayerService.class);
-                bindService(intent, this, Context.BIND_AUTO_CREATE);
-                setLayoutPlaying();
+                initServiceAndPlaylist(null,false, false);
                 break;
-            case "SonsListActivity":
-                initServiceAndPlaylist(SongListActivity.songArrayList, true, false);
+            case "SongListActivity":
+                initServiceAndPlaylist(SongListActivity.songArrayList, true, true);
                 break;
         }
 
@@ -151,13 +153,14 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
                 shuffleIb.setColorFilter(ContextCompat.getColor(this,R.color.grayBt));
                 Log.d(TAG, "Refresh songs");
             }
+            listPlayFragment.onSongChanged();
         });
-
+        listSongIb.setOnClickListener(v -> viewPager2.setCurrentItem(2));
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    if (nowPlayingId.equals(currentSongs.get(songPosition).getId())) {
+                    if (checkSong()) {
                         musicPlayerService.mediaPlayer.seekTo(progress);
                     }
                 }
@@ -172,34 +175,32 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
             }
         });
 
-//        if (!isReceiverRegistered) {
-            broadcastReceiver = new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    if (intent.getAction().equals("music_control")) {
-                        String action = intent.getStringExtra("action");
-                        switch (action) {
-                            case "next":
-                                initLayout();
-                                diskFragment.updateImage();
-                                break;
-                            case "play":
-                                setDuration();
-                                break;
-                            case "pause":
-                                playIb.setImageResource(R.drawable.ic_play);
-                                break;
-                            case "resume":
-                                playIb.setImageResource(R.drawable.ic_pause_gray);
-                                break;
-                        }
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals("music_control")) {
+                    String action = intent.getStringExtra("action");
+                    switch (action) {
+                        case "play":
+                            setDuration();
+                            playIb.setImageResource(R.drawable.ic_pause_gray);
+                            break;
+                        case "prepare":
+                            updateLayout();
+                            listPlayFragment.onSongChanged();
+                            break;
+                        case "pause":
+                            playIb.setImageResource(R.drawable.ic_play);
+                            break;
+                        case "resume":
+                            playIb.setImageResource(R.drawable.ic_pause_gray);
+                            break;
                     }
                 }
-            };
+            }
+        };
         IntentFilter intentFilter = new IntentFilter("music_control");
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(broadcastReceiver, intentFilter);
-//            isReceiverRegistered = true;
-//        }
     }
 
     private void refreshSongs() {
@@ -233,57 +234,40 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
     public void prevNextSong(boolean b) {
         if (musicPlayerService != null) {
             musicPlayerService.nextSong(b);
-            initLayout();
-            diskFragment.updateImage();
         }
     }
 
-    public static void setSongPosition(boolean b) {
-        if (!repeat) {
-            if (b) {
-                if (songPosition == currentSongs.size() - 1) {
-                    songPosition = 0;
-                } else {
-                    songPosition++;
-                }
-            } else {
-                if (songPosition == 0) {
-                    songPosition = currentSongs.size() - 1;
-                } else {
-                    songPosition --;
-                }
-            }
+    private void initServiceAndPlaylist(ArrayList<Song> playlist, boolean shuffle, boolean isNewSong) {
+        if (isNewSong) {
+            currentSongs = new ArrayList<>();
+            originalSongs = new ArrayList<>();
+            currentSongs.addAll(playlist);
+            originalSongs.addAll(playlist);
         }
-    }
-
-    private void initServiceAndPlaylist(ArrayList<Song> playlist, boolean shuffle, boolean playNext) {
+        if (shuffle) {
+            Collections.shuffle(currentSongs);
+            isShuffled = true;
+            Log.d(TAG, "isShuffled is true");
+        }
+        initLayout();
         Intent intent = new Intent(this, MusicPlayerService.class);
         startService(intent);
         bindService(intent, this, Context.BIND_AUTO_CREATE);
-        currentSongs = new ArrayList<>();
-        originalSongs = new ArrayList<>();
-        currentSongs.addAll(playlist);
-        originalSongs.addAll(playlist);
-        if (shuffle) {
-            activeShuffle = true;
-            Collections.shuffle(currentSongs);
-            isShuffled = true;
-            Log.d(TAG, "isShuffled is " + isShuffled);
-        }
-        initLayout();
+    }
+
+    private void updateLayout() {
+        nameSongTv.setText(currentSongs.get(songPosition).getTitle());
+        authorSongTv.setText(currentSongs.get(songPosition).getNameAuthor());
+        diskFragment.setArtUrl(currentSongs.get(songPosition).getArtUrl());
+        diskFragment.updateImage();
+        startDirectionTv.setText(R.string.start_direction_title);
+        endDirectionTv.setText(R.string.end_direction_title);
+        playIb.setImageResource(R.drawable.ic_play);
+        seekBar.setProgress(0);
+        Log.d(TAG, "update layout");
     }
 
     private void initLayout() {
-
-        setLayoutPlaying();
-        playIb.setImageResource(R.drawable.ic_pause_gray);
-        startDirectionTv.setText(R.string.start_direction_title);
-        endDirectionTv.setText(R.string.end_direction_title);
-        seekBar.setProgress(0);
-//        Log.d("MUSIC PLAYER ACTIVITY", "set 00:00");
-    }
-
-    private void setLayoutPlaying() {
         nameSongTv.setText(currentSongs.get(songPosition).getTitle());
         authorSongTv.setText(currentSongs.get(songPosition).getNameAuthor());
         diskFragment.setArtUrl(currentSongs.get(songPosition).getArtUrl());
@@ -297,10 +281,22 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         } else {
             shuffleIb.setColorFilter(ContextCompat.getColor(getApplicationContext(),R.color.grayBt));
         }
+        Log.d(TAG, "init layout");
+    }
+
+    private void setLayoutPlaying() {
+        if (musicPlayerService.isPlaying()) {
+            playIb.setImageResource(R.drawable.ic_pause_gray);
+        } else {
+            playIb.setImageResource(R.drawable.ic_play);
+        }
+        setDuration();
+        startDirectionTv.setText(TimeFormatterUtility.formatTime(musicPlayerService.getCurrentPosition()));
+        seekBar.setProgress(musicPlayerService.getCurrentPosition());
     }
 
     private void clickPauseOrResume() {
-        if (nowPlayingId.equals(currentSongs.get(songPosition).getId())) {
+        if (checkSong()) {
             if (musicPlayerService.isPlaying()) {
                 musicPlayerService.pauseMusic();
                 playIb.setImageResource(R.drawable.ic_play);
@@ -326,12 +322,12 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            return fragmentArrayList.get(position);
+            return fragments.get(position);
         }
 
         @Override
         public int getItemCount() {
-            return fragmentArrayList.size();
+            return fragments.size();
         }
 
 
@@ -348,42 +344,37 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         if (musicPlayerService == null) {
             MusicPlayerService.LocalBinder binder = (MusicPlayerService.LocalBinder) service;
             musicPlayerService = binder.getService();
-        }
-        if (currentSongs.get(songPosition).getId().equals(nowPlayingId) && !isShuffled) {
             Log.d(TAG, "Service is connected");
-            if (musicPlayerService.isPlaying()) {
-                playIb.setImageResource(R.drawable.ic_pause_gray);
-            } else {
-                playIb.setImageResource(R.drawable.ic_play);
-            }
-            startDirectionTv.setText(TimeFormatterUtility.formatTime(musicPlayerService.getCurrentPosition()));
-            endDirectionTv.setText(TimeFormatterUtility.formatTime(musicPlayerService.getDuration()));
-            seekBar.setMax(musicPlayerService.getDuration());
-            seekBar.setProgress(musicPlayerService.getCurrentPosition());
+        }
+        if (!isShuffled && checkSong()) {
+            setLayoutPlaying();
         }
         else {
             musicPlayerService.playMusicFromUrl(currentSongs.get(songPosition).getPathUrl());
-            Log.d(TAG, "play new music ");
+            Log.d(TAG, "play new song ");
             if (activeShuffle) {
                 shuffleSongs();
             }
         }
+    }
 
+    public static boolean checkSong() {
+        return currentSongs.get(songPosition).getId().equals(nowPlayingId);
     }
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
-            musicPlayerService = null;
+        musicPlayerService = null;
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        }
+        LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(broadcastReceiver);
+    }
 
     @Override
     protected void onStop() {
         super.onStop();
-        LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(broadcastReceiver);
     }
 }

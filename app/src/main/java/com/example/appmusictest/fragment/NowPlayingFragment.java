@@ -53,17 +53,13 @@ public class NowPlayingFragment extends Fragment {
             if (nowPlayingId.equals(currentSongs.get(songPosition).getId())) {
                 if (MusicPlayerActivity.musicPlayerService.isPlaying()) {
                     MusicPlayerActivity.musicPlayerService.pauseMusic();
-//                    pausePlIb.setImageResource(R.drawable.ic_play);
                 } else {
                     MusicPlayerActivity.musicPlayerService.resumeMusic();
-//                    pausePlIb.setImageResource(R.drawable.ic_pause_gray);
                 }
             }
         });
 
-        nextPlIb.setOnClickListener(v -> {
-            MusicPlayerActivity.musicPlayerService.nextSong(true);
-        });
+        nextPlIb.setOnClickListener(v -> MusicPlayerActivity.musicPlayerService.nextSong(true));
 
         view.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), MusicPlayerActivity.class);
@@ -113,7 +109,8 @@ public class NowPlayingFragment extends Fragment {
                         String action = intent.getStringExtra("action");
 
                         switch (action) {
-                            case "next":
+                            case "prepare":
+                                pausePlIb.setImageResource(R.drawable.ic_play);
                                 setViewData();
                                 break;
                             case "play":

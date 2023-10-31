@@ -52,15 +52,15 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
         />
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/playMusicVp2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/authorSongTv"
-        android:layout_marginTop="20dp"
         android:layout_above="@+id/seeBar"
-        android:layout_marginBottom="120dp"
-        />
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="120dp" />
 
     <SeekBar
         android:id="@+id/seeBar"

@@ -4,23 +4,26 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="0dp"
-
-    android:background="#F8F8F8"
+    app:cardCornerRadius="10dp"
+    app:cardUseCompatPadding="true"
     >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#F8F8F8"
         android:paddingBottom="5dp"
         android:paddingTop="5dp"
+        android:paddingStart="5dp"
+
         >
         <ImageView
             android:id="@+id/imgRowIv"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:scaleType="centerCrop"
-            android:src="@mipmap/ic_launcher_round"/>
+            android:src="@mipmap/ic_launcher_round"
+            android:background="@drawable/shape_img1"
+            />
 
         <TextView
             android:id="@+id/nameSongTv"

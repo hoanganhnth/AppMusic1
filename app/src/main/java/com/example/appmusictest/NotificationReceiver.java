@@ -24,14 +24,13 @@ public class NotificationReceiver extends BroadcastReceiver {
                     prevNextSong(false);
                 }
             } else if (MyApplication.PLAY.equals(action)) {
-                if (nowPlayingId.equals(currentSongs.get(songPosition).getId())) {
+                if (MusicPlayerActivity.checkSong()) {
                     if (MusicPlayerActivity.musicPlayerService.isPlaying()) {
                         pauseMusic();
                     } else {
                         playMusic();
                     }
                 }
-
             } else if (MyApplication.NEXT.equals(action)) {
                 if (MusicPlayerActivity.currentSongs.size() > 1) {
                     prevNextSong(true);
@@ -60,11 +59,11 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     private void playMusic() {
         MusicPlayerActivity.musicPlayerService.resumeMusic();
-        Log.d("Notification Receiver", "play");
+        Log.d(TAG, "play");
     }
 
     private void pauseMusic() {
         MusicPlayerActivity.musicPlayerService.pauseMusic();
-        Log.d("Notification Receiver", "pause");
+        Log.d(TAG, "pause");
     }
 }

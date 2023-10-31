@@ -3,6 +3,7 @@ package com.example.appmusictest.service;
 import static com.example.appmusictest.MyApplication.CHANNEL_ID;
 
 import static com.example.appmusictest.activity.MusicPlayerActivity.nowPlayingId;
+import static com.example.appmusictest.activity.MusicPlayerActivity.repeat;
 import static com.example.appmusictest.activity.MusicPlayerActivity.seekBar;
 import static com.example.appmusictest.activity.MusicPlayerActivity.songPosition;
 import static com.example.appmusictest.activity.MusicPlayerActivity.currentSongs;
@@ -176,6 +177,9 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
                     mediaPlayer.setDataSource(musicUrl);
                     mediaPlayer.prepareAsync();
                     mediaPlayer.setOnCompletionListener(this);
+                    Intent intent = new Intent("music_control");
+                    intent.putExtra("action", "prepare");
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
                     showNotification(R.drawable.ic_play);
                     Log.d(TAG, "Prepare music");
                 })
@@ -211,7 +215,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
     public Runnable updateSeekbar = new Runnable() {
         @Override
         public void run() {
-            if ( nowPlayingId.equals(currentSongs.get(songPosition).getId())) {
+            if (MusicPlayerActivity.checkSong()) {
                 seekBar.setProgress(getCurrentPosition());
                 startDirectionTv.setText(TimeFormatterUtility.formatTime(getCurrentPosition()));
             }
@@ -251,12 +255,27 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
     }
 
     public void nextSong(Boolean b) {
-        MusicPlayerActivity.setSongPosition(b);
+        setSongPosition(b);
         playMusicFromUrl(currentSongs.get(songPosition).getPathUrl());
-        Intent intent = new Intent("music_control");
-        intent.putExtra("action", "next");
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         Log.d(TAG, "Next song");
+    }
+
+    private void setSongPosition(boolean b) {
+        if (!repeat) {
+            if (b) {
+                if (songPosition == currentSongs.size() - 1) {
+                    songPosition = 0;
+                } else {
+                    songPosition++;
+                }
+            } else {
+                if (songPosition == 0) {
+                    songPosition = currentSongs.size() - 1;
+                } else {
+                    songPosition --;
+                }
+            }
+        }
     }
 
     @Override

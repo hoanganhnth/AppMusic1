@@ -19,16 +19,17 @@ import android.view.animation.LinearInterpolator;
 
 import com.bumptech.glide.Glide;
 import com.example.appmusictest.R;
+import com.example.appmusictest.activity.MusicPlayerActivity;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DiskFragment extends Fragment {
 
-    public static CircleImageView circleImageView;
+    private CircleImageView circleImageView;
     ObjectAnimator objectAnimator;
     private String artUrl;
-    BroadcastReceiver broadcastReceiver;
-    IntentFilter intentFilter;
+    private BroadcastReceiver broadcastReceiver;
+    private IntentFilter intentFilter;
 
     private static final String TAG = "Disk_fragment";
     public DiskFragment() {
@@ -74,6 +75,10 @@ public class DiskFragment extends Fragment {
                             objectAnimator.pause();
                             Log.d(TAG, "pause");
                             break;
+                        case "play":
+                            objectAnimator.resume();
+                            Log.d(TAG, "play");
+                            break;
                     }
                 }
             }
@@ -81,7 +86,7 @@ public class DiskFragment extends Fragment {
         intentFilter = new IntentFilter("music_control");
         LocalBroadcastManager.getInstance(requireContext()).registerReceiver(broadcastReceiver, intentFilter);
 
-
+        Log.d(TAG, "On create view");
         return view;
     }
 
@@ -90,7 +95,12 @@ public class DiskFragment extends Fragment {
             Glide.with(getView())
                     .load(artUrl)
                     .into(circleImageView);
+            Log.d(TAG, "show img ");
+        } else {
+            if (circleImageView == null) Log.d(TAG, "circleImg is null");
+            if (getView() == null) Log.d(TAG, "get view is null");
         }
+
     }
 
     @Override
@@ -99,4 +109,12 @@ public class DiskFragment extends Fragment {
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (MusicPlayerActivity.checkSong() && !MusicPlayerActivity.musicPlayerService.isPlaying()) {
+            objectAnimator.pause();
+        }
+    }
 }

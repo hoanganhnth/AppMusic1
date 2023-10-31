@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
-
+    private static final String TAG = "Main_activity";
     private final String[] labelFragment = new String[]{"Playlist", "Author", "Song"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("Main", "main destroy");
+        Log.d(TAG, "main destroy");
         Intent intent = new Intent("your.package.name.MainActivityDestroyed");
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         if (MusicPlayerActivity.musicPlayerService != null) {
             MusicPlayerActivity.musicPlayerService.destroyMain = false;
-            Log.d("Main", "main resume");
+            Log.d(TAG, "main resume");
             if (MusicPlayerActivity.musicPlayerService.isPlaying()) {
                 MusicPlayerActivity.musicPlayerService.showNotification(R.drawable.ic_pause_gray);
             } else {
