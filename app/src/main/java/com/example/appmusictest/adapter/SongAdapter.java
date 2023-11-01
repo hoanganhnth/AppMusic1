@@ -1,12 +1,21 @@
 package com.example.appmusictest.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +32,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
     private ArrayList<Song> songArrayList;
     private Context context;
+    private static final String TAG = "SongAdapter";
 
     public SongAdapter(ArrayList<Song> songArrayList) {
         this.songArrayList = songArrayList;
@@ -64,6 +74,49 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
             holder.itemView.getContext().startActivity(intent);
         });
+        holder.moreIv.setOnClickListener(v -> {
+            showBottomDialog(v, position);
+        });
+    }
+
+    private void showBottomDialog(View view, int pos) {
+        final Dialog dialog = new Dialog(view.getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.song_bottom_layout);
+
+        LinearLayout addPlaySongsLn = dialog.findViewById(R.id.addPlaySongsLn);
+        LinearLayout addPlayNextLn = dialog.findViewById(R.id.addPlayNextLn);
+        LinearLayout addFavLn = dialog.findViewById(R.id.addFavLn);
+
+        TextView nameSong = dialog.findViewById(R.id.nameSongTv);
+        TextView authorSong = dialog.findViewById(R.id.authorSongTv);
+        nameSong.setText(songArrayList.get(pos).getTitle());
+        authorSong.setText(songArrayList.get(pos).getNameAuthor());
+        ImageView imgIv = dialog.findViewById(R.id.imgDlIv);
+        Glide.with(view.getContext())
+                        .load(songArrayList.get(pos).getArtUrl())
+                                .into(imgIv);
+        addPlaySongsLn.setOnClickListener( v -> {
+            Toast.makeText(view.getContext(), "Đã thêm vào danh sách phát", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+        });
+
+        addPlayNextLn.setOnClickListener( v -> {
+            Toast.makeText(view.getContext(), "Đã chuyển thành bài hát kế tiếp", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+        });
+
+        addFavLn.setOnClickListener( v -> {
+            Toast.makeText(view.getContext(), "Đã thêm vào thư viện", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
     @Override
