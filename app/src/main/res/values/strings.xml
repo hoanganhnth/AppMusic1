@@ -16,4 +16,7 @@
     <string name="author_song_title">Nghệ sĩ</string>
     <string name="category_song_title">Thể loại</string>
     <string name="playlist_fragment_title">Playlist gợi ý</string>
+    <string name="add_list_play_notification">Đã thêm vào danh sách phát</string>
+    <string name="add_play_next_notification">Đã chuyển thành bài hát kế tiếp</string>
+    <string name="add_favorite_notification">Đã thêm vào thư viện</string>
 </resources>

@@ -74,9 +74,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
             holder.itemView.getContext().startActivity(intent);
         });
-        holder.moreIv.setOnClickListener(v -> {
-            showBottomDialog(v, position);
-        });
+        holder.moreIv.setOnClickListener(v -> showBottomDialog(v, position));
     }
 
     private void showBottomDialog(View view, int pos) {
@@ -97,17 +95,19 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
                         .load(songArrayList.get(pos).getArtUrl())
                                 .into(imgIv);
         addPlaySongsLn.setOnClickListener( v -> {
-            Toast.makeText(view.getContext(), "Đã thêm vào danh sách phát", Toast.LENGTH_SHORT).show();
+            Toast.makeText(view.getContext(), R.string.add_list_play_notification, Toast.LENGTH_SHORT).show();
+            addSongToCurrentSongs(pos);
             dialog.dismiss();
         });
 
         addPlayNextLn.setOnClickListener( v -> {
-            Toast.makeText(view.getContext(), "Đã chuyển thành bài hát kế tiếp", Toast.LENGTH_SHORT).show();
+            Toast.makeText(view.getContext(), R.string.add_play_next_notification, Toast.LENGTH_SHORT).show();
+            addSongToNextSong(pos);
             dialog.dismiss();
         });
 
         addFavLn.setOnClickListener( v -> {
-            Toast.makeText(view.getContext(), "Đã thêm vào thư viện", Toast.LENGTH_SHORT).show();
+            Toast.makeText(view.getContext(), R.string.add_favorite_notification, Toast.LENGTH_SHORT).show();
             dialog.dismiss();
 
         });
@@ -117,6 +117,22 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
+    private void addSongToNextSong(int pos) {
+        if (MusicPlayerActivity.originalSongs != null) {
+            MusicPlayerActivity.currentSongs.add(MusicPlayerActivity.songPosition + 1, songArrayList.get(pos));
+            MusicPlayerActivity.originalSongs.add(MusicPlayerActivity.originalPos() + 1, songArrayList.get(pos));
+            Log.d(TAG, "add Song To NextSong");
+        }
+    }
+
+    private void addSongToCurrentSongs(int pos) {
+        if (MusicPlayerActivity.originalSongs != null) {
+            MusicPlayerActivity.currentSongs.add(songArrayList.get(pos));
+            MusicPlayerActivity.originalSongs.add(songArrayList.get(pos));
+            Log.d(TAG, "add Song To CurrentSongs");
+        }
     }
 
     @Override

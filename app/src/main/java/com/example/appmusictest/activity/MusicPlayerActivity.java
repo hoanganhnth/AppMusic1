@@ -69,6 +69,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
     public static boolean activeShuffle = false;
     private static final String TAG = "Music_Player_Activity";
     private boolean isShuffled = false;
+    private static int originalPos = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -362,6 +363,15 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         return currentSongs.get(songPosition).getId().equals(nowPlayingId);
     }
 
+    public static int originalPos() {
+        for (int i = 0; i < originalSongs.size(); i ++) {
+            if (currentSongs.get(songPosition).getId().equals(originalSongs.get(i).getId())) {
+                originalPos = i;
+                break;
+            }
+        }
+        return originalPos;
+    }
     @Override
     public void onServiceDisconnected(ComponentName name) {
         musicPlayerService = null;
