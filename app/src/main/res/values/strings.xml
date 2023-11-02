@@ -19,4 +19,10 @@
     <string name="add_list_play_notification">Đã thêm vào danh sách phát</string>
     <string name="add_play_next_notification">Đã chuyển thành bài hát kế tiếp</string>
     <string name="add_favorite_notification">Đã thêm vào thư viện</string>
+    <string name="add_to_playlist_title">Thêm vào danh sách phát</string>
+    <string name="add_to_next_song_title">Phát kế tiếp</string>
+    <string name="add_to_favorite_title">Thêm vào thư viện</string>
+    <string name="set_time_title">Hẹn giờ</string>
+    <string name="equalizer_title">Equalizer</string>
+    <string name="see_author_title">Xem nghệ sĩ</string>
 </resources>

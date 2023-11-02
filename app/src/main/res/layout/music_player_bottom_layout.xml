@@ -2,11 +2,65 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingStart="20dp"
-    android:paddingEnd="20dp"
-    android:paddingTop="20dp"
+    android:padding="20dp"
     android:orientation="vertical"
     android:background="@drawable/dialog_bg">
+    <LinearLayout
+        android:id="@+id/setupLn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp"
+        >
+        <LinearLayout
+            android:id="@+id/setTimeLn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            >
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_set_time"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/set_time_title"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/setEqualizer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            >
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_equalizer"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text= "@string/equalizer_title"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/songRl"
@@ -55,7 +109,7 @@
         android:background="@color/grayBt"
         android:layout_marginBottom="20dp"/>
     <LinearLayout
-        android:id="@+id/addPlaySongsLn"
+        android:id="@+id/addMyPlaylistLn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -64,7 +118,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_add_playlist_play"
+            android:src="@drawable/ic_my_playlist_add"
             android:background="@android:color/transparent"
             android:layout_gravity="center"
             android:layout_marginEnd="15dp"
@@ -79,32 +133,32 @@
             />
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/addPlayNextLn"
+        android:id="@+id/addFavoriteLn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginBottom="20dp"
         >
+
         <ImageButton
 
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_add_play_next"
-            android:background="@android:color/transparent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginEnd="15dp"
-            />
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_add_library" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/add_to_next_song_title"
+            android:text="@string/add_to_favorite_title"
             android:textSize="14sp"
             android:textColor="@color/black"
             android:layout_gravity="center"
             />
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/addFavLn"
+        android:id="@+id/seeAuthorLn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -113,7 +167,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_add_library"
+            android:src="@drawable/ic_author"
             android:background="@android:color/transparent"
             android:layout_gravity="center"
             android:layout_marginEnd="15dp"
@@ -121,7 +175,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/add_to_favorite_title"
+            android:text="@string/see_author_title"
             android:textSize="14sp"
             android:textColor="@color/black"
             android:layout_gravity="center"

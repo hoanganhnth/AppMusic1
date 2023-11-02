@@ -9,19 +9,29 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.appmusictest.R;
 import com.example.appmusictest.fragment.ListPlayFragment;
 import com.example.appmusictest.utilities.TimeFormatterUtility;
@@ -157,6 +167,10 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
             listPlayFragment.onSongChanged();
         });
         listSongIb.setOnClickListener(v -> viewPager2.setCurrentItem(2));
+
+        menuIb.setOnClickListener(v -> {
+            showDialog();
+        });
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -202,6 +216,48 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         };
         IntentFilter intentFilter = new IntentFilter("music_control");
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+    private void showDialog() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.music_player_bottom_layout);
+
+        LinearLayout setTimeLn = dialog.findViewById(R.id.setTimeLn);
+        LinearLayout setEqualizerLn = dialog.findViewById(R.id.setEqualizer);
+        LinearLayout addFavoriteLn = dialog.findViewById(R.id.addFavoriteLn);
+        LinearLayout addMyPlaylistLn = dialog.findViewById(R.id.addMyPlaylistLn);
+        LinearLayout seeAuthorLn = dialog.findViewById(R.id.seeAuthorLn);
+
+        TextView nameSong = dialog.findViewById(R.id.nameSongTv);
+        TextView authorSong = dialog.findViewById(R.id.authorSongTv);
+        nameSong.setText(currentSongs.get(songPosition).getTitle());
+        authorSong.setText(currentSongs.get(songPosition).getNameAuthor());
+        ImageView imgIv = dialog.findViewById(R.id.imgDlIv);
+        Glide.with(this)
+                .load(currentSongs.get(songPosition).getArtUrl())
+                .into(imgIv);
+        setTimeLn.setOnClickListener( v -> {
+            dialog.dismiss();
+        });
+        setEqualizerLn.setOnClickListener( v -> {
+            dialog.dismiss();
+        });
+        addFavoriteLn.setOnClickListener( v -> {
+            dialog.dismiss();
+        });
+        addMyPlaylistLn.setOnClickListener( v -> {
+            dialog.dismiss();
+        });
+        seeAuthorLn.setOnClickListener( v -> {
+            dialog.dismiss();
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
     private void refreshSongs() {
