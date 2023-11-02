@@ -4,18 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.MusicPlayerActivity">
+    tools:context=".activity.MusicPlayerActivity"
+    android:paddingTop="20dp">
 
     <ImageButton
         android:id="@+id/backIb"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:src="@drawable/ic_back_gr"
         android:scaleType="fitXY"
         android:background="@android:color/transparent"
         android:layout_alignParentStart="true"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
         android:contentDescription="@string/back_btn" />
 
     <TextView
@@ -27,7 +27,6 @@
         android:textSize="20sp"
         android:textColor="@color/black"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
         android:gravity="center"
 
 
@@ -43,13 +42,12 @@
         />
     <ImageButton
         android:id="@+id/menuIb"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:src="@drawable/ic_more"
         android:background="@android:color/transparent"
         android:scaleType="fitXY"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
         />
 
@@ -60,7 +58,8 @@
         android:layout_above="@+id/seeBar"
         android:layout_alignParentTop="true"
         android:layout_marginTop="100dp"
-        android:layout_marginBottom="120dp" />
+        android:layout_marginBottom="120dp"
+        android:layout_centerVertical="true"/>
 
     <SeekBar
         android:id="@+id/seeBar"
@@ -156,8 +155,8 @@
 
     <ImageButton
         android:id="@+id/favoriteIb"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_alignBottom="@+id/seeBar"
         android:layout_marginStart="20dp"
         android:layout_marginBottom="80dp"
@@ -168,8 +167,8 @@
         />
     <ImageButton
         android:id="@+id/listSongIb"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_alignParentEnd="true"
         android:layout_alignBottom="@id/seeBar"
         android:background="@android:color/transparent"

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">App Music Test</string>
+    <string name="app_name">App Music</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="list_song_hint">Danh Sách bài hát</string>
@@ -28,4 +28,6 @@
     <string name="one_hour_timer_title">1 giờ</string>
     <string name="half_hour_timer_title">30 phút</string>
     <string name="quarter_hour_timer_title">15 phút</string>
+    <string name="search_song_and_author_title">Tìm kiếm bài hát và tác giả</string>
+    <string name="unfinished_title">Tính năng đang phát triển</string>
 </resources>

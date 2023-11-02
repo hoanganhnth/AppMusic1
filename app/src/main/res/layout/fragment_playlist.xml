@@ -5,8 +5,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.PlaylistFragment"
-    android:layout_marginStart="20dp"
-    android:layout_marginEnd="15dp">
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp">
 
     <TextView
         android:id="@+id/titlePlTv"

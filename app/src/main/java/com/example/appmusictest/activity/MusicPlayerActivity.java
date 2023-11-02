@@ -287,7 +287,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
     private void showDialogTimer() {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.timer_layout);
+        dialog.setContentView(R.layout.timer_bottom_layout);
         LinearLayout statusTv = dialog.findViewById(R.id.statusTimerLn);
         TextView timeRemainingTV = dialog.findViewById(R.id.timeRemainingTv);
         TextView setQuarterfTv = dialog.findViewById(R.id.setQuarterTv);

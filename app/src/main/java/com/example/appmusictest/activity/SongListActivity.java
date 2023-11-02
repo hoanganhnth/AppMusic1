@@ -2,14 +2,24 @@ package com.example.appmusictest.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.media.audiofx.AudioEffect;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.appmusictest.R;
@@ -61,6 +71,44 @@ public class SongListActivity extends AppCompatActivity {
             intent.putExtra("index", 0);
             startActivity(intent);
         });
+        menuIb.setOnClickListener(v -> {
+            showDialog();
+        });
+    }
+
+    private void showDialog() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.song_list_bottom_layout);
+
+        LinearLayout searchLn = dialog.findViewById(R.id.searchLn);
+        LinearLayout addPlaySongsLn = dialog.findViewById(R.id.addPlaySongsLn);
+        LinearLayout addFavLn = dialog.findViewById(R.id.addFavLn);
+        TextView namePlaylist = dialog.findViewById(R.id.namePlTv);
+        namePlaylist.setText(playlist.getTitle());
+        ImageView imgIv = dialog.findViewById(R.id.imgPlIv);
+        Glide.with(this)
+                .load(playlist.getArtUrl())
+                .placeholder(R.mipmap.ic_launcher_round)
+                .into(imgIv);
+        searchLn.setOnClickListener(v -> {
+            Toast.makeText(this, "Tính năng đang trong quá trình phát triển", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+        });
+        addPlaySongsLn.setOnClickListener(v -> {
+            Toast.makeText(this, "Tính năng đang trong quá trình phát triển", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+        });
+        addFavLn.setOnClickListener(v -> {
+            Toast.makeText(this, "Tính năng đang trong quá trình phát triển", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
     @Override
