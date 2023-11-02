@@ -13,13 +13,13 @@
         android:layout_marginBottom="20dp"
         >
         <LinearLayout
-            android:id="@+id/setTimeLn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_weight="1"
             >
             <ImageButton
+                android:id="@+id/setTimeIb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_set_time"
@@ -27,6 +27,7 @@
                 android:layout_gravity="center"
                 />
             <TextView
+                android:id="@+id/setTimeTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/set_time_title"
@@ -37,13 +38,14 @@
 
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/setEqualizer"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_weight="1"
             >
             <ImageButton
+                android:id="@+id/setEqualizer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_equalizer"

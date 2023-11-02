@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageButton;
@@ -32,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.appmusictest.NotificationReceiver;
 import com.example.appmusictest.R;
 import com.example.appmusictest.fragment.ListPlayFragment;
 import com.example.appmusictest.utilities.TimeFormatterUtility;
@@ -39,6 +41,7 @@ import com.example.appmusictest.fragment.DiskFragment;
 import com.example.appmusictest.fragment.InfoSongFragment;
 import com.example.appmusictest.model.Song;
 import com.example.appmusictest.service.MusicPlayerService;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -80,6 +83,8 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
     private static final String TAG = "Music_Player_Activity";
     private boolean isShuffled = false;
     private static int originalPos = 0;
+    private static boolean isSetTimer = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -223,22 +228,29 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.music_player_bottom_layout);
 
-        LinearLayout setTimeLn = dialog.findViewById(R.id.setTimeLn);
-        LinearLayout setEqualizerLn = dialog.findViewById(R.id.setEqualizer);
+        ImageButton setTimeLn = dialog.findViewById(R.id.setTimeIb);
+        ImageButton setEqualizerLn = dialog.findViewById(R.id.setEqualizer);
         LinearLayout addFavoriteLn = dialog.findViewById(R.id.addFavoriteLn);
         LinearLayout addMyPlaylistLn = dialog.findViewById(R.id.addMyPlaylistLn);
         LinearLayout seeAuthorLn = dialog.findViewById(R.id.seeAuthorLn);
+        TextView setTimeTv = dialog.findViewById(R.id.setTimeTv);
+
 
         TextView nameSong = dialog.findViewById(R.id.nameSongTv);
         TextView authorSong = dialog.findViewById(R.id.authorSongTv);
         nameSong.setText(currentSongs.get(songPosition).getTitle());
         authorSong.setText(currentSongs.get(songPosition).getNameAuthor());
         ImageView imgIv = dialog.findViewById(R.id.imgDlIv);
+        if (isSetTimer) {
+            setTimeLn.setColorFilter(ContextCompat.getColor(this,R.color.purple_500));
+            setTimeTv.setTextColor(ContextCompat.getColor(this,R.color.purple_500));
+        }
         Glide.with(this)
                 .load(currentSongs.get(songPosition).getArtUrl())
                 .into(imgIv);
         setTimeLn.setOnClickListener( v -> {
             dialog.dismiss();
+            showDialogTimer();
         });
         setEqualizerLn.setOnClickListener( v -> {
             dialog.dismiss();
@@ -258,6 +270,69 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
+    private void showDialogTimer() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.timer_layout);
+        LinearLayout statusTv = dialog.findViewById(R.id.statusTimerLn);
+        TextView timeRemainingTV = dialog.findViewById(R.id.timeRemainingTv);
+        TextView setQuarterfTv = dialog.findViewById(R.id.setQuarterTv);
+        TextView setHalfTv = dialog.findViewById(R.id.setHalfTv);
+        TextView setOneTv = dialog.findViewById(R.id.setOneTv);
+
+        if (isSetTimer) {
+            statusTv.setVisibility(View.VISIBLE);
+//            timeRemainingTV.setText("(Còn lại " + "15" + " phút)");
+            timeRemainingTV.setVisibility(View.GONE);
+            statusTv.setOnClickListener(v -> {
+                isSetTimer = false;
+                dialog.dismiss();
+                Toast.makeText(this, "Đã tắt hẹn giờ", Toast.LENGTH_SHORT).show();
+            });
+        } else {
+            statusTv.setVisibility(View.GONE);
+        }
+
+        setQuarterfTv.setOnClickListener(v -> {
+            Toast.makeText(this, "Âm nhạc sẽ tắt sau 15 phút", Toast.LENGTH_SHORT).show();
+            isSetTimer = true;
+            initTimer(1);
+            dialog.dismiss();
+        });
+        setHalfTv.setOnClickListener(v -> {
+            Toast.makeText(this, "Âm nhạc sẽ tắt sau 30 phút", Toast.LENGTH_SHORT).show();
+            isSetTimer = true;
+            initTimer(15);
+            dialog.dismiss();
+        });
+        setOneTv.setOnClickListener(v -> {
+            Toast.makeText(this, "Âm nhạc sẽ tắt sau 1 giờ", Toast.LENGTH_SHORT).show();
+            isSetTimer = true;
+            initTimer(15);
+            dialog.dismiss();
+        });
+
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
+    private void initTimer(int sec) {
+        new Thread(() -> {
+            try {
+                Thread.sleep(sec * 60000);
+                if (isSetTimer) {
+                    NotificationReceiver.exitApplication();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     private void refreshSongs() {

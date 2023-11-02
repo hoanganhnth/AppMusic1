@@ -41,7 +41,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         }
     }
 
-    private void exitApplication() {
+    public static void exitApplication() {
         if (MusicPlayerActivity.musicPlayerService != null) {
             MusicPlayerActivity.musicPlayerService.mediaPlayer.release();
             MusicPlayerActivity.musicPlayerService.mediaPlayer = null;

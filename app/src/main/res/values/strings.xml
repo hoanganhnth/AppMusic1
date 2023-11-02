@@ -25,4 +25,7 @@
     <string name="set_time_title">Hẹn giờ</string>
     <string name="equalizer_title">Equalizer</string>
     <string name="see_author_title">Xem nghệ sĩ</string>
+    <string name="one_hour_timer_title">1 giờ</string>
+    <string name="half_hour_timer_title">30 phút</string>
+    <string name="quarter_hour_timer_title">15 phút</string>
 </resources>
