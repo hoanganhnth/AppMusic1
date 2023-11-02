@@ -18,6 +18,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.audiofx.AudioEffect;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -228,21 +229,21 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.music_player_bottom_layout);
 
-        ImageButton setTimeLn = dialog.findViewById(R.id.setTimeIb);
-        ImageButton setEqualizerLn = dialog.findViewById(R.id.setEqualizer);
+        LinearLayout setTimeLn = dialog.findViewById(R.id.setTimeLn);
+        LinearLayout setEqualizerLn = dialog.findViewById(R.id.setEqualizerLn);
         LinearLayout addFavoriteLn = dialog.findViewById(R.id.addFavoriteLn);
         LinearLayout addMyPlaylistLn = dialog.findViewById(R.id.addMyPlaylistLn);
         LinearLayout seeAuthorLn = dialog.findViewById(R.id.seeAuthorLn);
         TextView setTimeTv = dialog.findViewById(R.id.setTimeTv);
-
-
         TextView nameSong = dialog.findViewById(R.id.nameSongTv);
         TextView authorSong = dialog.findViewById(R.id.authorSongTv);
+        ImageButton setTimeIb = dialog.findViewById(R.id.setTimeIb);
+
         nameSong.setText(currentSongs.get(songPosition).getTitle());
         authorSong.setText(currentSongs.get(songPosition).getNameAuthor());
         ImageView imgIv = dialog.findViewById(R.id.imgDlIv);
         if (isSetTimer) {
-            setTimeLn.setColorFilter(ContextCompat.getColor(this,R.color.purple_500));
+            setTimeIb.setColorFilter(ContextCompat.getColor(this,R.color.purple_500));
             setTimeTv.setTextColor(ContextCompat.getColor(this,R.color.purple_500));
         }
         Glide.with(this)
@@ -253,6 +254,17 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
             showDialogTimer();
         });
         setEqualizerLn.setOnClickListener( v -> {
+            try {
+                Intent eqIntent = new Intent(AudioEffect.ACTION_DISPLAY_AUDIO_EFFECT_CONTROL_PANEL);
+                eqIntent.putExtra(AudioEffect.EXTRA_AUDIO_SESSION, musicPlayerService.getMediaPlayer().getAudioSessionId());
+                eqIntent.putExtra(AudioEffect.EXTRA_PACKAGE_NAME, getBaseContext().getPackageName());
+                eqIntent.putExtra(AudioEffect.EXTRA_CONTENT_TYPE, AudioEffect.CONTENT_TYPE_MUSIC);
+                startActivityForResult(eqIntent, 13);
+            } catch (Exception e) {
+                Toast.makeText(this, "Equalizer Feature not Supported!!", Toast.LENGTH_SHORT).show();
+            }
+
+
             dialog.dismiss();
         });
         addFavoriteLn.setOnClickListener( v -> {
@@ -322,12 +334,13 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
+
     private void initTimer(int sec) {
         new Thread(() -> {
             try {
-                Thread.sleep(sec * 60000);
+                Thread.sleep(sec * 60000L);
                 if (isSetTimer) {
-                    NotificationReceiver.exitApplication();
+                    NotificationReceiver.exitApplication(this);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -425,18 +438,25 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         setDuration();
         startDirectionTv.setText(TimeFormatterUtility.formatTime(musicPlayerService.getCurrentPosition()));
         seekBar.setProgress(musicPlayerService.getCurrentPosition());
+        Log.d(TAG, "set layoutPlaying");
     }
 
     private void clickPauseOrResume() {
-        if (checkSong()) {
-            if (musicPlayerService.isPlaying()) {
-                musicPlayerService.pauseMusic();
-                playIb.setImageResource(R.drawable.ic_play);
-                Log.d(TAG, "pause");
-            } else {
-                musicPlayerService.resumeMusic();
-                playIb.setImageResource(R.drawable.ic_pause_gray);
-                Log.d(TAG, "resume");
+        if (musicPlayerService == null) {
+            Intent intent = new Intent(this, MusicPlayerService.class);
+            startService(intent);
+            bindService(intent, this, Context.BIND_AUTO_CREATE);
+        } else {
+            if (checkSong()) {
+                if (musicPlayerService.isPlaying()) {
+                    musicPlayerService.pauseMusic();
+                    playIb.setImageResource(R.drawable.ic_play);
+                    Log.d(TAG, "pause");
+                } else {
+                    musicPlayerService.resumeMusic();
+                    playIb.setImageResource(R.drawable.ic_pause_gray);
+                    Log.d(TAG, "resume");
+                }
             }
         }
     }
@@ -489,6 +509,12 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
             }
         }
     }
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+        musicPlayerService = null;
+        playIb.setImageResource(R.drawable.ic_play);
+        Log.d(TAG, "onServiceDisconnected");
+    }
 
     public static boolean checkSong() {
         return currentSongs.get(songPosition).getId().equals(nowPlayingId);
@@ -503,9 +529,12 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         }
         return originalPos;
     }
+
     @Override
-    public void onServiceDisconnected(ComponentName name) {
-        musicPlayerService = null;
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 13 || resultCode == RESULT_OK) {
+        }
     }
 
     @Override

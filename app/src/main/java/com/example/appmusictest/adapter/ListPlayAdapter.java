@@ -53,9 +53,11 @@ public class ListPlayAdapter extends RecyclerView.Adapter<ListPlayAdapter.ViewHo
             holder.itemView.setBackground(null);
         }
         holder.itemView.setOnClickListener(v -> {
-            MusicPlayerActivity.musicPlayerService.playMusicFromUrl(currentSongs.get(position).getPathUrl());
-            MusicPlayerActivity.songPosition = holder.getAdapterPosition();
-            setCurrentlyPlayingPosition(holder.getAdapterPosition());
+            if (MusicPlayerActivity.musicPlayerService != null)  {
+                MusicPlayerActivity.musicPlayerService.playMusicFromUrl(currentSongs.get(position).getPathUrl());
+                MusicPlayerActivity.songPosition = holder.getAdapterPosition();
+                setCurrentlyPlayingPosition(holder.getAdapterPosition());
+            }
         });
     }
 

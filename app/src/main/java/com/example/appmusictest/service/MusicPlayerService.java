@@ -62,6 +62,10 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
         }
     }
 
+    public MediaPlayer getMediaPlayer() {
+        return mediaPlayer;
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -73,7 +77,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
         super.onCreate();
         mediaPlayer = new MediaPlayer();
         checkMainActivityDestroy();
-
+        Log.d(TAG, "On create");
     }
 
     private void checkMainActivityDestroy() {
@@ -96,6 +100,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
 
     public void stopService() {
         stopSelf();
+        Log.d(TAG, "stop service");
     }
 
     @Override
@@ -109,6 +114,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
         }
         seekBarUpdateHandler.removeCallbacks(updateSeekbar);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(onDestroyReceiver);
+        Log.d(TAG, "service destroy");
         super.onDestroy();
     }
 

@@ -13,6 +13,7 @@
         android:layout_marginBottom="20dp"
         >
         <LinearLayout
+            android:id="@+id/setTimeLn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -38,14 +39,14 @@
 
         </LinearLayout>
         <LinearLayout
-
+            android:id="@+id/setEqualizerLn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_weight="1"
             >
             <ImageButton
-                android:id="@+id/setEqualizer"
+                android:id="@+id/setEqualizerIb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_equalizer"

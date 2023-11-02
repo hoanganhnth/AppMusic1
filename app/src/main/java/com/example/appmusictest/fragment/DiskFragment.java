@@ -112,9 +112,12 @@ public class DiskFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        if (MusicPlayerActivity.checkSong() && !MusicPlayerActivity.musicPlayerService.isPlaying()) {
+        if (MusicPlayerActivity.musicPlayerService == null) {
             objectAnimator.pause();
+        } else {
+            if (MusicPlayerActivity.checkSong() && !MusicPlayerActivity.musicPlayerService.isPlaying()) {
+                objectAnimator.pause();
+            }
         }
     }
 }

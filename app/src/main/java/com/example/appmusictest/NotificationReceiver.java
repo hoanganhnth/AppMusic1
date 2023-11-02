@@ -1,14 +1,12 @@
 package com.example.appmusictest;
 
-import static com.example.appmusictest.activity.MusicPlayerActivity.nowPlayingId;
-import static com.example.appmusictest.activity.MusicPlayerActivity.songPosition;
-import static com.example.appmusictest.activity.MusicPlayerActivity.currentSongs;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import com.example.appmusictest.activity.MusicPlayerActivity;
+
 
 public class NotificationReceiver extends BroadcastReceiver {
 
@@ -36,18 +34,20 @@ public class NotificationReceiver extends BroadcastReceiver {
                     prevNextSong(true);
                 }
             } else if (MyApplication.EXIT.equals(action)) {
-                exitApplication();
+                exitApplication(context);
             }
         }
     }
 
-    public static void exitApplication() {
+    public static void exitApplication(Context context) {
         if (MusicPlayerActivity.musicPlayerService != null) {
             MusicPlayerActivity.musicPlayerService.mediaPlayer.release();
             MusicPlayerActivity.musicPlayerService.mediaPlayer = null;
             MusicPlayerActivity.musicPlayerService.stopForeground(true);
             MusicPlayerActivity.musicPlayerService.stopService();
-            MusicPlayerActivity.musicPlayerService = null;
+//            Intent intent = new Intent(context, MusicPlayerService.class);
+//            context.unbindService()
+//            context.stopService(intent);
             Log.d(TAG, "Stop service");
         }
     }
