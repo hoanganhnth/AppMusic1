@@ -21,7 +21,9 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -163,6 +165,51 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
                 .addAction(R.drawable.ic_next, "Next", nextPendingIntent)
                 .addAction(exit, "Exit", exitPendingIntent)
                 .build();
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+            float playbackSpeed;
+            if (isPlaying) {
+                playbackSpeed = 1.0f;
+            } else {
+                playbackSpeed = 0.0f;
+            }
+
+            mediaSessionCompat.setMetadata(new MediaMetadataCompat.Builder()
+                    .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, getDuration()) // Đặt tổng thời gian
+                    .build());
+            PlaybackStateCompat.Builder playbackStateBuilder = new PlaybackStateCompat.Builder()
+                    .setState(PlaybackStateCompat.STATE_PLAYING, getCurrentPosition(), playbackSpeed) // Ví dụ: STATE_PLAYING và vị trí hiện tại
+                    .setActions(PlaybackStateCompat.ACTION_PLAY | PlaybackStateCompat.ACTION_PAUSE | PlaybackStateCompat.ACTION_SEEK_TO);
+
+            mediaSessionCompat.setPlaybackState(playbackStateBuilder.build());
+            mediaSessionCompat.setCallback(new MediaSessionCompat.Callback() {
+
+                @Override
+                public boolean onMediaButtonEvent(Intent mediaButtonEvent) {
+                    if (isPlaying) {
+                        // Tạm dừng nhạc
+                        pauseMusic();
+                        showNotification(R.drawable.ic_play);
+                    } else {
+                        // Phát nhạc
+                        resumeMusic();
+                        showNotification(R.drawable.ic_pause_gray);
+                    }
+                    return super.onMediaButtonEvent(mediaButtonEvent);
+                }
+
+                @Override
+                public void onSeekTo(long pos) {
+                    super.onSeekTo(pos);
+                    mediaPlayer.seekTo((int) pos);
+                    PlaybackStateCompat.Builder playbackStateBuilder = new PlaybackStateCompat.Builder()
+                            .setState(PlaybackStateCompat.STATE_PLAYING, mediaPlayer.getCurrentPosition(), playbackSpeed)
+                            .setActions(PlaybackStateCompat.ACTION_SEEK_TO);
+                    mediaSessionCompat.setPlaybackState(playbackStateBuilder.build());
+                }
+            });
+
+        }
+
         startForeground(13,builder);
     }
 
@@ -186,7 +233,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
                     Intent intent = new Intent("music_control");
                     intent.putExtra("action", "prepare");
                     LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-                    showNotification(R.drawable.ic_play);
+//                    showNotification(R.drawable.ic_play);
                     Log.d(TAG, "Prepare music");
                 })
                 .subscribeOn(Schedulers.io())
