@@ -5,66 +5,255 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity"
-    android:background="@color/grayBg"
-    >
-
-    <TextView
-        android:id="@+id/appName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="32dp"
-        android:text="@string/main_activity_title"
-        android:textStyle="bold"
-        android:textSize="25sp"
-        android:textColor="@color/black"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="30dp"/>
+    android:id="@+id/mainRl"
+    android:focusable="true"
+    android:focusableInTouchMode="true" >
 
     <EditText
         android:id="@+id/searchEt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/appName"
+        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="18dp"
-        android:layout_marginStart="23dp"
-        android:layout_marginEnd="23dp"
         android:background="@drawable/shape_edittext1"
-        android:elevation="4dp"
+        android:elevation="2dp"
         android:hint="@string/search_main_activity_hint"
         android:padding="10dp"
         android:textColorHint="#B0B0B0"
         android:drawableEnd="@drawable/ic_search"
-        android:autofillHints=""
-        android:inputType="" />
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/searchEt"
-            android:layout_marginTop="30dp"
-            android:background="#F8F8F8"
-            app:tabMode="scrollable"
-            android:layout_marginStart="20dp"
-            />
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPaper"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/tabLayout"
-        android:layout_marginTop="20dp"
+        android:imeOptions="actionSearch"
+        android:singleLine="true"
+        android:inputType="textNoSuggestions"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         />
+    <TextView
+        android:id="@+id/libraryTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thư viện"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp"
+        android:layout_below="@id/searchEt"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"/>
+    <HorizontalScrollView
+        android:id="@+id/libHs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/libraryTv"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="20dp"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginEnd="10dp"
+                >
+                <RelativeLayout
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/library_item_bg"
+                    android:padding="13dp"
+                    android:elevation="3dp"
+                    android:layout_marginBottom="10dp"
+                    >
+                    <ImageButton
+                        android:id="@+id/songIb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_music"
+                        android:background="@drawable/library_song_bg"
+                        android:layout_marginBottom="10dp"
+                        android:padding="5dp"
+                        />
+                    <TextView
+                        android:id="@+id/songTitleTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bài hát"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:layout_below="@id/songIb"
+                        android:layout_marginEnd="10dp"
+                        />
+                    <TextView
+                        android:id="@+id/numberSongTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/songTitleTv"
+                        android:text="10"
+                        android:layout_below="@id/songIb"
+                        android:textSize="15sp"
+                        />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/library_item_bg"
+                    android:padding="13dp"
+                    android:elevation="3dp"
+                    >
+                    <ImageButton
+                        android:id="@+id/albumIb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_album_lib"
+                        android:background="@drawable/library_album_bg"
+                        android:layout_marginBottom="10dp"
+                        android:padding="5dp"
+                        />
+                    <TextView
+                        android:id="@+id/albumTitleTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Album"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:layout_below="@id/albumIb"
+                        android:layout_marginEnd="10dp"
+                        />
+                    <TextView
+                        android:id="@+id/numberAlbumTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/albumTitleTv"
+                        android:text="10"
+                        android:layout_below="@id/albumIb"
+                        android:textSize="15sp"
+                        />
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <RelativeLayout
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/library_item_bg"
+                    android:padding="13dp"
+                    android:elevation="3dp"
+                    android:layout_marginBottom="10dp"
+                    >
+                    <ImageButton
+                        android:id="@+id/playlistIb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_playlist_lib"
+                        android:background="@drawable/library_playlist_bg"
+                        android:layout_marginBottom="10dp"
+                        android:padding="5dp"
+                        />
+                    <TextView
+                        android:id="@+id/playlistTitleTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Playlist"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:layout_below="@id/playlistIb"
+                        android:layout_marginEnd="10dp"
+                        />
+                    <TextView
+                        android:id="@+id/numberPlaylistTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/playlistTitleTv"
+                        android:text="10"
+                        android:layout_below="@id/playlistIb"
+                        android:textSize="15sp"
+                        />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/library_item_bg"
+                    android:padding="13dp"
+                    android:elevation="3dp"
+                    >
+                    <ImageButton
+                        android:id="@+id/authorIb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_author_lib"
+                        android:background="@drawable/library_author_bg"
+                        android:layout_marginBottom="10dp"
+                        android:padding="5dp"
+                        />
+                    <TextView
+                        android:id="@+id/authorTitleTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nghệ sĩ"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:layout_below="@id/authorIb"
+                        android:layout_marginEnd="10dp"
+                        />
+                    <TextView
+                        android:id="@+id/numberAuthorTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/authorTitleTv"
+                        android:text="10"
+                        android:layout_below="@id/authorIb"
+                        android:textSize="15sp"
+                        />
+                </RelativeLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+
+    <TextView
+        android:id="@+id/playlistSugTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/libHs"
+        android:drawableEnd="@drawable/ic_see_all"
+        android:text="Playlist gợi ý"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="15dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/playlistSuggestRv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/playlistSugTv"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/row_playlist_suggest"
+        android:layout_marginStart="20dp"
+
+        />
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/playingFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-       android:layout_alignParentBottom="true"
+        android:layout_alignParentBottom="true"
         android:name="com.example.appmusictest.fragment.NowPlayingFragment"
         tools:layout="@layout/fragment_now_playing"
         />
-
-
 </RelativeLayout>

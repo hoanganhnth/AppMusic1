@@ -33,7 +33,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.example.appmusictest.MyApplication;
 import com.example.appmusictest.NotificationReceiver;
 import com.example.appmusictest.R;
-import com.example.appmusictest.activity.MainActivity;
+import com.example.appmusictest.activity.SearchActivity;
 import com.example.appmusictest.activity.MusicPlayerActivity;
 import com.example.appmusictest.utilities.TimeFormatterUtility;
 
@@ -122,7 +122,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
 
     public void showNotification(int playPauseBtn) {
         Log.d(TAG, "show notification");
-        Intent intent = new Intent(getBaseContext(), MainActivity.class);
+        Intent intent = new Intent(getBaseContext(), SearchActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         int flag;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -153,7 +153,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
 
         Notification builder = new NotificationCompat.Builder(getBaseContext(), CHANNEL_ID)
                 .setContentIntent(contentIntent)
-                .setSmallIcon(R.drawable.ic_music_cyan)
+                .setSmallIcon(R.drawable.ic_music)
                 .setContentTitle(MusicPlayerActivity.currentSongs.get(MusicPlayerActivity.songPosition).getTitle())
                 .setContentText(MusicPlayerActivity.currentSongs.get(MusicPlayerActivity.songPosition).getNameAuthor())
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle().setMediaSession(mediaSessionCompat.getSessionToken()))

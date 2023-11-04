@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.appmusictest.R;
 import com.example.appmusictest.adapter.PlaylistAdapter;
@@ -30,6 +31,9 @@ public class PlaylistFragment extends Fragment {
     private ArrayList<Playlist> playlists;
     private RecyclerView playlistRv;
     private static final String TAG = "Playlist_Fragment";
+    private PlaylistAdapter playlistAdapter;
+    private boolean isFilter = false;
+    public static TextView noDataTv;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,25 +48,37 @@ public class PlaylistFragment extends Fragment {
 
     private void initView(View view) {
         playlistRv = view.findViewById(R.id.playlistRv);
+        noDataTv = view.findViewById(R.id.noDataTv);
     }
 
     private void getData() {
-        DataService dataService = ApiService.getService();
-        Call<List<Playlist>> callback = dataService.getPlaylistCurrentDay();
-        callback.enqueue(new Callback<List<Playlist>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Playlist>> call, @NonNull Response<List<Playlist>> response) {
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String query = bundle.getString("query");
 
-                playlists = (ArrayList<Playlist>) response.body();
-                playlistRv.setAdapter(new PlaylistAdapter(playlists,getActivity()));
-            }
+            DataService dataService = ApiService.getService();
+            Call<List<Playlist>> callback = dataService.getPlaylistCurrentDay();
+            callback.enqueue(new Callback<List<Playlist>>() {
+                @Override
+                public void onResponse(@NonNull Call<List<Playlist>> call, @NonNull Response<List<Playlist>> response) {
 
-            @Override
-            public void onFailure(@NonNull Call<List<Playlist>> call, @NonNull Throwable t) {
-                Log.d(TAG, "Fail get data due to: " + t.getMessage() );
+                    playlists = (ArrayList<Playlist>) response.body();
+                    playlistAdapter = new PlaylistAdapter(playlists,getActivity());
+                    playlistAdapter.filter(query);
+                    playlistRv.setAdapter(playlistAdapter);
+                }
 
-            }
-        });
+                @Override
+                public void onFailure(@NonNull Call<List<Playlist>> call, @NonNull Throwable t) {
+                    Log.d(TAG, "Fail get data due to: " + t.getMessage() );
 
+                }
+            });
+        }
+    }
+    public void filter(String query) {
+        if (playlistAdapter != null) {
+            playlistAdapter.filter(query);
+        }
     }
 }

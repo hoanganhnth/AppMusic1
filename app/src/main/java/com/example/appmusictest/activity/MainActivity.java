@@ -2,84 +2,126 @@ package com.example.appmusictest.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.widget.ViewPager2;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.appmusictest.R;
-import com.example.appmusictest.fragment.AuthorsFragment;
-import com.example.appmusictest.fragment.PlaylistFragment;
-import com.example.appmusictest.fragment.SongsFragment;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
+import com.example.appmusictest.adapter.PlaylistSuggestAdapter;
+import com.example.appmusictest.model.Playlist;
+import com.example.appmusictest.service.ApiService;
+import com.example.appmusictest.service.DataService;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TabLayout tabLayout;
-    private ViewPager2 viewPager2;
-    private static final String TAG = "Main_activity";
-    private final String[] labelFragment = new String[]{"Playlist", "Author", "Song"};
+    private EditText searchEt;
+    RelativeLayout relativeLayout;
+    private ArrayList<Playlist> playlists;
+    private RecyclerView playlistSgRv;
+    private static final String TAG = "Main_Activity";
+    private PlaylistSuggestAdapter playlistSuggestAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        init();
-        new TabLayoutMediator(tabLayout, viewPager2, (tab, position)
-                -> tab.setText(labelFragment[position])).attach();
-        viewPager2.setCurrentItem(0, false);
+        initView();
+        getData();
+        setViewData();
     }
 
-    private void init() {
-        tabLayout = findViewById(R.id.tabLayout);
-        viewPager2 = findViewById(R.id.viewPaper);
-        ViewPaperMainFragmentAdapter adapter = new ViewPaperMainFragmentAdapter(this);
-        viewPager2.setAdapter(adapter);
-    }
+    private void setViewData() {
 
-    private class ViewPaperMainFragmentAdapter extends FragmentStateAdapter {
+        searchEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
-        public ViewPaperMainFragmentAdapter(@NonNull FragmentActivity fragmentActivity) {
-            super(fragmentActivity);
-        }
-
-        @NonNull
-        @Override
-        public Fragment createFragment(int position) {
-            switch (position) {
-                case 0:
-                    return new PlaylistFragment();
-                case 1:
-                    return new AuthorsFragment();
-                case 3:
-                    return new SongsFragment();
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || event.getAction() == KeyEvent.KEYCODE_ENTER) {
+                    String query = searchEt.getText().toString().trim();
+                    if (!query.equals("")) {
+                        Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                        intent.putExtra("query", query);
+                        startActivity(intent);
+                        searchEt.clearFocus();
+                    }
+                    return true;
+                }
+                Log.d(TAG, "NOT enter");
+                return false;
             }
-            return new SongsFragment();
-        }
+        });
 
-        @Override
-        public int getItemCount() {
-            return labelFragment.length;
-        }
+
+
     }
+
+    private void initView() {
+        searchEt = findViewById(R.id.searchEt);
+        playlistSgRv = findViewById(R.id.playlistSuggestRv);
+        relativeLayout = findViewById(R.id.mainRl);
+    }
+    private void getData() {
+        DataService dataService = ApiService.getService();
+        Call<List<Playlist>> callback = dataService.getPlaylistCurrentDay();
+        callback.enqueue(new Callback<List<Playlist>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Playlist>> call, @NonNull Response<List<Playlist>> response) {
+
+                playlists = (ArrayList<Playlist>) response.body();
+                playlistSuggestAdapter = new PlaylistSuggestAdapter(playlists, MainActivity.this);
+                playlistSgRv.setAdapter(playlistSuggestAdapter);
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Playlist>> call, @NonNull Throwable t) {
+                Log.d(TAG, "Fail get data due to: " + t.getMessage() );
+
+            }
+        });
+
+    }
+
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "main destroy");
-        Intent intent = new Intent("your.package.name.MainActivityDestroyed");
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
         }
-
+        return super.dispatchTouchEvent(event);
+    }
     @Override
     protected void onResume() {
         super.onResume();
+        searchEt.setText("");
         if (MusicPlayerActivity.musicPlayerService != null) {
             MusicPlayerActivity.musicPlayerService.destroyMain = false;
             Log.d(TAG, "main resume");
@@ -89,5 +131,12 @@ public class MainActivity extends AppCompatActivity {
                 MusicPlayerActivity.musicPlayerService.showNotification(R.drawable.ic_play);
             }
         }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "main destroy");
+        Intent intent = new Intent("your.package.name.MainActivityDestroyed");
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }

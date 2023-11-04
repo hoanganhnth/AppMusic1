@@ -8,24 +8,24 @@
     android:paddingStart="20dp"
     android:paddingEnd="20dp">
 
-    <TextView
-        android:id="@+id/titlePlTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/playlist_fragment_title"
-        android:layout_marginStart="5dp"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/playlistRv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:listitem="@layout/row_playlist"
-        android:layout_below="@+id/titlePlTv"
-        android:layout_marginTop="10dp"
+        android:layout_alignParentStart="true"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        />
+    <TextView
+        android:id="@+id/noDataTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rất tiếc không có kết quả phù hợp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
         />
 
 </RelativeLayout>

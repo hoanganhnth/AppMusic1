@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -16,7 +17,22 @@
         android:roundIcon="@mipmap/music_player_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppMusicTest"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".activity.MainActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+
+        </activity>
         <activity
             android:name=".activity.SongListActivity"
             android:exported="false">
@@ -32,21 +48,19 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activity.MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:name=".activity.SearchActivity"
+            android:exported="false">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <service
             android:name=".service.MusicPlayerService"
             android:exported="false" />
+
         <receiver
             android:name=".NotificationReceiver"
             android:enabled="true" />

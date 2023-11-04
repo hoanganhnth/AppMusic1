@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="140dp"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="15dp">
+
+    <ImageView
+        android:id="@+id/imgSuggestIv"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:src="@mipmap/music_player_icon"
+        android:scaleType="centerCrop"
+        android:layout_marginBottom="10dp"
+        />
+    <TextView
+        android:id="@+id/titleSuggestTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imgSuggestIv"
+        android:text="Top bai hat hay"
+        android:textSize="15dp"
+        android:textColor="@color/black"
+        />
+
+</RelativeLayout>

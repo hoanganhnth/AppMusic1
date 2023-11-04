@@ -45,6 +45,7 @@ public class NotificationReceiver extends BroadcastReceiver {
             MusicPlayerActivity.musicPlayerService.mediaPlayer = null;
             MusicPlayerActivity.musicPlayerService.stopForeground(true);
             MusicPlayerActivity.musicPlayerService.stopService();
+            MusicPlayerActivity.musicPlayerService = null;
             Log.d(TAG, "Stop service");
         }
     }

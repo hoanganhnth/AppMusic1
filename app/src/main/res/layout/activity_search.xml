@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.SearchActivity"
+    android:background="@color/grayBg"
+    >
+
+    <ImageButton
+        android:id="@+id/backIb"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_back_gr"
+        android:scaleType="fitXY"
+        android:background="@android:color/transparent"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/back_btn"
+        android:layout_alignStart="@id/searchEt"
+        />
+
+    <EditText
+        android:id="@+id/searchEt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/shape_edittext1"
+        android:elevation="4dp"
+        android:hint="@string/search_main_activity_hint"
+        android:padding="10dp"
+        android:textColorHint="#B0B0B0"
+        android:drawableEnd="@drawable/ic_search"
+        android:imeOptions="actionSearch"
+        android:singleLine="true"
+        android:inputType="textNoSuggestions"
+        />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/searchEt"
+            android:background="#F8F8F8"
+            app:tabMode="scrollable"
+            android:layout_marginStart="40dp"
+            android:layout_marginBottom="10dp"
+            />
+    <View
+        android:id="@+id/seView"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/tabLayout"
+        android:background="@color/grayBg"
+        android:elevation="3dp"/>
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPaper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/seView"
+        android:layout_marginTop="10dp"
+        />
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/playingFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       android:layout_alignParentBottom="true"
+        android:name="com.example.appmusictest.fragment.NowPlayingFragment"
+        tools:layout="@layout/fragment_now_playing"
+        />
+
+
+</RelativeLayout>
