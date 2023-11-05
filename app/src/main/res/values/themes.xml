@@ -17,4 +17,24 @@
         <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
         <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
     </style>
+
+    <style name="AppTheme.Song" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Set the status bar color -->
+        <item name="android:statusBarColor">@color/fav_song_color</item>
+    </style>
+
+    <style name="AppTheme.Playlist" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Set the status bar color -->
+        <item name="android:statusBarColor">@color/fav_playlist_color</item>
+    </style>
+
+    <style name="AppTheme.Album" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Set the status bar color -->
+        <item name="android:statusBarColor">@color/fav_album_color</item>
+    </style>
+
+    <style name="AppTheme.Author" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Set the status bar color -->
+        <item name="android:statusBarColor">@color/fav_author_color</item>
+    </style>
 </resources>

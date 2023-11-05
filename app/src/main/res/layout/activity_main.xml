@@ -61,6 +61,7 @@
                 android:layout_marginEnd="10dp"
                 >
                 <RelativeLayout
+                    android:id="@+id/songFavRl"
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/library_item_bg"
@@ -99,6 +100,7 @@
                         />
                 </RelativeLayout>
                 <RelativeLayout
+                    android:id="@+id/albumFavRl"
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/library_item_bg"
@@ -142,6 +144,7 @@
                 android:orientation="vertical"
                 >
                 <RelativeLayout
+                    android:id="@+id/playlistFavRl"
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/library_item_bg"
@@ -180,6 +183,7 @@
                         />
                 </RelativeLayout>
                 <RelativeLayout
+                    android:id="@+id/authorFavRl"
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/library_item_bg"

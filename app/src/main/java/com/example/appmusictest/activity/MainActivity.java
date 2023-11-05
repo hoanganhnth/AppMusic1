@@ -36,7 +36,8 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     private EditText searchEt;
-    RelativeLayout relativeLayout;
+    private RelativeLayout songFavRl, playlistFavRl, albumFavRl, authorFavRl;
+    private TextView numberSongTv;
     private ArrayList<Playlist> playlists;
     private RecyclerView playlistSgRv;
     private static final String TAG = "Main_Activity";
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setViewData() {
+
 
         searchEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
@@ -70,6 +72,18 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+        songFavRl.setOnClickListener(v -> {
+            startActivity(new Intent(this, FavoriteSongActivity.class));
+        });
+        playlistFavRl.setOnClickListener(v -> {
+            startActivity(new Intent(this, FavoritePlaylistActivity.class));
+        });
+        albumFavRl.setOnClickListener(v -> {
+            startActivity(new Intent(this, FavoriteAlbumActivity.class));
+        });
+        authorFavRl.setOnClickListener(v -> {
+            startActivity(new Intent(this, FavoriteAuthorActivity.class));
+        });
 
 
 
@@ -78,7 +92,11 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
         searchEt = findViewById(R.id.searchEt);
         playlistSgRv = findViewById(R.id.playlistSuggestRv);
-        relativeLayout = findViewById(R.id.mainRl);
+        songFavRl = findViewById(R.id.songFavRl);
+        playlistFavRl = findViewById(R.id.playlistFavRl);
+        albumFavRl = findViewById(R.id.albumFavRl);
+        authorFavRl = findViewById(R.id.authorFavRl);
+        numberSongTv = findViewById(R.id.numberSongTv);
     }
     private void getData() {
         DataService dataService = ApiService.getService();
@@ -122,6 +140,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         searchEt.setText("");
+        if (FavoriteSongActivity.favSongs.isEmpty()) {
+            numberSongTv.setText("");
+        } else {
+            numberSongTv.setText(String.valueOf(FavoriteSongActivity.favSongs.size()));
+        }
         if (MusicPlayerActivity.musicPlayerService != null) {
             MusicPlayerActivity.musicPlayerService.destroyMain = false;
             Log.d(TAG, "main resume");

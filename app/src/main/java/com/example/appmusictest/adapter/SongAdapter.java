@@ -22,10 +22,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.appmusictest.R;
+import com.example.appmusictest.activity.FavoriteSongActivity;
 import com.example.appmusictest.activity.MusicPlayerActivity;
 import com.example.appmusictest.model.Song;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
@@ -85,6 +85,12 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         LinearLayout addPlaySongsLn = dialog.findViewById(R.id.addPlaySongsLn);
         LinearLayout addPlayNextLn = dialog.findViewById(R.id.addPlayNextLn);
         LinearLayout addFavLn = dialog.findViewById(R.id.addFavLn);
+        TextView addFavTv = dialog.findViewById(R.id.addFavTv);
+        ImageButton addFavIb = dialog.findViewById(R.id.addFavIb);
+        if (FavoriteSongActivity.favSongs.contains(songArrayList.get(pos))) {
+            addFavTv.setText(R.string.delete_fav_title);
+            addFavIb.setImageResource(R.drawable.ic_in_library);
+        }
 
         TextView nameSong = dialog.findViewById(R.id.nameSongTv);
         TextView authorSong = dialog.findViewById(R.id.authorSongTv);
@@ -107,7 +113,14 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         });
 
         addFavLn.setOnClickListener( v -> {
-            Toast.makeText(view.getContext(), R.string.add_favorite_notification, Toast.LENGTH_SHORT).show();
+            if (!FavoriteSongActivity.favSongs.contains(songArrayList.get(pos))) {
+                Toast.makeText(view.getContext(), R.string.add_favorite_notification, Toast.LENGTH_SHORT).show();
+                FavoriteSongActivity.addSong(songArrayList.get(pos));
+            } else {
+                Toast.makeText(view.getContext(), R.string.remove_favorite_notification, Toast.LENGTH_SHORT).show();
+                FavoriteSongActivity.removeSong(songArrayList.get(pos));
+                notifyItemRemoved(pos);
+            }
             dialog.dismiss();
 
         });
@@ -140,7 +153,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         return songArrayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView nameSong, authorSong;
         private ImageView moreIv;
         private ImageView imgIv;

@@ -11,5 +11,9 @@
     <color name="grayBt">#808080</color>
     <color name="grayEt">#D1C8C8</color>
     <color name="cyanColor">#00ffff</color>
+    <color name="fav_song_color">#05CAE4</color>
+    <color name="fav_playlist_color">#9C27B0</color>
+    <color name="fav_album_color">#FF5722</color>
+    <color name="fav_author_color">#4CAF50</color>
 
 </resources>

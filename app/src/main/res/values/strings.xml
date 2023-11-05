@@ -19,6 +19,7 @@
     <string name="add_list_play_notification">Đã thêm vào danh sách phát</string>
     <string name="add_play_next_notification">Đã chuyển thành bài hát kế tiếp</string>
     <string name="add_favorite_notification">Đã thêm vào thư viện</string>
+    <string name="remove_favorite_notification">Đã xóa khỏi thư viện</string>
     <string name="add_to_playlist_title">Thêm vào danh sách phát</string>
     <string name="add_to_next_song_title">Phát kế tiếp</string>
     <string name="add_to_favorite_title">Thêm vào thư viện</string>
@@ -30,4 +31,5 @@
     <string name="quarter_hour_timer_title">15 phút</string>
     <string name="search_song_and_author_title">Tìm kiếm bài hát và tác giả</string>
     <string name="unfinished_title">Tính năng đang phát triển</string>
+    <string name="delete_fav_title">Xóa khỏi thư viện</string>
 </resources>

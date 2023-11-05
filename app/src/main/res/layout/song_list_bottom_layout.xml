@@ -108,6 +108,7 @@
         android:layout_marginBottom="20dp"
         >
         <ImageButton
+            android:id="@+id/addFavIb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_add_library"
@@ -116,6 +117,7 @@
             android:layout_marginEnd="15dp"
             />
         <TextView
+            android:id="@+id/addFavTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/add_to_favorite_title"

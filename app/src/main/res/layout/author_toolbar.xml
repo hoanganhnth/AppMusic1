@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/fav_author_color"
+    android:paddingBottom="5dp">
+    <ImageButton
+        android:id="@+id/backIb"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_back"
+        android:scaleType="fitXY"
+        android:background="@android:color/transparent"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:contentDescription="@string/back_btn"
+        android:layout_marginTop="10dp"
+        android:layout_centerInParent="true"
+        />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/backIb"
+        android:layout_centerInParent="true"
+        >
+
+        <TextView
+            android:id="@+id/titleAuthorTv"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Author"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/numberPlaylistTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/titleAuthorTv"
+            android:text="Tat ca 29 bai"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:layout_alignStart="@+id/titleAuthorTv"
+            android:visibility="gone"
+            />
+    </RelativeLayout>
+
+
+</RelativeLayout>
