@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.SongListActivity"
-    android:background="#F8F8F8">
+    >
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -113,7 +113,6 @@
             android:layout_below="@+id/listSongTv"
             android:layout_marginTop="10dp"
             tools:listitem="@layout/row_songs"
-            android:background="#F8F8F8"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 
             />
