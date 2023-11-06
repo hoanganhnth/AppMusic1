@@ -27,7 +27,17 @@
         android:layout_marginBottom="20dp"
         android:layout_marginTop="15dp"
         android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="50dp"
+        />
+    <ImageButton
+        android:id="@+id/logOutIb"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_exit_gray"
+        android:background="@android:color/transparent"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp"
         />
     <TextView
         android:id="@+id/libraryTv"

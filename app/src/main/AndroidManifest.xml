@@ -53,21 +53,29 @@
         </activity>
         <activity
             android:name=".activity.RegisterActivity"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/AppTheme.Playlist">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".activity.LoginActivity"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/AppTheme.Playlist">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".activity.SplashActivity"
-            android:exported="false">
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -76,11 +84,6 @@
             android:name=".activity.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="stateHidden|adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
             <meta-data
                 android:name="android.app.lib_name"

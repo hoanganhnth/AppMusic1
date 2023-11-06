@@ -17,10 +17,12 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.appmusictest.R;
+import com.example.appmusictest.SessionManager;
 import com.example.appmusictest.adapter.PlaylistSuggestAdapter;
 import com.example.appmusictest.model.Playlist;
 import com.example.appmusictest.service.ApiService;
@@ -38,14 +40,17 @@ public class MainActivity extends AppCompatActivity {
     private EditText searchEt;
     private RelativeLayout songFavRl, playlistFavRl, albumFavRl, authorFavRl;
     private TextView numberSongTv;
+    private ImageButton logOutIb;
     private ArrayList<Playlist> playlists;
     private RecyclerView playlistSgRv;
     private static final String TAG = "Main_Activity";
     private PlaylistSuggestAdapter playlistSuggestAdapter;
+    private SessionManager sessionManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sessionManager = new SessionManager(getApplicationContext());
         initView();
         getData();
         setViewData();
@@ -54,37 +59,26 @@ public class MainActivity extends AppCompatActivity {
     private void setViewData() {
 
 
-        searchEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH || event.getAction() == KeyEvent.KEYCODE_ENTER) {
-                    String query = searchEt.getText().toString().trim();
-                    if (!query.equals("")) {
-                        Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                        intent.putExtra("query", query);
-                        startActivity(intent);
-                        searchEt.clearFocus();
-                    }
-                    return true;
+        searchEt.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH || event.getAction() == KeyEvent.KEYCODE_ENTER) {
+                String query = searchEt.getText().toString().trim();
+                if (!query.equals("")) {
+                    Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                    intent.putExtra("query", query);
+                    startActivity(intent);
+                    searchEt.clearFocus();
                 }
-                Log.d(TAG, "NOT enter");
-                return false;
+                return true;
             }
+            Log.d(TAG, "NOT enter");
+            return false;
         });
-        songFavRl.setOnClickListener(v -> {
-            startActivity(new Intent(this, FavoriteSongActivity.class));
-        });
-        playlistFavRl.setOnClickListener(v -> {
-            startActivity(new Intent(this, FavoritePlaylistActivity.class));
-        });
-        albumFavRl.setOnClickListener(v -> {
-            startActivity(new Intent(this, FavoriteAlbumActivity.class));
-        });
-        authorFavRl.setOnClickListener(v -> {
-            startActivity(new Intent(this, FavoriteAuthorActivity.class));
-        });
+        songFavRl.setOnClickListener(v -> startActivity(new Intent(this, FavoriteSongActivity.class)));
+        playlistFavRl.setOnClickListener(v -> startActivity(new Intent(this, FavoritePlaylistActivity.class)));
+        albumFavRl.setOnClickListener(v -> startActivity(new Intent(this, FavoriteAlbumActivity.class)));
+        authorFavRl.setOnClickListener(v -> startActivity(new Intent(this, FavoriteAuthorActivity.class)));
 
+        logOutIb.setOnClickListener(v -> sessionManager.logOutSession());
 
 
     }
@@ -97,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         albumFavRl = findViewById(R.id.albumFavRl);
         authorFavRl = findViewById(R.id.authorFavRl);
         numberSongTv = findViewById(R.id.numberSongTv);
+        logOutIb = findViewById(R.id.logOutIb);
     }
     private void getData() {
         DataService dataService = ApiService.getService();

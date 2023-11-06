@@ -61,12 +61,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:hintEnabled="false"
+                android:layout_marginBottom="10dp"
                 >
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/nameEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_edittext1"
+                    android:background="@drawable/shape_edittext2"
                     android:drawableStart="@drawable/ic_author"
                     android:drawablePadding="10dp"
                     android:inputType="textEmailAddress"
@@ -82,12 +83,13 @@
                 android:layout_height="wrap_content"
                 app:hintEnabled="false"
                 android:layout_below="@+id/nameTil"
+                android:layout_marginBottom="10dp"
                 >
                 <EditText
                     android:id="@+id/emailEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_edittext1"
+                    android:background="@drawable/shape_edittext2"
                     android:drawableStart="@drawable/ic_email"
                     android:drawablePadding="10dp"
                     android:inputType="textEmailAddress"
@@ -104,12 +106,13 @@
                 app:hintEnabled="false"
                 android:layout_below="@+id/emailTil"
                 app:passwordToggleEnabled="true"
+                android:layout_marginBottom="10dp"
                 >
                 <EditText
                     android:id="@+id/passwordEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_edittext1"
+                    android:background="@drawable/shape_edittext2"
                     android:drawableStart="@drawable/ic_lock"
                     android:drawablePadding="10dp"
                     android:inputType="textPassword"
@@ -131,7 +134,7 @@
                     android:id="@+id/passwordCfEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_edittext1"
+                    android:background="@drawable/shape_edittext2"
                     android:drawableStart="@drawable/ic_lock"
                     android:drawablePadding="10dp"
                     android:inputType="textPassword"
@@ -142,7 +145,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
-            <EditText
+            <TextView
                 android:id="@+id/registerBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -150,7 +153,9 @@
                 android:gravity="center"
                 android:layout_below="@+id/passwordCfTil"
                 android:background="@drawable/shape_button3"
-                android:text="Register"
+                android:text="REGISTER"
+                android:textStyle="bold"
+                android:clickable="true"
                 android:textColor="@color/white"
                 android:layout_marginTop="20dp"
                 />
