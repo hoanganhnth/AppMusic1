@@ -131,7 +131,7 @@ public class SongListActivity extends AppCompatActivity {
     private void getDataIntent() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            playlist = (Playlist) bundle.getSerializable("playlist");
+            playlist = (Playlist) bundle.getParcelable("playlist");
         }
     }
 

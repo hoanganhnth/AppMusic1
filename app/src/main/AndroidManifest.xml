@@ -16,9 +16,16 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/music_player_icon"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.AppMusicTest"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".activity.ShowMorePlaylistActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".activity.FavoriteAuthorActivity"
             android:exported="false"
@@ -84,7 +91,6 @@
             android:name=".activity.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="stateHidden|adjustPan">
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

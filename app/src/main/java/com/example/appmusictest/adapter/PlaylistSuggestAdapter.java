@@ -3,7 +3,6 @@ package com.example.appmusictest.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,20 +20,27 @@ import com.example.appmusictest.model.Playlist;
 import java.util.ArrayList;
 
 public class PlaylistSuggestAdapter extends RecyclerView.Adapter<PlaylistSuggestAdapter.ViewHolder> {
-    private ArrayList<Playlist> playlistArrayList;
-    private Context context;
+    private ArrayList<? extends Playlist> playlistArrayList;
+    private final Context context;
     private static final String TAG = "Playlist_Adapter";
+    private boolean bigSize;
 
 
-    public PlaylistSuggestAdapter(ArrayList<Playlist> playlistArrayList, Context context) {
+    public PlaylistSuggestAdapter(ArrayList<? extends Playlist> playlistArrayList, Context context, boolean big) {
         this.playlistArrayList = playlistArrayList;
         this.context = context;
+        bigSize = big;
     }
 
     @NonNull
     @Override
     public PlaylistSuggestAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.row_playlist_suggest, parent, false);
+        View view;
+        if (bigSize) {
+            view = LayoutInflater.from(context).inflate(R.layout.row_playlist_suggest_big, parent, false);
+        } else {
+            view = LayoutInflater.from(context).inflate(R.layout.row_playlist_suggest, parent, false);
+        }
         return new ViewHolder(view);
     }
 
@@ -50,7 +56,7 @@ public class PlaylistSuggestAdapter extends RecyclerView.Adapter<PlaylistSuggest
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, SongListActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putSerializable("playlist", playlistArrayList.get(position));
+            bundle.putParcelable("playlist", playlistArrayList.get(position));
             intent.putExtras(bundle);
             context.startActivity(intent);
         });
@@ -63,7 +69,7 @@ public class PlaylistSuggestAdapter extends RecyclerView.Adapter<PlaylistSuggest
         return playlistArrayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView titleSuggestTv;
         ImageView imgSuggestIv;
         public ViewHolder(@NonNull View itemView) {

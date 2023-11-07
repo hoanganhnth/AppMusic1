@@ -39,13 +39,15 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText searchEt;
     private RelativeLayout songFavRl, playlistFavRl, albumFavRl, authorFavRl;
+    private RelativeLayout showMoreRl;
     private TextView numberSongTv;
-    private ImageButton logOutIb;
+    private ImageButton logOutIb,showMoreIb;
     private ArrayList<Playlist> playlists;
     private RecyclerView playlistSgRv;
     private static final String TAG = "Main_Activity";
     private PlaylistSuggestAdapter playlistSuggestAdapter;
     private SessionManager sessionManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +82,14 @@ public class MainActivity extends AppCompatActivity {
 
         logOutIb.setOnClickListener(v -> sessionManager.logOutSession());
 
+        showMoreIb.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ShowMorePlaylistActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("playlists", playlists);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        });
+
 
     }
 
@@ -92,7 +102,10 @@ public class MainActivity extends AppCompatActivity {
         authorFavRl = findViewById(R.id.authorFavRl);
         numberSongTv = findViewById(R.id.numberSongTv);
         logOutIb = findViewById(R.id.logOutIb);
+        showMoreIb = findViewById(R.id.showMoreIb);
+        showMoreRl = findViewById(R.id.showMoreRl);
     }
+
     private void getData() {
         DataService dataService = ApiService.getService();
         Call<List<Playlist>> callback = dataService.getPlaylistCurrentDay();
@@ -101,7 +114,11 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<List<Playlist>> call, @NonNull Response<List<Playlist>> response) {
 
                 playlists = (ArrayList<Playlist>) response.body();
-                playlistSuggestAdapter = new PlaylistSuggestAdapter(playlists, MainActivity.this);
+                assert playlists != null;
+                if (playlists.size() >= 3) {
+                    showMoreRl.setVisibility(View.VISIBLE);
+                }
+                playlistSuggestAdapter = new PlaylistSuggestAdapter(playlists, MainActivity.this, false);
                 playlistSgRv.setAdapter(playlistSuggestAdapter);
             }
 
@@ -134,12 +151,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        searchEt.setText("");
-        if (FavoriteSongActivity.favSongs.isEmpty()) {
-            numberSongTv.setText("");
-        } else {
-            numberSongTv.setText(String.valueOf(FavoriteSongActivity.favSongs.size()));
-        }
+
+        updateUi();
         if (MusicPlayerActivity.musicPlayerService != null) {
             MusicPlayerActivity.musicPlayerService.destroyMain = false;
             Log.d(TAG, "main resume");
@@ -150,6 +163,16 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void updateUi() {
+        searchEt.setText("");
+        if (FavoriteSongActivity.favSongs.isEmpty()) {
+            numberSongTv.setText("");
+        } else {
+            numberSongTv.setText(String.valueOf(FavoriteSongActivity.favSongs.size()));
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

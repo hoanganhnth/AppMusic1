@@ -53,7 +53,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, SongListActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putSerializable("playlist", playlistArrayListFilter.get(position));
+            bundle.putParcelable("playlist", playlistArrayListFilter.get(position));
             intent.putExtras(bundle);
             context.startActivity(intent);
         });
