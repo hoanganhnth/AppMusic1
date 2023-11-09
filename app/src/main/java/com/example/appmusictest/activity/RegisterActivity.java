@@ -10,7 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.appmusictest.MyProgressDialog;
+import com.example.appmusictest.dialog.MyProgressDialog;
 import com.example.appmusictest.R;
 import com.example.appmusictest.SessionManager;
 

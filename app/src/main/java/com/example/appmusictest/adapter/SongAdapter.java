@@ -1,5 +1,6 @@
 package com.example.appmusictest.adapter;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -56,7 +57,6 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         holder.nameSong.setText(songArrayList.get(position).getTitle());
         holder.authorSong.setText(songArrayList.get(position).getNameAuthor());
 
-
         Glide.with(holder.itemView.getContext())
                 .load(songArrayList.get(position).getArtUrl())
                 .placeholder(R.mipmap.ic_launcher_round)
@@ -87,7 +87,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         LinearLayout addFavLn = dialog.findViewById(R.id.addFavLn);
         TextView addFavTv = dialog.findViewById(R.id.addFavTv);
         ImageButton addFavIb = dialog.findViewById(R.id.addFavIb);
-        if (FavoriteSongActivity.favSongs.contains(songArrayList.get(pos))) {
+        if (FavoriteSongActivity.isInFav(songArrayList.get(pos))) {
             addFavTv.setText(R.string.delete_fav_title);
             addFavIb.setImageResource(R.drawable.ic_in_library);
         }
@@ -113,13 +113,16 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         });
 
         addFavLn.setOnClickListener( v -> {
-            if (!FavoriteSongActivity.favSongs.contains(songArrayList.get(pos))) {
+            if (!FavoriteSongActivity.isInFav(songArrayList.get(pos))) {
                 Toast.makeText(view.getContext(), R.string.add_favorite_notification, Toast.LENGTH_SHORT).show();
                 FavoriteSongActivity.addSong(songArrayList.get(pos));
             } else {
                 Toast.makeText(view.getContext(), R.string.remove_favorite_notification, Toast.LENGTH_SHORT).show();
                 FavoriteSongActivity.removeSong(songArrayList.get(pos));
-                notifyItemRemoved(pos);
+                if (((Activity) context).getClass().getSimpleName().equals(FavoriteSongActivity.class.getSimpleName())) {
+                    notifyItemRemoved(pos);
+                    notifyItemRangeChanged(pos, FavoriteSongActivity.getSize());
+                }
             }
             dialog.dismiss();
 

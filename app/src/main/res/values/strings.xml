@@ -35,4 +35,6 @@
     <string name="new_user_sign_up">New User?<b>Sign up</b></string>
     <string name="show_more_tittle">Xem tất cả</string>
     <string name="hot_playlist_title">Playlist hot</string>
+    <string name="add_playlist_title">Tạo playlist</string>
+    <string name="delete_playlist_title">Playlist của bạn sẽ bị xóa khỏi thư viện?</string>
 </resources>

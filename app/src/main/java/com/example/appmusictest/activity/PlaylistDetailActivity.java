@@ -2,17 +2,16 @@ package com.example.appmusictest.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.media.audiofx.AudioEffect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageButton;
@@ -36,7 +35,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SongListActivity extends AppCompatActivity {
+public class PlaylistDetailActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     public static ArrayList<Song> songArrayList;
@@ -49,7 +48,7 @@ public class SongListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_song_list);
+        setContentView(R.layout.activity_playlist_detail);
         initView();
         getDataIntent();
         getDataFromServer(playlist.getId());
@@ -61,19 +60,34 @@ public class SongListActivity extends AppCompatActivity {
         titlePlIv.setText(playlist.getTitle());
         Glide.with(this)
                 .load(playlist.getArtUrl())
-                .placeholder(R.mipmap.ic_launcher_round)
+                .placeholder(R.mipmap.music_player_icon)
                 .into(imgPlIv);
         backIb.setOnClickListener(v -> onBackPressed());
 
+        if (songArrayList.isEmpty()) {
+            shuffleBtn.setVisibility(View.GONE);
+        }
         shuffleBtn.setOnClickListener(v -> {
             Intent intent = new Intent(this, MusicPlayerActivity.class);
             intent.putExtra("class","SongListActivity");
             intent.putExtra("index", 0);
             startActivity(intent);
         });
-        menuIb.setOnClickListener(v -> {
-            showDialog();
+        menuIb.setOnClickListener(v -> showDialog());
+
+        favoriteIb.setOnClickListener(v -> {
+            if (FavoritePlaylistActivity.isInFav(playlist)) {
+                FavoritePlaylistActivity.removePlaylist(playlist);
+                favoriteIb.setImageResource(R.drawable.ic_favorite_gray);
+                Toast.makeText(this, R.string.remove_favorite_notification, Toast.LENGTH_SHORT).show();
+            } else {
+                FavoritePlaylistActivity.addPlaylist(playlist);
+                favoriteIb.setImageResource(R.drawable.ic_favorite_purple);
+                Toast.makeText(this, R.string.add_favorite_notification, Toast.LENGTH_SHORT).show();
+            }
         });
+
+
     }
 
     private void showDialog() {
@@ -85,12 +99,21 @@ public class SongListActivity extends AppCompatActivity {
         LinearLayout addPlaySongsLn = dialog.findViewById(R.id.addPlaySongsLn);
         LinearLayout addFavLn = dialog.findViewById(R.id.addFavLn);
         TextView namePlaylist = dialog.findViewById(R.id.namePlTv);
+        ImageButton addFavIb = dialog.findViewById(R.id.addFavIb);
+        TextView addFavTv = dialog.findViewById(R.id.addFavTv);
         namePlaylist.setText(playlist.getTitle());
         ImageView imgIv = dialog.findViewById(R.id.imgPlIv);
         Glide.with(this)
                 .load(playlist.getArtUrl())
                 .placeholder(R.mipmap.ic_launcher_round)
                 .into(imgIv);
+
+        if (FavoritePlaylistActivity.isInFav(playlist)) {
+            addFavTv.setText(R.string.delete_fav_title);
+            addFavIb.setImageResource(R.drawable.ic_in_library);
+            favoriteIb.setImageResource(R.drawable.ic_favorite_purple);
+            Log.d(TAG , "favorite contain");
+        }
         searchLn.setOnClickListener(v -> {
             Toast.makeText(this, "Tính năng đang trong quá trình phát triển", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
@@ -100,7 +123,15 @@ public class SongListActivity extends AppCompatActivity {
             dialog.dismiss();
         });
         addFavLn.setOnClickListener(v -> {
-            Toast.makeText(this, "Tính năng đang trong quá trình phát triển", Toast.LENGTH_SHORT).show();
+            if (!FavoritePlaylistActivity.isInFav(playlist)) {
+                Toast.makeText(this, R.string.add_favorite_notification, Toast.LENGTH_SHORT).show();
+                FavoritePlaylistActivity.addPlaylist(playlist);
+                favoriteIb.setImageResource(R.drawable.ic_favorite_purple);
+            } else {
+                Toast.makeText(this, R.string.remove_favorite_notification, Toast.LENGTH_SHORT).show();
+                FavoritePlaylistActivity.removePlaylist(playlist);
+                favoriteIb.setImageResource(R.drawable.ic_favorite_gray);
+            }
             dialog.dismiss();
         });
 
@@ -131,7 +162,7 @@ public class SongListActivity extends AppCompatActivity {
     private void getDataIntent() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            playlist = (Playlist) bundle.getParcelable("playlist");
+            playlist = bundle.getParcelable("playlist");
         }
     }
 
@@ -143,7 +174,7 @@ public class SongListActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<List<Song>> call, @NonNull Response<List<Song>> response) {
 
                 songArrayList = (ArrayList<Song>) response.body();
-                recyclerView.setAdapter(new SongAdapter(songArrayList));
+                recyclerView.setAdapter(new SongAdapter(songArrayList, PlaylistDetailActivity.this));
                 numberSongTv.setText(songArrayList.size() + " " + getString(R.string.playlist_title));
             }
 
@@ -152,10 +183,24 @@ public class SongListActivity extends AppCompatActivity {
                 Log.d(TAG, "Fail to get data from server due to:" + t.getMessage() );
             }
         });
+
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateUi();
+    }
+
+    private void updateUi() {
+        if (FavoritePlaylistActivity.isInFav(playlist)) {
+            favoriteIb.setImageResource(R.drawable.ic_favorite_purple);
+        } else {
+            favoriteIb.setImageResource(R.drawable.ic_favorite_gray);
+        }
+    }
 }

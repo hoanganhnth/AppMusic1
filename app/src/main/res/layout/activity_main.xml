@@ -70,45 +70,46 @@
                 android:orientation="vertical"
                 android:layout_marginEnd="10dp"
                 >
+
                 <RelativeLayout
                     android:id="@+id/songFavRl"
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_library_item_bg"
-                    android:padding="13dp"
-                    android:elevation="3dp"
                     android:layout_marginBottom="10dp"
-                    >
+                    android:background="@drawable/shape_library_item_bg"
+                    android:elevation="3dp"
+                    android:padding="13dp">
+
                     <ImageButton
                         android:id="@+id/songIb"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_music"
-                        android:background="@drawable/shape_library_song_bg"
                         android:layout_marginBottom="10dp"
+                        android:background="@drawable/shape_library_song_bg"
                         android:padding="5dp"
-                        />
+                        android:src="@drawable/ic_music" />
+
                     <TextView
                         android:id="@+id/songTitleTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Bài hát"
-                        android:textSize="15sp"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
                         android:layout_below="@id/songIb"
                         android:layout_marginEnd="10dp"
-                        />
+                        android:text="Bài hát"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
                     <TextView
                         android:id="@+id/numberSongTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_below="@id/songIb"
                         android:layout_toEndOf="@id/songTitleTv"
                         android:text="10"
-                        android:layout_below="@id/songIb"
-                        android:textSize="15sp"
-                        />
+                        android:textSize="15sp" />
                 </RelativeLayout>
+
                 <RelativeLayout
                     android:id="@+id/albumFavRl"
                     android:layout_width="180dp"

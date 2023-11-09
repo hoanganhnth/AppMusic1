@@ -16,5 +16,6 @@
     <color name="fav_playlist_color">#9C27B0</color>
     <color name="fav_album_color">#FF5722</color>
     <color name="fav_author_color">#4CAF50</color>
+    <color name="not_ready_button">#D0B0D5</color>
 
 </resources>

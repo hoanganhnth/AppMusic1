@@ -4,15 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Patterns;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.appmusictest.MyProgressDialog;
+import com.example.appmusictest.dialog.MyProgressDialog;
 import com.example.appmusictest.R;
-import com.example.appmusictest.SessionManager;
 
 public class LoginActivity extends AppCompatActivity {
 

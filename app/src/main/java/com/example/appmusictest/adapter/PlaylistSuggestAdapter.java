@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.appmusictest.R;
-import com.example.appmusictest.activity.SongListActivity;
+import com.example.appmusictest.activity.PlaylistDetailActivity;
 import com.example.appmusictest.model.Playlist;
 
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ public class PlaylistSuggestAdapter extends RecyclerView.Adapter<PlaylistSuggest
                 .placeholder(R.mipmap.ic_launcher_round)
                 .into(holder.imgSuggestIv);
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, SongListActivity.class);
+            Intent intent = new Intent(context, PlaylistDetailActivity.class);
             Bundle bundle = new Bundle();
             bundle.putParcelable("playlist", playlistArrayList.get(position));
             intent.putExtras(bundle);

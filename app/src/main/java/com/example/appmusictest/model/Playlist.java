@@ -23,7 +23,7 @@ public class Playlist implements Parcelable {
     @Expose
     private String artUrl;
 
-    protected Playlist(Parcel in) {
+    public Playlist(Parcel in) {
         id = in.readString();
         title = in.readString();
         artUrl = in.readString();
@@ -75,6 +75,12 @@ public class Playlist implements Parcelable {
         dest.writeString(id);
         dest.writeString(title);
         dest.writeString(artUrl);
+    }
+
+    public Playlist(String id, String title, String artUrl) {
+        this.id = id;
+        this.title = title;
+        this.artUrl = artUrl;
     }
 }
 

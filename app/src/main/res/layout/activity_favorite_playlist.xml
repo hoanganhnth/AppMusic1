@@ -9,21 +9,52 @@
     <include
         android:id="@+id/toolbarView"
         layout="@layout/playlist_toolbar"/>
-    <RelativeLayout
+
+
+  <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbarView"
         android:background="@drawable/fav_view"
         android:layout_marginTop="10dp">
+      <RelativeLayout
+          android:id="@+id/addPlaylistRl"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="20dp"
+          android:paddingStart="25dp"
+          android:paddingEnd="20dp">
+          <ImageButton
+              android:id="@+id/addPlaylistIb"
+              android:layout_width="60dp"
+              android:layout_height="60dp"
+              android:scaleType="centerCrop"
+              android:src="@drawable/ic_add_playlist"
+              android:background="@android:color/transparent"
+              android:layout_marginEnd="15dp"
+              />
+          <TextView
+              android:id="@+id/addPlaylistTitleTv"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_toEndOf="@+id/addPlaylistIb"
+              android:text="@string/add_playlist_title"
+              android:textColor="@color/fav_playlist_color"
+              android:textSize="15sp"
+              android:layout_centerVertical="true"
+              />
+      </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-
+            android:id="@+id/playlistFavRv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:layout_marginTop="20dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
+            tools:listitem="@layout/row_playlist"
+            android:layout_below="@+id/addPlaylistRl"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             />
     </RelativeLayout>
 

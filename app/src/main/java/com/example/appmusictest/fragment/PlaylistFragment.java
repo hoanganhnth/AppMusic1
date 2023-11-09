@@ -32,7 +32,6 @@ public class PlaylistFragment extends Fragment {
     private RecyclerView playlistRv;
     private static final String TAG = "Playlist_Fragment";
     private PlaylistAdapter playlistAdapter;
-    private boolean isFilter = false;
     public static TextView noDataTv;
 
     @Override
