@@ -8,7 +8,7 @@
     android:background="@color/fav_author_color">
     <include
         android:id="@+id/toolbarView"
-        layout="@layout/author_toolbar"/>
+        layout="@layout/toolbar_author"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

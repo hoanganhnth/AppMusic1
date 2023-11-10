@@ -91,7 +91,7 @@ public class PlaylistDetailActivity extends AppCompatActivity {
     private void showDialog() {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.song_list_bottom_layout);
+        dialog.setContentView(R.layout.bottom_layout_detail_playlist);
 
         LinearLayout searchLn = dialog.findViewById(R.id.searchLn);
         LinearLayout addPlaySongsLn = dialog.findViewById(R.id.addPlaySongsLn);

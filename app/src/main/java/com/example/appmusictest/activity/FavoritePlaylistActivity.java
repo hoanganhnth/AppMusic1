@@ -1,26 +1,18 @@
 package com.example.appmusictest.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.AlertDialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.appmusictest.R;
 import com.example.appmusictest.adapter.PlaylistAdapter;
+import com.example.appmusictest.dialog.MyCreatePlaylistDialog;
 import com.example.appmusictest.model.Playlist;
 
 import java.util.ArrayList;
@@ -74,49 +66,8 @@ public class FavoritePlaylistActivity extends AppCompatActivity {
     }
 
     private void showDialogAddPlaylist() {
-        AlertDialog dialog;
-        EditText playlistEt;
-        TextView submitBtn,cancelBtn;
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View view = LayoutInflater.from(this).inflate(R.layout.custom_add_dialog,null);
-        playlistEt = view.findViewById(R.id.playlistEt);
-        submitBtn = view.findViewById(R.id.submitBtn);
-        cancelBtn = view.findViewById(R.id.cancelBtn);
-        builder.setView(view);
-        builder.setCancelable(true);
-        dialog = builder.create();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
-        submitBtn.setBackground(ContextCompat.getDrawable(FavoritePlaylistActivity.this, R.drawable.shape_button4));
-        playlistEt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.toString().isEmpty()) {
-                    submitBtn.setBackground(ContextCompat.getDrawable(FavoritePlaylistActivity.this, R.drawable.shape_button4));
-                } else {
-                    submitBtn.setBackground(ContextCompat.getDrawable(FavoritePlaylistActivity.this, R.drawable.shape_button3));
-                }
-            }
-        });
-
-        submitBtn.setOnClickListener(v -> {
-            if (!playlistEt.getText().toString().isEmpty()) {
-                FavoritePlaylistActivity.addPlaylist(new Playlist("4", playlistEt.getText().toString(),""));
-                dialog.dismiss();
-                Toast.makeText(this, "Đã tạo playlist", Toast.LENGTH_SHORT).show();
-            }
-        });
-        cancelBtn.setOnClickListener(v -> dialog.dismiss());
+        MyCreatePlaylistDialog myCreatePlaylistDialog = new MyCreatePlaylistDialog(this);
+        myCreatePlaylistDialog.show();
     }
 
     public static void addPlaylist(Playlist playlist) {
@@ -130,6 +81,7 @@ public class FavoritePlaylistActivity extends AppCompatActivity {
             Playlist obj = iterator.next();
             if (obj.getId().equals(playlist.getId())) {
                 iterator.remove();
+                break;
             }
         }
         Log.d(TAG, "remove from favorite");

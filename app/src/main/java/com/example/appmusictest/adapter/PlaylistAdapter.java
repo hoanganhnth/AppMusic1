@@ -39,7 +39,6 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
         this.playlistArrayList = playlistArrayList;
         this.context = context;
         playlistArrayListFilter = new ArrayList<>();
-        Log.d(TAG, "construct");
 
     }
 
@@ -54,72 +53,60 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull PlaylistAdapter.ViewHolder holder, int position) {
 
-        if (isFilter) {
-            holder.playlistTv.setText(playlistArrayListFilter.get(position).getTitle());
-            Glide.with(context)
-                    .load(playlistArrayListFilter.get(position).getArtUrl())
-                    .placeholder(R.mipmap.music_player_icon)
-                    .into(holder.playlistIv);
-            holder.itemView.setOnClickListener(v -> {
-                Intent intent = new Intent(context, PlaylistDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("playlist", playlistArrayListFilter.get(position));
-                intent.putExtras(bundle);
-                context.startActivity(intent);
-
-            });
-            if (FavoritePlaylistActivity.isInFav(playlistArrayListFilter.get(position))) {
-                holder.playlistFvIb.setImageResource(R.drawable.ic_favorite_purple);
-            }
-            holder.playlistFvIb.setOnClickListener(v -> {
-                if (FavoritePlaylistActivity.isInFav(playlistArrayListFilter.get(position))) {
-                    showDialog(position, holder, true);
-                } else {
-                    FavoritePlaylistActivity.addPlaylist(playlistArrayListFilter.get(position));
-                    holder.playlistFvIb.setImageResource(R.drawable.ic_favorite_purple);
-                    Toast.makeText(v.getContext(), R.string.add_favorite_notification, Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            Log.d(TAG, "filter");
+        Playlist model;
+        if (isFilter)  {
+            model = playlistArrayListFilter.get(position);
         } else {
-            holder.playlistTv.setText(playlistArrayList.get(position).getTitle());
-            Glide.with(context)
-                    .load(playlistArrayList.get(position).getArtUrl())
-                    .placeholder(R.mipmap.music_player_icon)
-                    .into(holder.playlistIv);
-            holder.itemView.setOnClickListener(v -> {
-                Intent intent = new Intent(context, PlaylistDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("playlist", playlistArrayList.get(position));
-                intent.putExtras(bundle);
-                context.startActivity(intent);
-            });
-            if (FavoritePlaylistActivity.isInFav(playlistArrayList.get(position))) {
-                holder.playlistFvIb.setImageResource(R.drawable.ic_favorite_purple);
-            }
-            holder.playlistFvIb.setOnClickListener(v -> {
-                showDialog(position, holder, false);
-
-            });
-            Log.d(TAG, "not filter");
+            model = playlistArrayList.get(position);
         }
+        String activity = context.getClass().getSimpleName();
+
+        holder.playlistTv.setText(model.getTitle());
+        Glide.with(context)
+                .load(model.getArtUrl())
+                .placeholder(R.mipmap.music_player_icon)
+                .into(holder.playlistIv);
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, PlaylistDetailActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("playlist", model);
+            intent.putExtras(bundle);
+            context.startActivity(intent);
+        });
+
+        if (FavoritePlaylistActivity.isInFav(model)) {
+            holder.playlistFvIb.setImageResource(R.drawable.ic_favorite_purple);
+        }
+        holder.playlistFvIb.setOnClickListener(v -> {
+            if (!FavoritePlaylistActivity.isInFav(model)) {
+                FavoritePlaylistActivity.addPlaylist(model);
+                holder.playlistFvIb.setImageResource(R.drawable.ic_favorite_purple);
+                Toast.makeText(v.getContext(), R.string.add_favorite_notification, Toast.LENGTH_SHORT).show();
+            } else if (activity.equals(FavoritePlaylistActivity.class.getSimpleName())){
+                showDialog(position, model);
+            } else {
+                holder.playlistFvIb.setImageResource(R.drawable.ic_favorite_gray);
+                FavoritePlaylistActivity.removePlaylist(model);
+                Toast.makeText(v.getContext(), R.string.remove_favorite_notification, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
 
-    private void showDialog(int pos, ViewHolder holder, boolean isFilter) {
+    private void showDialog(int pos, Playlist model) {
         AlertDialog dialog;
         TextView titleDialogDeleteTv,contentDialogTv,submitBtn,cancelBtn;
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        View view = LayoutInflater.from(context).inflate(R.layout.custom_delete_dialog,null);
+        View view = LayoutInflater.from(context).inflate(R.layout.custom_dialog_delete,null);
+
         titleDialogDeleteTv = view.findViewById(R.id.titleDialogDeleteTv);
         contentDialogTv = view.findViewById(R.id.contentDialogTv);
         submitBtn = view.findViewById(R.id.submitBtn);
         cancelBtn = view.findViewById(R.id.cancelBtn);
-        if (isFilter) {
-            titleDialogDeleteTv.setText(playlistArrayListFilter.get(pos).getTitle());
-        } else {
-            titleDialogDeleteTv.setText(playlistArrayList.get(pos).getTitle());
-        }
+
+        titleDialogDeleteTv.setText(model.getTitle());
         contentDialogTv.setText(R.string.delete_playlist_title);
 
         builder.setView(view);
@@ -128,15 +115,11 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
 
+
         submitBtn.setOnClickListener(v -> {
-            if (!isFilter) {
-                FavoritePlaylistActivity.removePlaylist(playlistArrayList.get(pos));
-                notifyItemRemoved(pos);
-                notifyItemRangeChanged(pos, FavoritePlaylistActivity.getSize());
-            } else {
-                holder.playlistFvIb.setImageResource(R.drawable.ic_favorite_gray);
-                FavoritePlaylistActivity.removePlaylist(playlistArrayListFilter.get(pos));
-            }
+            FavoritePlaylistActivity.removePlaylist(model);
+            notifyItemRemoved(pos);
+            notifyItemRangeChanged(pos, FavoritePlaylistActivity.getSize());
             dialog.dismiss();
             Toast.makeText(v.getContext(), R.string.remove_favorite_notification, Toast.LENGTH_SHORT).show();
         });
@@ -145,7 +128,6 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        Log.d(TAG, "getItemCount");
         if (isFilter) {
             return playlistArrayListFilter.size();
         }
@@ -165,14 +147,15 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
     }
 
     public void filter(String query) {
+
         if (!isFilter) {
             isFilter = true;
         }
-        query = query.toLowerCase();
+        String lowerQuery = query.toLowerCase();
         playlistArrayListFilter.clear();
-        if (!query.equals("")) {
+        if (!lowerQuery.equals("")) {
             for (Playlist item : playlistArrayList) {
-                if (item.getTitle().toLowerCase().contains(query)) {
+                if (item.getTitle().toLowerCase().contains(lowerQuery)) {
                     playlistArrayListFilter.add(item);
                 }
             }
@@ -182,7 +165,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
             noDataTv.setVisibility(View.VISIBLE);
         } else {
             noDataTv.setVisibility(View.GONE);
-            Log.d(TAG, "query :" + query);
+            Log.d(TAG, "query :" + lowerQuery);
         }
         notifyDataSetChanged();
     }

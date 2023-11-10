@@ -18,7 +18,7 @@ public class MyProgressDialog {
 
     public MyProgressDialog(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        View view = LayoutInflater.from(context).inflate(R.layout.custom_progress_dialog, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.custom_dialog_progress, null);
         progressBar = view.findViewById(R.id.progress_bar);
         titleDialog = view.findViewById(R.id.titleDialog);
         messageDialog = view.findViewById(R.id.messageDialog);

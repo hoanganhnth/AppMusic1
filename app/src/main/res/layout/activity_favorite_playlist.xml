@@ -8,7 +8,7 @@
     android:background="@color/fav_playlist_color">
     <include
         android:id="@+id/toolbarView"
-        layout="@layout/playlist_toolbar"/>
+        layout="@layout/toolbar_playlist"/>
 
 
   <RelativeLayout
@@ -49,7 +49,6 @@
             android:id="@+id/playlistFavRv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             tools:listitem="@layout/row_playlist"

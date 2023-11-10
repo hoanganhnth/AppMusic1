@@ -8,7 +8,7 @@
 
     <include
         android:id="@+id/toolbarMorePlaylist"
-        layout="@layout/show_more_toolbar"
+        layout="@layout/toolbar_show_more"
         />
 
     <androidx.recyclerview.widget.RecyclerView

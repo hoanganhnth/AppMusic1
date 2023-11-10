@@ -1,6 +1,5 @@
 package com.example.appmusictest.adapter;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -16,6 +15,7 @@ import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +27,7 @@ import com.example.appmusictest.R;
 import com.example.appmusictest.activity.FavoritePlaylistActivity;
 import com.example.appmusictest.activity.FavoriteSongActivity;
 import com.example.appmusictest.activity.MusicPlayerActivity;
+import com.example.appmusictest.dialog.MyCreatePlaylistDialog;
 import com.example.appmusictest.model.Song;
 
 import java.util.ArrayList;
@@ -76,17 +77,18 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
             holder.itemView.getContext().startActivity(intent);
         });
-        holder.moreIv.setOnClickListener(v -> showBottomDialog(v, position));
+        holder.moreIv.setOnClickListener(v -> showBottomDialog(context, position));
     }
 
-    private void showBottomDialog(View view, int pos) {
-        final Dialog dialog = new Dialog(view.getContext());
+    private void showBottomDialog(Context context, int pos) {
+        final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.song_bottom_layout);
+        dialog.setContentView(R.layout.bottom_layout_song);
 
         LinearLayout addPlaySongsLn = dialog.findViewById(R.id.addPlaySongsLn);
         LinearLayout addPlayNextLn = dialog.findViewById(R.id.addPlayNextLn);
         LinearLayout addFavLn = dialog.findViewById(R.id.addFavLn);
+        LinearLayout addPlaylistLn = dialog.findViewById(R.id.addPlaylistLn);
         TextView addFavTv = dialog.findViewById(R.id.addFavTv);
         ImageButton addFavIb = dialog.findViewById(R.id.addFavIb);
         if (FavoriteSongActivity.isInFav(songArrayList.get(pos))) {
@@ -99,37 +101,40 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         nameSong.setText(songArrayList.get(pos).getTitle());
         authorSong.setText(songArrayList.get(pos).getNameAuthor());
         ImageView imgIv = dialog.findViewById(R.id.imgDlIv);
-        Glide.with(view.getContext())
+        Glide.with(context)
                         .load(songArrayList.get(pos).getArtUrl())
                                 .into(imgIv);
         addPlaySongsLn.setOnClickListener( v -> {
-            Toast.makeText(view.getContext(), R.string.add_list_play_notification, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.add_list_play_notification, Toast.LENGTH_SHORT).show();
             addSongToCurrentSongs(pos);
             dialog.dismiss();
         });
 
         addPlayNextLn.setOnClickListener( v -> {
-            Toast.makeText(view.getContext(), R.string.add_play_next_notification, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.add_play_next_notification, Toast.LENGTH_SHORT).show();
             addSongToNextSong(pos);
             dialog.dismiss();
         });
 
         addFavLn.setOnClickListener( v -> {
             if (!FavoriteSongActivity.isInFav(songArrayList.get(pos))) {
-                Toast.makeText(view.getContext(), R.string.add_favorite_notification, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.add_favorite_notification, Toast.LENGTH_SHORT).show();
                 FavoriteSongActivity.addSong(songArrayList.get(pos));
             } else {
 
                 if (context.getClass().getSimpleName().equals(FavoriteSongActivity.class.getSimpleName())) {
-                    showDeleteDialog(view, pos);
-
+                    showDeleteDialog(context, pos);
                 } else {
-                    Toast.makeText(view.getContext(), R.string.remove_favorite_notification, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.remove_favorite_notification, Toast.LENGTH_SHORT).show();
                     FavoriteSongActivity.removeSong(songArrayList.get(pos));
                 }
             }
             dialog.dismiss();
 
+        });
+        addPlaylistLn.setOnClickListener(v -> {
+            dialog.dismiss();
+            showAddPlaylistDialog(context, pos);
         });
 
         dialog.show();
@@ -139,11 +144,35 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
-    private void showDeleteDialog(View view, int pos) {
+    private void showAddPlaylistDialog(Context context, int pos) {
+        Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.bottom_layout_add_to_playlist);
+        RelativeLayout addPlaylistRl = dialog.findViewById(R.id.addPlaylistRl);
+        RecyclerView playlistFavRv = dialog.findViewById(R.id.playlistFavRv);
+        PlaylistAddAdapter playlistAdapter = new PlaylistAddAdapter(FavoritePlaylistActivity.getFavPlaylists(), context);
+        playlistFavRv.setAdapter(playlistAdapter);
+        addPlaylistRl.setOnClickListener(v -> {
+            dialog.dismiss();
+            showCreatePlaylistDialog(context);
+        });
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
+    private void showCreatePlaylistDialog(Context context) {
+        MyCreatePlaylistDialog myCreatePlaylistDialog = new MyCreatePlaylistDialog(context);
+        myCreatePlaylistDialog.show();
+    }
+
+    private void showDeleteDialog(Context context, int pos) {
         AlertDialog dialog;
         TextView titleDialogDeleteTv,contentDialogTv,submitBtn,cancelBtn;
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        View viewDialog = LayoutInflater.from(context).inflate(R.layout.custom_delete_dialog,null);
+        View viewDialog = LayoutInflater.from(context).inflate(R.layout.custom_dialog_delete,null);
         titleDialogDeleteTv = viewDialog.findViewById(R.id.titleDialogDeleteTv);
         contentDialogTv = viewDialog.findViewById(R.id.contentDialogTv);
         submitBtn = viewDialog.findViewById(R.id.submitBtn);
@@ -160,7 +189,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         dialog.show();
 
         submitBtn.setOnClickListener(v -> {
-            Toast.makeText(view.getContext(), R.string.remove_favorite_notification, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.remove_favorite_notification, Toast.LENGTH_SHORT).show();
             FavoriteSongActivity.removeSong(songArrayList.get(pos));
             notifyItemRemoved(pos);
             notifyItemRangeChanged(pos, FavoriteSongActivity.getSize());

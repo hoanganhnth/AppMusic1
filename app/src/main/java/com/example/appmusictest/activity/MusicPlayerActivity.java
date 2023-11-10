@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -29,6 +30,7 @@ import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +38,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.appmusictest.NotificationReceiver;
 import com.example.appmusictest.R;
+import com.example.appmusictest.adapter.PlaylistAddAdapter;
+import com.example.appmusictest.dialog.MyCreatePlaylistDialog;
 import com.example.appmusictest.fragment.ListPlayFragment;
 import com.example.appmusictest.utilities.TimeFormatterUtility;
 import com.example.appmusictest.fragment.DiskFragment;
@@ -157,14 +161,14 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
             }
             else {
                 repeat = true;
-                repeatIb.setColorFilter(ContextCompat.getColor(this,R.color.purple_500));
+                repeatIb.setColorFilter(ContextCompat.getColor(this,R.color.fav_playlist_color));
             }
         });
         shuffleIb.setOnClickListener(v -> {
             if (!activeShuffle) {
                 activeShuffle = true;
                 shuffleSongs();
-                shuffleIb.setColorFilter(ContextCompat.getColor(this,R.color.purple_500));
+                shuffleIb.setColorFilter(ContextCompat.getColor(this,R.color.fav_playlist_color));
                 Log.d(TAG, "Active shuffle");
             }
             else {
@@ -230,24 +234,30 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
     private void showDialog() {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.music_player_bottom_layout);
+        dialog.setContentView(R.layout.bottom_layout_music_player);
 
         LinearLayout setTimeLn = dialog.findViewById(R.id.setTimeLn);
+        LinearLayout addPlaylistLn = dialog.findViewById(R.id.addPlaylistLn);
         LinearLayout setEqualizerLn = dialog.findViewById(R.id.setEqualizerLn);
         LinearLayout addFavoriteLn = dialog.findViewById(R.id.addFavoriteLn);
-        LinearLayout addMyPlaylistLn = dialog.findViewById(R.id.addMyPlaylistLn);
         LinearLayout seeAuthorLn = dialog.findViewById(R.id.seeAuthorLn);
         TextView setTimeTv = dialog.findViewById(R.id.setTimeTv);
         TextView nameSong = dialog.findViewById(R.id.nameSongTv);
+        TextView addFavTv = dialog.findViewById(R.id.addFavTv);
         TextView authorSong = dialog.findViewById(R.id.authorSongTv);
         ImageButton setTimeIb = dialog.findViewById(R.id.setTimeIb);
+        ImageButton addFavIb = dialog.findViewById(R.id.addFavIb);
 
         nameSong.setText(currentSongs.get(songPosition).getTitle());
         authorSong.setText(currentSongs.get(songPosition).getNameAuthor());
         ImageView imgIv = dialog.findViewById(R.id.imgDlIv);
         if (isSetTimer) {
-            setTimeIb.setColorFilter(ContextCompat.getColor(this,R.color.purple_500));
-            setTimeTv.setTextColor(ContextCompat.getColor(this,R.color.purple_500));
+            setTimeIb.setColorFilter(ContextCompat.getColor(this,R.color.fav_playlist_color));
+            setTimeTv.setTextColor(ContextCompat.getColor(this,R.color.fav_playlist_color));
+        }
+        if (FavoriteSongActivity.isInFav(currentSongs.get(songPosition))) {
+            addFavTv.setText(R.string.delete_fav_title);
+            addFavIb.setImageResource(R.drawable.ic_in_library);
         }
         Glide.with(this)
                 .load(currentSongs.get(songPosition).getArtUrl())
@@ -271,12 +281,23 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
             dialog.dismiss();
         });
         addFavoriteLn.setOnClickListener( v -> {
-            dialog.dismiss();
+            if (!FavoriteSongActivity.isInFav(currentSongs.get(songPosition))) {
+                Toast.makeText(this, R.string.add_favorite_notification, Toast.LENGTH_SHORT).show();
+                FavoriteSongActivity.addSong(currentSongs.get(songPosition));
+            } else {
+                Toast.makeText(this, R.string.remove_favorite_notification, Toast.LENGTH_SHORT).show();
+                FavoriteSongActivity.removeSong(currentSongs.get(songPosition));
+            }
+                dialog.dismiss();
         });
-        addMyPlaylistLn.setOnClickListener( v -> {
-            dialog.dismiss();
-        });
+
         seeAuthorLn.setOnClickListener( v -> {
+            Toast.makeText(this, R.string.unfinished_title, Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+        });
+
+        addPlaylistLn.setOnClickListener(v -> {
+            showAddPlaylistDialog(this, songPosition);
             dialog.dismiss();
         });
 
@@ -287,10 +308,34 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
+    private void showAddPlaylistDialog(Context context, int pos) {
+        Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.bottom_layout_add_to_playlist);
+        RelativeLayout addPlaylistRl = dialog.findViewById(R.id.addPlaylistRl);
+        RecyclerView playlistFavRv = dialog.findViewById(R.id.playlistFavRv);
+        PlaylistAddAdapter playlistAdapter = new PlaylistAddAdapter(FavoritePlaylistActivity.getFavPlaylists(), context);
+        playlistFavRv.setAdapter(playlistAdapter);
+        addPlaylistRl.setOnClickListener(v -> {
+            dialog.dismiss();
+            showCreatePlaylistDialog(context);
+        });
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
+    private void showCreatePlaylistDialog(Context context) {
+        MyCreatePlaylistDialog myCreatePlaylistDialog = new MyCreatePlaylistDialog(context);
+        myCreatePlaylistDialog.show();
+    }
+
     private void showDialogTimer() {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.timer_bottom_layout);
+        dialog.setContentView(R.layout.bottom_layout_timer);
         LinearLayout statusTv = dialog.findViewById(R.id.statusTimerLn);
         TextView timeRemainingTV = dialog.findViewById(R.id.timeRemainingTv);
         TextView setQuarterfTv = dialog.findViewById(R.id.setQuarterTv);
@@ -319,13 +364,13 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         setHalfTv.setOnClickListener(v -> {
             Toast.makeText(this, "Âm nhạc sẽ tắt sau 30 phút", Toast.LENGTH_SHORT).show();
             isSetTimer = true;
-            initTimer(15);
+            initTimer(30);
             dialog.dismiss();
         });
         setOneTv.setOnClickListener(v -> {
             Toast.makeText(this, "Âm nhạc sẽ tắt sau 1 giờ", Toast.LENGTH_SHORT).show();
             isSetTimer = true;
-            initTimer(15);
+            initTimer(60);
             dialog.dismiss();
         });
 
@@ -420,12 +465,12 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         authorSongTv.setText(currentSongs.get(songPosition).getNameAuthor());
         diskFragment.setArtUrl(currentSongs.get(songPosition).getArtUrl());
         if (repeat) {
-            repeatIb.setColorFilter(ContextCompat.getColor(getApplicationContext(),R.color.purple_500));
+            repeatIb.setColorFilter(ContextCompat.getColor(getApplicationContext(),R.color.fav_playlist_color));
         } else {
             repeatIb.setColorFilter(ContextCompat.getColor(getApplicationContext(),R.color.grayBt));
         }
         if (activeShuffle) {
-            shuffleIb.setColorFilter(ContextCompat.getColor(getApplicationContext(),R.color.purple_500));
+            shuffleIb.setColorFilter(ContextCompat.getColor(getApplicationContext(),R.color.fav_playlist_color));
         } else {
             shuffleIb.setColorFilter(ContextCompat.getColor(getApplicationContext(),R.color.grayBt));
         }

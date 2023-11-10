@@ -9,11 +9,10 @@
         android:id="@+id/titleDialogAddTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="THÊM PLAYLIST"
-        android:layout_centerHorizontal="true"
+        android:text="Tạo playlist"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:textColor="@color/fav_playlist_color"/>
+        android:textColor="@color/black"/>
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -24,6 +23,7 @@
         android:layout_marginTop="20dp"
         android:hint="Tên playlist"
         app:hintTextColor="@color/fav_playlist_color"
+        app:boxStrokeColor="@color/fav_playlist_color"
 
         >
         <EditText
@@ -31,9 +31,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/black"
+            android:background="@color/white"
+
             />
     </com.google.android.material.textfield.TextInputLayout>
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.SearchActivity"
-    android:background="@color/grayBg"
+
     >
 
     <ImageButton
@@ -47,7 +47,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/searchEt"
-            android:background="#F8F8F8"
             app:tabMode="scrollable"
             android:layout_marginStart="40dp"
             android:layout_marginBottom="10dp"

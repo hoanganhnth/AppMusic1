@@ -8,7 +8,7 @@
     android:background="@color/fav_album_color">
     <include
         android:id="@+id/toolbarView"
-        layout="@layout/album_toolbar"
+        layout="@layout/toolbar_album"
         />
 
     <RelativeLayout
