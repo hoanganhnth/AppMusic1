@@ -64,9 +64,7 @@ public class PlaylistDetailActivity extends AppCompatActivity {
                 .into(imgPlIv);
         backIb.setOnClickListener(v -> onBackPressed());
 
-        if (songArrayList.isEmpty()) {
-            shuffleBtn.setVisibility(View.GONE);
-        }
+
         shuffleBtn.setOnClickListener(v -> {
             Intent intent = new Intent(this, MusicPlayerActivity.class);
             intent.putExtra("class","SongListActivity");
@@ -176,6 +174,11 @@ public class PlaylistDetailActivity extends AppCompatActivity {
                 songArrayList = (ArrayList<Song>) response.body();
                 recyclerView.setAdapter(new SongAdapter(songArrayList, PlaylistDetailActivity.this));
                 numberSongTv.setText(songArrayList.size() + " " + getString(R.string.playlist_title));
+                if (songArrayList.isEmpty()) {
+                    shuffleBtn.setVisibility(View.GONE);
+                } else {
+                    shuffleBtn.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
@@ -201,6 +204,12 @@ public class PlaylistDetailActivity extends AppCompatActivity {
             favoriteIb.setImageResource(R.drawable.ic_favorite_purple);
         } else {
             favoriteIb.setImageResource(R.drawable.ic_favorite_gray);
+        }
+
+        if (songArrayList.isEmpty()) {
+            shuffleBtn.setVisibility(View.GONE);
+        } else {
+            shuffleBtn.setVisibility(View.VISIBLE);
         }
     }
 }

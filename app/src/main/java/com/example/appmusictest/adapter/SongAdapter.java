@@ -1,6 +1,7 @@
 package com.example.appmusictest.adapter;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.appmusictest.R;
+import com.example.appmusictest.activity.FavoritePlaylistActivity;
 import com.example.appmusictest.activity.FavoriteSongActivity;
 import com.example.appmusictest.activity.MusicPlayerActivity;
 import com.example.appmusictest.model.Song;
@@ -117,11 +119,13 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
                 Toast.makeText(view.getContext(), R.string.add_favorite_notification, Toast.LENGTH_SHORT).show();
                 FavoriteSongActivity.addSong(songArrayList.get(pos));
             } else {
-                Toast.makeText(view.getContext(), R.string.remove_favorite_notification, Toast.LENGTH_SHORT).show();
-                FavoriteSongActivity.removeSong(songArrayList.get(pos));
-                if (((Activity) context).getClass().getSimpleName().equals(FavoriteSongActivity.class.getSimpleName())) {
-                    notifyItemRemoved(pos);
-                    notifyItemRangeChanged(pos, FavoriteSongActivity.getSize());
+
+                if (context.getClass().getSimpleName().equals(FavoriteSongActivity.class.getSimpleName())) {
+                    showDeleteDialog(view, pos);
+
+                } else {
+                    Toast.makeText(view.getContext(), R.string.remove_favorite_notification, Toast.LENGTH_SHORT).show();
+                    FavoriteSongActivity.removeSong(songArrayList.get(pos));
                 }
             }
             dialog.dismiss();
@@ -133,6 +137,37 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
+    private void showDeleteDialog(View view, int pos) {
+        AlertDialog dialog;
+        TextView titleDialogDeleteTv,contentDialogTv,submitBtn,cancelBtn;
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View viewDialog = LayoutInflater.from(context).inflate(R.layout.custom_delete_dialog,null);
+        titleDialogDeleteTv = viewDialog.findViewById(R.id.titleDialogDeleteTv);
+        contentDialogTv = viewDialog.findViewById(R.id.contentDialogTv);
+        submitBtn = viewDialog.findViewById(R.id.submitBtn);
+        cancelBtn = viewDialog.findViewById(R.id.cancelBtn);
+
+        titleDialogDeleteTv.setText(songArrayList.get(pos).getTitle());
+
+        contentDialogTv.setText(R.string.delete_song_title);
+
+        builder.setView(viewDialog);
+        builder.setCancelable(true);
+        dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+
+        submitBtn.setOnClickListener(v -> {
+            Toast.makeText(view.getContext(), R.string.remove_favorite_notification, Toast.LENGTH_SHORT).show();
+            FavoriteSongActivity.removeSong(songArrayList.get(pos));
+            notifyItemRemoved(pos);
+            notifyItemRangeChanged(pos, FavoriteSongActivity.getSize());
+            dialog.dismiss();
+        });
+        cancelBtn.setOnClickListener(v -> dialog.dismiss());
+
     }
 
     private void addSongToNextSong(int pos) {

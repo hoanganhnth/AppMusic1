@@ -31,7 +31,7 @@ public class SongsFragment extends Fragment {
 
 
         songRv = view.findViewById(R.id.songsRv);
-        songRv.setAdapter(new SongAdapter(arrayList));
+        songRv.setAdapter(new SongAdapter(arrayList, view.getContext()));
         return view;
     }
 

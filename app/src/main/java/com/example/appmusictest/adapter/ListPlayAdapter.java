@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -47,10 +48,14 @@ public class ListPlayAdapter extends RecyclerView.Adapter<ListPlayAdapter.ViewHo
                 .load(currentSongs.get(position).getArtUrl())
                 .into(holder.imgIV);
         if (position == positionPlaying) {
-            holder.itemView.setBackground(ContextCompat.getDrawable(holder.itemView.getContext(),R.drawable.shape_button2));
+            holder.itemView.setBackground(ContextCompat.getDrawable(holder.itemView.getContext(),R.drawable.shape_button1));
+            holder.nameSongTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),R.color.white));
+            holder.authorSongTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),R.color.white));
             Log.d(TAG, "song number " + position + " ís playing");
         } else {
             holder.itemView.setBackground(null);
+            holder.nameSongTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),R.color.black));
+            holder.authorSongTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),R.color.black));
         }
         holder.itemView.setOnClickListener(v -> {
             if (MusicPlayerActivity.musicPlayerService != null)  {
@@ -59,6 +64,7 @@ public class ListPlayAdapter extends RecyclerView.Adapter<ListPlayAdapter.ViewHo
                 setCurrentlyPlayingPosition(holder.getAdapterPosition());
             }
         });
+        holder.moreIv.setVisibility(View.GONE);
     }
 
     @Override
@@ -69,11 +75,13 @@ public class ListPlayAdapter extends RecyclerView.Adapter<ListPlayAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView nameSongTv, authorSongTv;
         private ImageView imgIV;
+        private ImageButton moreIv;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             nameSongTv = itemView.findViewById(R.id.nameSongTv);
             authorSongTv = itemView.findViewById(R.id.authorSongTv);
             imgIV = itemView.findViewById(R.id.imgRowIv);
+            moreIv = itemView.findViewById(R.id.moreIv);
         }
     }
 }

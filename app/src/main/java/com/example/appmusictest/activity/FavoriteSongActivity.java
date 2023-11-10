@@ -3,6 +3,7 @@ package com.example.appmusictest.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,7 +23,7 @@ public class FavoriteSongActivity extends AppCompatActivity {
     private static ArrayList<Song> favSongs = new ArrayList<>();
     private SongAdapter songAdapter;
     private RecyclerView songFavRv;
-    private TextView numberSongTv;
+    private TextView numberSongTv,buttonShuffleTv;
     private ImageButton backIb;
     private final static String TAG = "Favorite_Song_Activity";
 
@@ -41,10 +42,11 @@ public class FavoriteSongActivity extends AppCompatActivity {
 
     private void setViewData() {
 
-        songAdapter = new SongAdapter(favSongs);
+        songAdapter = new SongAdapter(favSongs, this);
         songFavRv.setAdapter(songAdapter);
 
         if (!favSongs.isEmpty()) {
+            buttonShuffleTv.setVisibility(View.VISIBLE);
             numberSongTv.setVisibility(View.VISIBLE);
             numberSongTv.setText("Tất cả " + favSongs.size() + " bài hát");
         }
@@ -52,12 +54,19 @@ public class FavoriteSongActivity extends AppCompatActivity {
         backIb.setOnClickListener(v -> {
             onBackPressed();
         });
+        buttonShuffleTv.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MusicPlayerActivity.class);
+            intent.putExtra("class","FavoriteSongActivity");
+            intent.putExtra("index", 0);
+            startActivity(intent);
+        });
     }
 
     private void initView() {
         songFavRv = findViewById(R.id.songFavRv);
         numberSongTv = findViewById(R.id.numberSongTv);
         backIb = findViewById(R.id.backIb);
+        buttonShuffleTv = findViewById(R.id.buttonShuffleTv);
     }
 
     public static void addSong(Song song) {
