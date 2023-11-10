@@ -23,10 +23,9 @@
         android:layout_marginTop="20dp"
         android:hint="Tên playlist"
         app:hintTextColor="@color/fav_playlist_color"
-        app:boxStrokeColor="@color/fav_playlist_color"
 
         >
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/playlistEt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,7 +33,6 @@
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/black"
-            android:background="@color/white"
 
             />
     </com.google.android.material.textfield.TextInputLayout>
