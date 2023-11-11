@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.appmusictest.R;
 import com.example.appmusictest.adapter.SongAdapter;
+import com.example.appmusictest.model.Album;
 import com.example.appmusictest.model.Playlist;
 import com.example.appmusictest.model.Song;
 import com.example.appmusictest.service.ApiService;
@@ -40,6 +41,7 @@ public class PlaylistDetailActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     public static ArrayList<Song> songArrayList;
     private Playlist playlist;
+    private Album album;
     private ImageButton backIb, favoriteIb, menuIb;
     private TextView shuffleBtn, titlePlIv, numberSongTv;
     private ImageView imgPlIv;
@@ -51,17 +53,26 @@ public class PlaylistDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_playlist_detail);
         initView();
         getDataIntent();
-        getDataFromServer(playlist.getId());
+        getDataFromServer();
         setViewData();
 
     }
 
     private void setViewData() {
-        titlePlIv.setText(playlist.getTitle());
-        Glide.with(this)
-                .load(playlist.getArtUrl())
-                .placeholder(R.mipmap.music_player_icon)
-                .into(imgPlIv);
+        if (playlist != null) {
+            titlePlIv.setText(playlist.getTitle());
+            Glide.with(this)
+                    .load(playlist.getArtUrl())
+                    .placeholder(R.mipmap.music_player_icon)
+                    .into(imgPlIv);
+        } else if (album != null) {
+            titlePlIv.setText(album.getTitle());
+            Glide.with(this)
+                    .load(album.getArtUrl())
+                    .placeholder(R.mipmap.music_player_icon)
+                    .into(imgPlIv);
+        }
+
         backIb.setOnClickListener(v -> onBackPressed());
 
 
@@ -161,10 +172,19 @@ public class PlaylistDetailActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             playlist = bundle.getParcelable("playlist");
+            album = bundle.getParcelable("album");
         }
     }
 
-    private void getDataFromServer(String idPlaylist) {
+    private void getDataFromServer() {
+        if (playlist != null) {
+            getData(playlist.getId());
+        } else if (album != null) {
+            getData(album.getId());
+        }
+    }
+
+    private void getData(String idPlaylist) {
         DataService dataService = ApiService.getService();
         Call<List<Song>> callback = dataService.getSongByPlaylist(idPlaylist);
         callback.enqueue(new Callback<List<Song>>() {
@@ -186,8 +206,8 @@ public class PlaylistDetailActivity extends AppCompatActivity {
                 Log.d(TAG, "Fail to get data from server due to:" + t.getMessage() );
             }
         });
-
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

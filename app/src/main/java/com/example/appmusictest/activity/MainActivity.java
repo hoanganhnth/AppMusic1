@@ -19,11 +19,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.appmusictest.R;
 import com.example.appmusictest.SessionManager;
-import com.example.appmusictest.adapter.PlaylistSuggestAdapter;
+import com.example.appmusictest.adapter.PlaylistAlbumSuggestAdapter;
+import com.example.appmusictest.model.Album;
 import com.example.appmusictest.model.Playlist;
 import com.example.appmusictest.service.ApiService;
 import com.example.appmusictest.service.DataService;
@@ -39,14 +41,18 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText searchEt;
     private RelativeLayout songFavRl, playlistFavRl, albumFavRl, authorFavRl;
-    private RelativeLayout showMoreRl;
+    private RelativeLayout showMorePlaylistRl,showMoreAlbumRl;
     private TextView numberSongTv,numberPlaylistTv;
-    private ImageButton logOutIb,showMoreIb;
+    private ImageButton logOutIb,showMoreIb,showMoreAlbumIb;
+    private ScrollView viewSv;
     private ArrayList<Playlist> playlists;
-    private RecyclerView playlistSgRv;
+    private ArrayList<Album> albums;
+    private RecyclerView playlistSgRv,albumSgRv;
     private static final String TAG = "Main_Activity";
-    private PlaylistSuggestAdapter playlistSuggestAdapter;
+    private PlaylistAlbumSuggestAdapter<Album> albumSuggestAdapter;
+    private PlaylistAlbumSuggestAdapter<Playlist> playlistSuggestAdapter;
     private SessionManager sessionManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +65,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setViewData() {
-
-
         searchEt.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH || event.getAction() == KeyEvent.KEYCODE_ENTER) {
                 String query = searchEt.getText().toString().trim();
@@ -81,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
         authorFavRl.setOnClickListener(v -> startActivity(new Intent(this, FavoriteAuthorActivity.class)));
 
         logOutIb.setOnClickListener(v -> sessionManager.logOutSession());
-
         showMoreIb.setOnClickListener(v -> {
             Intent intent = new Intent(this, ShowMorePlaylistActivity.class);
             Bundle bundle = new Bundle();
@@ -90,6 +93,13 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        showMoreAlbumIb.setOnClickListener( v-> {
+            Intent intent = new Intent(this, ShowMorePlaylistActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("albums", albums);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        });
 
     }
 
@@ -103,11 +113,37 @@ public class MainActivity extends AppCompatActivity {
         numberSongTv = findViewById(R.id.numberSongTv);
         logOutIb = findViewById(R.id.logOutIb);
         showMoreIb = findViewById(R.id.showMoreIb);
-        showMoreRl = findViewById(R.id.showMoreRl);
+        showMorePlaylistRl = findViewById(R.id.showMorePlaylistRl);
         numberPlaylistTv = findViewById(R.id.numberPlaylistTv);
+        albumSgRv = findViewById(R.id.albumSuggestRv);
+        showMoreAlbumRl = findViewById(R.id.showMoreAlbumRl);
+        viewSv = findViewById(R.id.viewSv);
+        showMoreAlbumIb = findViewById(R.id.showMoreAlbumIb);
     }
 
     private void getData() {
+        getDataPlaylist();
+        getDataAlbum();
+
+    }
+
+    private void getDataAlbum() {
+        albums = new ArrayList<>();
+        albums.add(new Album("1","test1", "https://imgmusic.com/uploads/album/cover/2/ZPP_Pop_Rock_Inspirational_vol1_highrez.jpg"));
+        albums.add(new Album("2","test2", "https://imgmusic.com/uploads/album/cover/197/poprockinsp_vol2_ZPP067.jpg"));
+        albums.add(new Album("3","test3", "https://imgmusic.com/uploads/album/cover/78/IndieInspirational_Vol2.jpg"));
+        albums.add(new Album("4","test4", "https://imgmusic.com/uploads/album/cover/66/EmotionalBuilds_Vol1-update.jpg"));
+        albums.add(new Album("5","test5", "https://imgmusic.com/uploads/album/cover/11/IndieReflections_Vol1_highrez.jpg"));
+        albumSuggestAdapter = new PlaylistAlbumSuggestAdapter<>(albums, this, false);
+        albumSgRv.setAdapter(albumSuggestAdapter);
+
+        if (albums.size() >= 5) {
+            showMoreAlbumRl.setVisibility(View.VISIBLE);
+        }
+        Log.d(TAG, "album size "  + albums.size());
+    }
+
+    private void getDataPlaylist() {
         DataService dataService = ApiService.getService();
         Call<List<Playlist>> callback = dataService.getPlaylistCurrentDay();
         callback.enqueue(new Callback<List<Playlist>>() {
@@ -117,9 +153,9 @@ public class MainActivity extends AppCompatActivity {
                 playlists = (ArrayList<Playlist>) response.body();
                 assert playlists != null;
                 if (playlists.size() >= 3) {
-                    showMoreRl.setVisibility(View.VISIBLE);
+                    showMorePlaylistRl.setVisibility(View.VISIBLE);
                 }
-                playlistSuggestAdapter = new PlaylistSuggestAdapter(playlists, MainActivity.this, false);
+                playlistSuggestAdapter = new PlaylistAlbumSuggestAdapter<>(playlists, MainActivity.this, false);
                 playlistSgRv.setAdapter(playlistSuggestAdapter);
             }
 
@@ -129,7 +165,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
 
@@ -152,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         updateUi();
         if (MusicPlayerActivity.musicPlayerService != null) {
             MusicPlayerActivity.musicPlayerService.destroyMain = false;

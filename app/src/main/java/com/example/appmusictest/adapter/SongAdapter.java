@@ -62,7 +62,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
         Glide.with(holder.itemView.getContext())
                 .load(songArrayList.get(position).getArtUrl())
-                .placeholder(R.mipmap.ic_launcher_round)
+                .placeholder(R.mipmap.music_player_icon)
                 .into(holder.imgIv);
 
         holder.itemView.setOnClickListener(v -> {

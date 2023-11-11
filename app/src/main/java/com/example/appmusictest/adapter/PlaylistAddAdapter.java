@@ -62,9 +62,9 @@ public class PlaylistAddAdapter extends RecyclerView.Adapter<PlaylistAddAdapter.
         ImageButton playlistFvIb;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            playlistIv = itemView.findViewById(R.id.playlistIv);
-            playlistTv = itemView.findViewById(R.id.playlistTv);
-            playlistFvIb = itemView.findViewById(R.id.playlistFvIb);
+            playlistIv = itemView.findViewById(R.id.rowIv);
+            playlistTv = itemView.findViewById(R.id.rowTv);
+            playlistFvIb = itemView.findViewById(R.id.rowFvIb);
         }
     }
 }

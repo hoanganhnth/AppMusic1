@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.example.appmusictest.R;
 import com.example.appmusictest.activity.FavoritePlaylistActivity;
 import com.example.appmusictest.activity.PlaylistDetailActivity;
+import com.example.appmusictest.model.Album;
 import com.example.appmusictest.model.Playlist;
 
 import java.util.ArrayList;
@@ -31,9 +32,11 @@ import java.util.ArrayList;
 public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHolder> {
     private ArrayList<Playlist> playlistArrayList;
     private ArrayList<Playlist> playlistArrayListFilter;
+    private ArrayList<Album> albumArrayListFilter;
     private Context context;
     private static final String TAG = "Playlist_Adapter";
     private boolean isFilter = false;
+    private boolean isPlaylist = false;
 
     public PlaylistAdapter(ArrayList<Playlist> playlistArrayList, Context context) {
         this.playlistArrayList = playlistArrayList;
@@ -140,9 +143,9 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
         ImageButton playlistFvIb;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            playlistIv = itemView.findViewById(R.id.playlistIv);
-            playlistTv = itemView.findViewById(R.id.playlistTv);
-            playlistFvIb = itemView.findViewById(R.id.playlistFvIb);
+            playlistIv = itemView.findViewById(R.id.rowIv);
+            playlistTv = itemView.findViewById(R.id.rowTv);
+            playlistFvIb = itemView.findViewById(R.id.rowFvIb);
         }
     }
 
