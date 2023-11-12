@@ -6,11 +6,13 @@ import android.app.NotificationManager;
 import android.os.Build;
 
 public class MyApplication extends Application {
-    public static String CHANNEL_ID = "channel";
-    public static String PLAY = "play";
-    public static String NEXT = "next";
-    public static String PREVIOUS = "previous";
-    public static String EXIT = "exit";
+    public static final String CHANNEL_ID = "channel";
+    public static final String PLAY = "play";
+    public static final String NEXT = "next";
+    public static final String PREVIOUS = "previous";
+    public static final String EXIT = "exit";
+    public static final int TYPE_PLAYLIST = 1;
+    public static final int TYPE_ALBUM = 2;
 
     @Override
     public void onCreate() {

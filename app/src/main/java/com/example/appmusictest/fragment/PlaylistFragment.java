@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.appmusictest.R;
-import com.example.appmusictest.adapter.PlaylistAdapter;
+import com.example.appmusictest.adapter.PlaylistAlbumAdapter;
 import com.example.appmusictest.model.Playlist;
 import com.example.appmusictest.service.ApiService;
 import com.example.appmusictest.service.DataService;
@@ -31,7 +31,7 @@ public class PlaylistFragment extends Fragment {
     private ArrayList<Playlist> playlists;
     private RecyclerView playlistRv;
     private static final String TAG = "Playlist_Fragment";
-    private PlaylistAdapter playlistAdapter;
+    private PlaylistAlbumAdapter playlistAdapter;
     public static TextView noDataTv;
 
     @Override
@@ -62,7 +62,7 @@ public class PlaylistFragment extends Fragment {
                 public void onResponse(@NonNull Call<List<Playlist>> call, @NonNull Response<List<Playlist>> response) {
 
                     playlists = (ArrayList<Playlist>) response.body();
-                    playlistAdapter = new PlaylistAdapter(playlists,getActivity());
+                    playlistAdapter = new PlaylistAlbumAdapter<>(playlists,getActivity(), 1);
                     playlistAdapter.filter(query);
                     playlistRv.setAdapter(playlistAdapter);
                 }

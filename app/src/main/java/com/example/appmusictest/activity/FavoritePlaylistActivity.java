@@ -10,8 +10,9 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.appmusictest.MyApplication;
 import com.example.appmusictest.R;
-import com.example.appmusictest.adapter.PlaylistAdapter;
+import com.example.appmusictest.adapter.PlaylistAlbumAdapter;
 import com.example.appmusictest.dialog.MyCreatePlaylistDialog;
 import com.example.appmusictest.model.Playlist;
 
@@ -21,7 +22,7 @@ import java.util.Iterator;
 public class FavoritePlaylistActivity extends AppCompatActivity {
 
     private static ArrayList<Playlist> favPlaylists = new ArrayList<>();
-    private PlaylistAdapter playlistAdapter;
+    private PlaylistAlbumAdapter playlistAdapter;
     private RelativeLayout addPlaylistRl;
     private RecyclerView playlistFavRv;
     private TextView numberPlaylistTv;
@@ -48,7 +49,7 @@ public class FavoritePlaylistActivity extends AppCompatActivity {
     }
 
     private void setViewData() {
-        playlistAdapter = new PlaylistAdapter(favPlaylists, this);
+        playlistAdapter = new PlaylistAlbumAdapter<>(favPlaylists, this, MyApplication.TYPE_PLAYLIST);
         playlistFavRv.setAdapter(playlistAdapter);
 
         if (!favPlaylists.isEmpty()) {

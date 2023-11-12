@@ -136,13 +136,13 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         songPosition = getIntent().getIntExtra("index", 0);
         switch (getIntent().getStringExtra("class")) {
             case "SongAdapter":
-                initServiceAndPlaylist(PlaylistDetailActivity.songArrayList,false,true);
+                initServiceAndPlaylist(PlaylistAlbumDetailActivity.songArrayList,false,true);
                 break;
             case "NowPlaying":
                 initServiceAndPlaylist(null,false, false);
                 break;
             case "SongListActivity":
-                initServiceAndPlaylist(PlaylistDetailActivity.songArrayList, true, true);
+                initServiceAndPlaylist(PlaylistAlbumDetailActivity.songArrayList, true, true);
                 break;
             case "FavoriteSongActivity":
                 initServiceAndPlaylist(FavoriteSongActivity.getFavSongs(), true, true);

@@ -36,7 +36,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/numberSongTv"
+            android:id="@+id/numberAlbumTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/titleAlbumTv"
@@ -44,6 +44,7 @@
             android:textColor="@color/white"
             android:textSize="15sp"
             android:layout_alignStart="@+id/titleAlbumTv"
+            android:visibility="gone"
             />
     </RelativeLayout>
 
