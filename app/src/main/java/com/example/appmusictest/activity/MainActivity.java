@@ -24,8 +24,10 @@ import android.widget.TextView;
 
 import com.example.appmusictest.R;
 import com.example.appmusictest.SessionManager;
+import com.example.appmusictest.adapter.AuthorSuggestAdapter;
 import com.example.appmusictest.adapter.PlaylistAlbumSuggestAdapter;
 import com.example.appmusictest.model.Album;
+import com.example.appmusictest.model.Author;
 import com.example.appmusictest.model.Playlist;
 import com.example.appmusictest.service.ApiService;
 import com.example.appmusictest.service.DataService;
@@ -47,10 +49,12 @@ public class MainActivity extends AppCompatActivity {
     private ScrollView viewSv;
     private ArrayList<Playlist> playlists;
     private ArrayList<Album> albums;
-    private RecyclerView playlistSgRv,albumSgRv;
+    private ArrayList<Author> authors;
+    private RecyclerView playlistSgRv,albumSgRv, authorSgRv;
     private static final String TAG = "Main_Activity";
     private PlaylistAlbumSuggestAdapter<Album> albumSuggestAdapter;
     private PlaylistAlbumSuggestAdapter<Playlist> playlistSuggestAdapter;
+    private AuthorSuggestAdapter authorSuggestAdapter;
     private SessionManager sessionManager;
 
 
@@ -120,11 +124,25 @@ public class MainActivity extends AppCompatActivity {
         viewSv = findViewById(R.id.viewSv);
         showMoreAlbumIb = findViewById(R.id.showMoreAlbumIb);
         numberAlbumTv = findViewById(R.id.numberAlbumTv);
+        authorSgRv = findViewById(R.id.authorSuggestRv);
     }
 
     private void getData() {
         getDataPlaylist();
         getDataAlbum();
+        getDataAuthor();
+
+    }
+
+    private void getDataAuthor() {
+        authors = new ArrayList<>();
+        authors.add(new Author("1", "author1", "https://upload.wikimedia.org/wikipedia/vi/3/32/S%C6%A1n_T%C3%B9ng_M-TP_-_C%C3%B3_ch%E1%BA%AFc_y%C3%AAu_l%C3%A0_%C4%91%C3%A2y.jpg"));
+        authors.add(new Author("2", "author2", "https://cdnphoto.dantri.com.vn/ecdPkKw4WCg-NR0Zi2shwRYyUlo=/thumb_w/1020/2022/11/10/micheal-jackson-1668044313441.jpg"));
+        authors.add(new Author("3", "author3", "https://cdn.tuoitre.vn/thumb_w/1100/471584752817336320/2023/9/5/jack-messi-1-16938973854241419756685.jpg"));
+        authors.add(new Author("4", "author4", "https://images2.thanhnien.vn/528068263637045248/2023/8/30/1-1693385246169701996465.jpg"));
+        authors.add(new Author("5", "author5", "https://suckhoedoisong.qltns.mediacdn.vn/thumb_w/640/324455921873985536/2023/9/6/dam-vinh-hung-16939936357631285203697.png"));
+        authorSuggestAdapter = new AuthorSuggestAdapter(authors, this);
+        authorSgRv.setAdapter(authorSuggestAdapter);
 
     }
 

@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.appmusictest.SessionManager;
 import com.example.appmusictest.dialog.MyProgressDialog;
 import com.example.appmusictest.R;
 
@@ -19,6 +20,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView noAccountTv;
     private MyProgressDialog myProgressDialog;
     private static final String TAG = "Login_Activity";
+    SessionManager sessionManager;
 
     private String email, password;
 
@@ -27,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        sessionManager = new SessionManager(getApplicationContext());
         myProgressDialog = new MyProgressDialog(this);
        initView();
        noAccountTv.setOnClickListener(v -> {
@@ -56,6 +59,8 @@ public class LoginActivity extends AppCompatActivity {
     private void loginUser() {
         myProgressDialog.show();
         myProgressDialog.setMessage("Logging account");
+        sessionManager.createSession("", email);
+        startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 
