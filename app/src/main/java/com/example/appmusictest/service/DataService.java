@@ -12,10 +12,10 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface DataService {
-    @GET("playlistforcurrentday.php")
+    @GET("/currentday")
     Call<List<Playlist>> getPlaylistCurrentDay();
 
     @FormUrlEncoded
-    @POST("listsong.php")
+    @POST("/listsong")
     Call<List<Song>> getSongByPlaylist(@Field("idPlaylist") String idPlaylist);
 }
