@@ -47,15 +47,14 @@ public class PlaylistAlbumDetailActivity extends AppCompatActivity {
     private TextView shuffleBtn, titlePlIv, numberSongTv;
     private ImageView imgPlIv;
     private int type;
-    private static final String TAG = "Song_List_Activity";
+    private static final String TAG = "Pl_Al_Detail_Activity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_playlist_detail);
+        setContentView(R.layout.activity_playlist_album_detail);
         initView();
         getDataIntent();
-        getDataFromServer();
         setViewData();
 
     }
@@ -68,7 +67,7 @@ public class PlaylistAlbumDetailActivity extends AppCompatActivity {
         }
         shuffleBtn.setOnClickListener(v -> {
             Intent intent = new Intent(this, MusicPlayerActivity.class);
-            intent.putExtra("class","SongListActivity");
+            intent.putExtra("class","PlaylistAlbumDetailActivity");
             intent.putExtra("index", 0);
             startActivity(intent);
         });
@@ -218,6 +217,7 @@ public class PlaylistAlbumDetailActivity extends AppCompatActivity {
             playlist = bundle.getParcelable("playlist");
             album = bundle.getParcelable("album");
         }
+        getDataFromServer();
     }
 
     private void getDataFromServer() {

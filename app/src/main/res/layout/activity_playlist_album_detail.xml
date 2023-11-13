@@ -104,26 +104,33 @@
 
             />
 
-        <TextView
-            android:id="@+id/listSongTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/buttonShuffleTv"
-            android:text="@string/list_song_title"
-            android:layout_marginTop="30dp"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/listsongRv"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/listSongTv"
-            android:layout_marginTop="10dp"
-            tools:listitem="@layout/row_songs"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_below="@+id/buttonShuffleTv"
+            >
+            <TextView
+                android:id="@+id/listSongTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-            />
+                android:text="@string/list_song_title"
+                android:layout_marginTop="30dp"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listsongRv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/listSongTv"
+                android:layout_marginTop="10dp"
+                tools:listitem="@layout/row_songs"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
+                />
+        </RelativeLayout>
+
 
     </RelativeLayout>
     <androidx.fragment.app.FragmentContainerView

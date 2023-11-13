@@ -141,12 +141,16 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
             case "NowPlaying":
                 initServiceAndPlaylist(null,false, false);
                 break;
-            case "SongListActivity":
+            case "PlaylistAlbumDetailActivity":
                 initServiceAndPlaylist(PlaylistAlbumDetailActivity.songArrayList, true, true);
                 break;
             case "FavoriteSongActivity":
                 initServiceAndPlaylist(FavoriteSongActivity.getFavSongs(), true, true);
                 break;
+            case "AuthorDetailActivity":
+                initServiceAndPlaylist(AuthorDetailActivity.getSongArrayList(), true, true);
+                break;
+
         }
 
         backIb.setOnClickListener(v -> onBackPressed());

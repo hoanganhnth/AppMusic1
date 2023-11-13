@@ -38,10 +38,6 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     private Context context;
     private static final String TAG = "SongAdapter";
 
-    public SongAdapter(ArrayList<Song> songArrayList) {
-        this.songArrayList = songArrayList;
-    }
-
     public SongAdapter(ArrayList<Song> songArrayList, Context context) {
         this.songArrayList = songArrayList;
         this.context = context;

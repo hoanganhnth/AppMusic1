@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText searchEt;
     private RelativeLayout songFavRl, playlistFavRl, albumFavRl, authorFavRl;
     private RelativeLayout showMorePlaylistRl,showMoreAlbumRl;
-    private TextView numberSongTv,numberPlaylistTv,numberAlbumTv;
+    private TextView numberSongTv,numberPlaylistTv,numberAlbumTv,numberAuthorTv;
     private ImageButton logOutIb,showMoreIb,showMoreAlbumIb;
     private ScrollView viewSv;
     private ArrayList<Playlist> playlists;
@@ -125,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
         showMoreAlbumIb = findViewById(R.id.showMoreAlbumIb);
         numberAlbumTv = findViewById(R.id.numberAlbumTv);
         authorSgRv = findViewById(R.id.authorSuggestRv);
+        numberAuthorTv = findViewById(R.id.numberAuthorTv);
     }
 
     private void getData() {
@@ -236,6 +237,11 @@ public class MainActivity extends AppCompatActivity {
             numberAlbumTv.setText("");
         } else {
             numberAlbumTv.setText(String.valueOf(FavoriteAlbumActivity.getSize()));
+        }
+        if (FavoriteAuthorActivity.getSize() == 0) {
+            numberAuthorTv.setText("");
+        } else {
+            numberAuthorTv.setText(String.valueOf(FavoriteAuthorActivity.getSize()));
         }
     }
 
