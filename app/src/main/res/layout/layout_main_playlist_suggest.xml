@@ -5,21 +5,36 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     >
-    <TextView
-        android:id="@+id/playlistSugTv"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/playlistSugRl"
+        android:layout_marginBottom="10dp"
+        >
+        <TextView
+            android:id="@+id/playlistSugTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Playlist gợi ý"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/title_size"
+            android:textStyle="bold"
+            android:layout_marginBottom="15dp"
+            android:layout_centerVertical="true"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/playlistSugTv"
+            android:src="@drawable/ic_see_all"
+            android:background="@android:color/transparent"
+            android:layout_centerVertical="true"
+            />
+    </RelativeLayout>
 
-        android:drawableEnd="@drawable/ic_see_all"
-        android:text="Playlist gợi ý"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="15dp"/>
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/playlistSugTv"
+        android:layout_below="@id/playlistSugRl"
         android:scrollbars="none"
         >
         <LinearLayout

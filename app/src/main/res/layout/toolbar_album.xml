@@ -32,7 +32,7 @@
             android:layout_marginStart="20dp"
             android:text="Album"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="@dimen/title_size"
             android:textStyle="bold" />
 
         <TextView
@@ -42,7 +42,7 @@
             android:layout_below="@+id/titleAlbumTv"
             android:text="Tat ca 29 album"
             android:textColor="@color/white"
-            android:textSize="15sp"
+            android:textSize="@dimen/name_size"
             android:layout_alignStart="@+id/titleAlbumTv"
             android:visibility="gone"
             />

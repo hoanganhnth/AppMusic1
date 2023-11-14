@@ -24,8 +24,8 @@
         android:layout_height="wrap_content"
         android:text="Song"
         android:textStyle="bold"
-        android:textSize="20sp"
-        android:textColor="@color/black"
+        android:textSize="@dimen/title_size"
+        android:textColor="@color/textColor"
         android:layout_centerHorizontal="true"
         android:gravity="center"
 
@@ -37,8 +37,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/nameSongTv"
         android:text="Author"
+        android:textColor="@color/textColor"
         android:layout_centerHorizontal="true"
-        android:textSize="15sp"
+        android:textSize="@dimen/name_size"
         />
     <ImageButton
         android:id="@+id/menuIb"
@@ -83,6 +84,8 @@
         android:layout_alignBottom="@+id/seeBar"
         android:layout_marginBottom="20dp"
         android:layout_marginStart="10dp"
+        android:textSize="@dimen/name_size"
+        android:textColor="@color/textColor"
         />
     <TextView
         android:id="@+id/endDirection"
@@ -93,6 +96,8 @@
         android:layout_alignBottom="@+id/seeBar"
         android:layout_marginBottom="20dp"
         android:layout_marginEnd="10dp"
+        android:textSize="@dimen/name_size"
+        android:textColor="@color/textColor"
         />
     <LinearLayout
         android:id="@+id/playMusicLl"
@@ -100,55 +105,60 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:gravity="center"
         android:layout_marginBottom="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center"
+        android:weightSum="5"
         >
 
         <ImageButton
             android:id="@+id/shuffleIb"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-
+            android:layout_width="0dp"
+            android:layout_height="40dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_shuffle_gray"
-            android:scaleType="fitXY"
-            android:layout_marginEnd="30dp"/>
+            android:scaleType="fitCenter"
+            android:layout_weight="1"
+
+            />
 
         <ImageButton
             android:id="@+id/previousIb"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_previous"
-            android:scaleType="fitXY"
-            android:layout_marginEnd="30dp"
+            android:scaleType="fitCenter"
+            android:layout_weight="1"
             />
         <ImageButton
             android:id="@+id/playIb"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_play"
-            android:scaleType="fitXY"
-            android:layout_marginEnd="30dp"
+            android:scaleType="fitCenter"
+            android:layout_weight="1"
+
             />
         <ImageButton
             android:id="@+id/nextIb"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_next"
-            android:scaleType="fitXY"
-            android:layout_marginEnd="30dp"
+            android:scaleType="fitCenter"
+            android:layout_weight="1"
             />
         <ImageButton
             android:id="@+id/repeatIb"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_repeat_gray"
-
-            android:scaleType="fitXY"
+            android:scaleType="fitCenter"
+            android:layout_weight="1"
             />
 
     </LinearLayout>
@@ -188,6 +198,6 @@
         android:text="@string/list_song_hint"
         android:gravity="center"
         android:layout_marginEnd="20dp"
-        android:textSize="15sp"
-        android:textColor="@color/black"/>
+        android:textSize="@dimen/name_size"
+        android:textColor="@color/textColor"/>
 </RelativeLayout>

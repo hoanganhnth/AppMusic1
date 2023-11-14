@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.appmusictest.R;
 import com.example.appmusictest.model.Playlist;
+import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
 
@@ -55,7 +56,7 @@ public class PlaylistAddAdapter extends RecyclerView.Adapter<PlaylistAddAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView playlistTv;
-        ImageView playlistIv;
+        ShapeableImageView playlistIv;
         ImageButton playlistFvIb;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

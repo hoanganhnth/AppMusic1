@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -14,7 +12,6 @@
         android:id="@+id/viewSv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:scrollbars="none">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -26,6 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="15dp"
+                android:layout_marginStart="20dp"
                 >
 
                 <EditText
@@ -42,6 +40,7 @@
                     android:hint="@string/search_main_activity_hint"
                     android:imeOptions="actionSearch"
                     android:inputType="textNoSuggestions"
+                    android:textColor="@color/textColor"
                     android:padding="10dp"
                     android:singleLine="true"
                     android:textColorHint="#B0B0B0" />
@@ -70,32 +69,32 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Thư viện"
-                    android:textSize="20sp"
-                    android:textColor="@color/black"
+                    android:textSize="@dimen/title_size"
+                    android:textColor="@color/textColor"
                     android:textStyle="bold"
                     android:layout_marginBottom="10dp"
+                    android:layout_marginStart="20dp"
                     />
-                <HorizontalScrollView
-                    android:id="@+id/libHs"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/libraryTv"
-                    >
+
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:id="@+id/libHs"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
+                        android:layout_below="@id/libraryTv"
+                        
                         >
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:layout_marginEnd="10dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_weight="1"
                             >
 
                             <RelativeLayout
                                 android:id="@+id/songFavRl"
-                                android:layout_width="180dp"
+                                android:layout_width="150dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="10dp"
                                 android:background="@drawable/shape_library_item_bg"
@@ -118,8 +117,8 @@
                                     android:layout_below="@id/songIb"
                                     android:layout_marginEnd="10dp"
                                     android:text="Bài hát"
-                                    android:textColor="@color/black"
-                                    android:textSize="15sp"
+                                    android:textColor="@color/textColor"
+                                    android:textSize="@dimen/name_size"
                                     android:textStyle="bold" />
 
                                 <TextView
@@ -129,12 +128,13 @@
                                     android:layout_below="@id/songIb"
                                     android:layout_toEndOf="@id/songTitleTv"
                                     android:text="10"
-                                    android:textSize="15sp" />
+                                    android:textSize="@dimen/name_size"
+                                    android:textColor="@color/textColor"/>
                             </RelativeLayout>
 
                             <RelativeLayout
                                 android:id="@+id/albumFavRl"
-                                android:layout_width="180dp"
+                                android:layout_width="150dp"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/shape_library_item_bg"
                                 android:padding="13dp"
@@ -154,8 +154,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Album"
-                                    android:textSize="15sp"
-                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/name_size"
+                                    android:textColor="@color/textColor"
                                     android:textStyle="bold"
                                     android:layout_below="@id/albumIb"
                                     android:layout_marginEnd="10dp"
@@ -167,18 +167,21 @@
                                     android:layout_toEndOf="@id/albumTitleTv"
                                     android:text="10"
                                     android:layout_below="@id/albumIb"
-                                    android:textSize="15sp"
+                                    android:textSize="@dimen/name_size"
                                     />
                             </RelativeLayout>
                         </LinearLayout>
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginStart="20dp"
                             >
                             <RelativeLayout
                                 android:id="@+id/playlistFavRl"
-                                android:layout_width="180dp"
+                                android:layout_width="150dp"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/shape_library_item_bg"
                                 android:padding="13dp"
@@ -199,8 +202,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Playlist"
-                                    android:textSize="15sp"
-                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/name_size"
+                                    android:textColor="@color/textColor"
                                     android:textStyle="bold"
                                     android:layout_below="@id/playlistIb"
                                     android:layout_marginEnd="10dp"
@@ -212,12 +215,13 @@
                                     android:layout_toEndOf="@id/playlistTitleTv"
                                     android:text="10"
                                     android:layout_below="@id/playlistIb"
-                                    android:textSize="15sp"
+                                    android:textSize="@dimen/name_size"
+                                    android:textColor="@color/textColor"
                                     />
                             </RelativeLayout>
                             <RelativeLayout
                                 android:id="@+id/authorFavRl"
-                                android:layout_width="180dp"
+                                android:layout_width="150dp"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/shape_library_item_bg"
                                 android:padding="13dp"
@@ -237,8 +241,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Nghệ sĩ"
-                                    android:textSize="15sp"
-                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/name_size"
+                                    android:textColor="@color/textColor"
                                     android:textStyle="bold"
                                     android:layout_below="@id/authorIb"
                                     android:layout_marginEnd="10dp"
@@ -250,14 +254,15 @@
                                     android:layout_toEndOf="@id/authorTitleTv"
                                     android:text="10"
                                     android:layout_below="@id/authorIb"
-                                    android:textSize="15sp"
+                                    android:textSize="@dimen/name_size"
+                                    android:textColor="@color/textColor"
                                     />
                             </RelativeLayout>
                         </LinearLayout>
 
 
                     </LinearLayout>
-                </HorizontalScrollView>
+
             </RelativeLayout>
 
             <include
@@ -267,6 +272,7 @@
                 android:layout_below="@+id/favoriteRl"
                 layout="@layout/layout_main_playlist_suggest"
                 android:layout_marginBottom="20dp"
+                android:layout_marginStart="20dp"
                  />
             <include
                 android:id="@+id/albumSuggestRl"
@@ -275,6 +281,7 @@
                 android:layout_below="@+id/playlistSuggestRl"
                 layout="@layout/layout_main_album_suggest"
                 android:layout_marginBottom="20dp"
+                android:layout_marginStart="20dp"
                 />
             <include
                 android:id="@+id/authorSuggestRl"
@@ -283,6 +290,7 @@
                 android:layout_below="@+id/albumSuggestRl"
                 layout="@layout/layout_main_author_suggest"
                 android:layout_marginBottom="80dp"
+                android:layout_marginStart="20dp"
                 />
         </RelativeLayout>
     </ScrollView>

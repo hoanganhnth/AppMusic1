@@ -30,6 +30,7 @@ import com.example.appmusictest.activity.FavoritePlaylistActivity;
 import com.example.appmusictest.activity.PlaylistAlbumDetailActivity;
 import com.example.appmusictest.model.Album;
 import com.example.appmusictest.model.Playlist;
+import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
 
@@ -191,7 +192,7 @@ public class PlaylistAlbumAdapter<T> extends RecyclerView.Adapter<PlaylistAlbumA
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView rowTv;
-        ImageView rowIv;
+        ShapeableImageView rowIv;
         ImageButton rowFvIb;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

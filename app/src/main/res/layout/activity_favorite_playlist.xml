@@ -23,7 +23,8 @@
           android:layout_height="wrap_content"
           android:layout_marginTop="20dp"
           android:paddingStart="25dp"
-          android:paddingEnd="20dp">
+          android:paddingEnd="20dp"
+          android:layout_marginBottom="20dp">
           <ImageButton
               android:id="@+id/addPlaylistIb"
               android:layout_width="60dp"
@@ -40,7 +41,7 @@
               android:layout_toEndOf="@+id/addPlaylistIb"
               android:text="@string/add_playlist_title"
               android:textColor="@color/fav_playlist_color"
-              android:textSize="15sp"
+              android:textSize="@dimen/name_size"
               android:layout_centerVertical="true"
               />
       </RelativeLayout>

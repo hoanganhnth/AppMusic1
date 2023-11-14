@@ -22,7 +22,7 @@ import java.util.Iterator;
 public class FavoritePlaylistActivity extends AppCompatActivity {
 
     private static ArrayList<Playlist> favPlaylists = new ArrayList<>();
-    private PlaylistAlbumAdapter playlistAdapter;
+    private  PlaylistAlbumAdapter playlistAdapter;
     private RelativeLayout addPlaylistRl;
     private RecyclerView playlistFavRv;
     private TextView numberPlaylistTv;
@@ -67,12 +67,13 @@ public class FavoritePlaylistActivity extends AppCompatActivity {
     }
 
     private void showDialogAddPlaylist() {
-        MyCreatePlaylistDialog myCreatePlaylistDialog = new MyCreatePlaylistDialog(this);
+        MyCreatePlaylistDialog myCreatePlaylistDialog = new MyCreatePlaylistDialog(this, playlistAdapter);
         myCreatePlaylistDialog.show();
     }
 
     public static void addPlaylist(Playlist playlist) {
         favPlaylists.add(playlist);
+
         Log.d(TAG, "added to favorite");
     }
 

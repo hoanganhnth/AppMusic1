@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#FFFFFFFF</color>
+    <color name="textColor">@color/white</color>
+    <color name="bgColor">#2F2D38</color>
+    <color name="hint_text_color">#EDEDED</color>
+    <color name="edittext_color">#535252</color>
+    <color name="bg_now_playing">#ff000000</color>
+    <color name="background">#161422</color>
+    <color name="dialog_color">#232532</color>
+</resources>

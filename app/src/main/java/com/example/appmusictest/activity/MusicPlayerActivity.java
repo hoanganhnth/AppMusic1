@@ -46,6 +46,7 @@ import com.example.appmusictest.fragment.DiskFragment;
 import com.example.appmusictest.fragment.InfoSongFragment;
 import com.example.appmusictest.model.Song;
 import com.example.appmusictest.service.MusicPlayerService;
+import com.google.android.material.imageview.ShapeableImageView;
 
 
 import java.util.ArrayList;
@@ -254,7 +255,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
 
         nameSong.setText(currentSongs.get(songPosition).getTitle());
         authorSong.setText(currentSongs.get(songPosition).getNameAuthor());
-        ImageView imgIv = dialog.findViewById(R.id.imgDlIv);
+        ShapeableImageView imgIv = dialog.findViewById(R.id.imgDlIv);
         if (isSetTimer) {
             setTimeIb.setColorFilter(ContextCompat.getColor(this,R.color.fav_playlist_color));
             setTimeTv.setTextColor(ContextCompat.getColor(this,R.color.fav_playlist_color));
@@ -332,7 +333,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
     }
 
     private void showCreatePlaylistDialog(Context context) {
-        MyCreatePlaylistDialog myCreatePlaylistDialog = new MyCreatePlaylistDialog(context);
+        MyCreatePlaylistDialog myCreatePlaylistDialog = new MyCreatePlaylistDialog(context, null);
         myCreatePlaylistDialog.show();
     }
 

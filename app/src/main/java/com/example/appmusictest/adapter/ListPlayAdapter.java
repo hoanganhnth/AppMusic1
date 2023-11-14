@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.example.appmusictest.R;
 import com.example.appmusictest.activity.MusicPlayerActivity;
 import com.example.appmusictest.model.Song;
+import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
 
@@ -54,8 +55,8 @@ public class ListPlayAdapter extends RecyclerView.Adapter<ListPlayAdapter.ViewHo
             Log.d(TAG, "song number " + position + " ís playing");
         } else {
             holder.itemView.setBackground(null);
-            holder.nameSongTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),R.color.black));
-            holder.authorSongTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),R.color.black));
+            holder.nameSongTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),R.color.textColor));
+            holder.authorSongTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),R.color.textColor));
         }
         holder.itemView.setOnClickListener(v -> {
             if (MusicPlayerActivity.musicPlayerService != null)  {
@@ -74,7 +75,7 @@ public class ListPlayAdapter extends RecyclerView.Adapter<ListPlayAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView nameSongTv, authorSongTv;
-        private ImageView imgIV;
+        private ShapeableImageView imgIV;
         private ImageButton moreIv;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

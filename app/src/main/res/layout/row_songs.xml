@@ -6,6 +6,7 @@
     app:cardElevation="0dp"
     app:cardCornerRadius="10dp"
     app:cardUseCompatPadding="true"
+
     >
 
     <RelativeLayout
@@ -14,30 +15,35 @@
         android:paddingStart="5dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
+        android:background="@color/background"
         >
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imgRowIv"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:scaleType="centerCrop"
             android:src="@mipmap/music_player_icon"
             android:layout_marginEnd="10dp"
+            app:shapeAppearanceOverlay="@style/rounded_corner"
             />
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_toStartOf="@+id/moreIv"
             android:layout_toEndOf="@+id/imgRowIv"
-            >
+            android:layout_centerVertical="true">
+
             <TextView
                 android:id="@+id/nameSongTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="I don't love you"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                android:textColor="@color/black"
                 android:layout_marginTop="6dp"
+                android:text="I don't love you"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/name_size"
+                android:textStyle="bold"
 
                 />
 
@@ -47,8 +53,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/nameSongTv"
                 android:text="Mica Jackson"
-                android:textSize="13sp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/sub_name_size"
+                android:textColor="@color/textColor"
+                 />
         </RelativeLayout>
 
 

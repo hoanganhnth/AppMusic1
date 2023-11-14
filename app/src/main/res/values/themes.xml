@@ -10,8 +10,9 @@
         <item name="colorSecondaryVariant">@color/fav_playlist_color</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/bgColor</item>
         <item name="colorAccent">@color/fav_playlist_color</item>
+<!--        <item name="android:textColor">@color/textColor</item>-->
 
 
         <!-- Customize your theme here. -->
@@ -40,5 +41,8 @@
     <style name="AppTheme.Author" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Set the status bar color -->
         <item name="android:statusBarColor">@color/fav_author_color</item>
+    </style>
+    <style name="rounded_corner">
+        <item name="cornerSize">10dp</item>
     </style>
 </resources>

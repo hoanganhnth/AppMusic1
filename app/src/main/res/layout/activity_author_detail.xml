@@ -6,119 +6,133 @@
     android:layout_height="match_parent"
     tools:context=".activity.AuthorDetailActivity">
 
-    <RelativeLayout
-        android:id="@+id/authorView1"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:background="@drawable/shape_img1"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
         >
-        <ImageView
-            android:id="@+id/imgBgIv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@mipmap/ic_launcher"
-            android:scaleType="centerCrop"
-            android:foreground="#40000000"
-            />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:paddingTop="20dp"
             >
             <RelativeLayout
-                android:id="@+id/toolbarDetailRl"
+                android:id="@+id/authorView1"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:background="@drawable/shape_img1"
+                >
+                <ImageView
+                    android:id="@+id/imgBgIv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@mipmap/ic_launcher"
+                    android:scaleType="centerCrop"
+                    android:foreground="#40000000"
+                    />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:paddingTop="20dp"
+                    >
+                    <RelativeLayout
+                        android:id="@+id/toolbarDetailRl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        >
+                        <ImageButton
+                            android:id="@+id/backIb"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_back"
+                            android:scaleType="fitXY"
+                            android:background="@android:color/transparent"
+                            />
+                    </RelativeLayout>
+                    <TextView
+                        android:id="@+id/nameAuthorTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/toolbarDetailRl"
+                        android:layout_marginTop="90dp"
+                        android:text="Phuong ly"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/big_size"
+                        android:layout_marginBottom="10dp"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_below="@id/nameAuthorTv"
+                        >
+                        <TextView
+                            android:id="@+id/followTv"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:text="BO QUAN TAM"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:textSize="@dimen/name_size"
+                            android:textColor="@color/white"
+                            android:background="@drawable/shape_button5"
+                            android:layout_marginTop="20dp"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="8dp"
+                            />
+                        <TextView
+                            android:id="@+id/buttonShuffleTv"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:text="PHÁT NHẠC"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:textSize="@dimen/name_size"
+                            android:textColor="@color/white"
+                            android:background="@drawable/shape_button1"
+                            android:layout_marginTop="20dp"
+                            android:layout_weight="1"
+                            android:layout_marginStart="8dp"
+
+                            />
+                    </LinearLayout>
+                </RelativeLayout>
+
+            </RelativeLayout>
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/authorView1"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 >
-                <ImageButton
-                    android:id="@+id/backIb"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_back"
-                    android:scaleType="fitXY"
-                    android:background="@android:color/transparent"
+                <TextView
+                    android:id="@+id/listSongTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/list_song_title"
+                    android:layout_marginTop="30dp"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/title_size"
+                    />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/listSongRv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/listSongTv"
+                    android:layout_marginTop="10dp"
+                    tools:listitem="@layout/row_songs"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
                     />
             </RelativeLayout>
-            <TextView
-                android:id="@+id/nameAuthorTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/toolbarDetailRl"
-                android:layout_marginTop="90dp"
-                android:text="Phuong ly"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="50sp"
-                android:layout_marginBottom="10dp"
-                />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_below="@id/nameAuthorTv"
-                >
-                <TextView
-                    android:id="@+id/followTv"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:text="BO QUAN TAM"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center"
-                    android:textSize="15sp"
-                    android:textColor="@color/white"
-                    android:background="@drawable/shape_button5"
-                    android:layout_marginTop="20dp"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="8dp"
-                    />
-                <TextView
-                    android:id="@+id/buttonShuffleTv"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:text="PHÁT NHẠC"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center"
-                    android:textSize="15sp"
-                    android:textColor="@color/white"
-                    android:background="@drawable/shape_button1"
-                    android:layout_marginTop="20dp"
-                    android:layout_weight="1"
-                    android:layout_marginStart="8dp"
-
-                    />
-            </LinearLayout>
         </RelativeLayout>
 
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/authorView1"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        >
-        <TextView
-            android:id="@+id/listSongTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/list_song_title"
-            android:layout_marginTop="30dp"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/listSongRv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/listSongTv"
-            android:layout_marginTop="10dp"
-            tools:listitem="@layout/row_songs"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    </ScrollView>
 
-            />
-    </RelativeLayout>
+
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/playingFragment"

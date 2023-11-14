@@ -18,6 +18,7 @@ import com.example.appmusictest.R;
 import com.example.appmusictest.activity.PlaylistAlbumDetailActivity;
 import com.example.appmusictest.model.Album;
 import com.example.appmusictest.model.Playlist;
+import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
 
@@ -92,7 +93,7 @@ public class PlaylistAlbumSuggestAdapter<T> extends RecyclerView.Adapter<Playlis
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView titleSuggestTv;
-        ImageView imgSuggestIv;
+        ShapeableImageView imgSuggestIv;
         RelativeLayout showMoreAlbumRl;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

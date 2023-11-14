@@ -29,6 +29,7 @@ import com.example.appmusictest.activity.FavoriteSongActivity;
 import com.example.appmusictest.activity.MusicPlayerActivity;
 import com.example.appmusictest.dialog.MyCreatePlaylistDialog;
 import com.example.appmusictest.model.Song;
+import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
 
@@ -96,7 +97,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         TextView authorSong = dialog.findViewById(R.id.authorSongTv);
         nameSong.setText(songArrayList.get(pos).getTitle());
         authorSong.setText(songArrayList.get(pos).getNameAuthor());
-        ImageView imgIv = dialog.findViewById(R.id.imgDlIv);
+        ShapeableImageView imgIv = dialog.findViewById(R.id.imgDlIv);
         Glide.with(context)
                         .load(songArrayList.get(pos).getArtUrl())
                                 .into(imgIv);
@@ -160,7 +161,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     }
 
     private void showCreatePlaylistDialog(Context context) {
-        MyCreatePlaylistDialog myCreatePlaylistDialog = new MyCreatePlaylistDialog(context);
+        MyCreatePlaylistDialog myCreatePlaylistDialog = new MyCreatePlaylistDialog(context,null);
         myCreatePlaylistDialog.show();
     }
 
@@ -218,8 +219,8 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView nameSong, authorSong;
-        private ImageView moreIv;
-        private ImageView imgIv;
+        private ImageButton moreIv;
+        private ShapeableImageView imgIv;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             nameSong = itemView.findViewById(R.id.nameSongTv);

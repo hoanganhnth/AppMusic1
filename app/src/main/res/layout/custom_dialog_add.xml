@@ -10,9 +10,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tạo playlist"
-        android:textSize="18sp"
+        android:textSize="@dimen/title_size"
         android:textStyle="bold"
-        android:textColor="@color/black"/>
+        android:textColor="@color/textColor"/>
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -22,17 +22,19 @@
         android:layout_below="@+id/titleDialogAddTv"
         android:layout_marginTop="20dp"
         android:hint="Tên playlist"
+        app:boxStrokeColor="@color/fav_playlist_color"
         app:hintTextColor="@color/fav_playlist_color"
-
+        android:textColorHint="@color/fav_playlist_color"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/playlistEt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:textSize="16sp"
+            android:textSize="@dimen/name_size"
             android:textStyle="bold"
-            android:textColor="@color/black"
+            android:textColor="@color/fav_playlist_color"
+            android:textColorHint="@color/fav_playlist_color"
 
             />
     </com.google.android.material.textfield.TextInputLayout>
@@ -42,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:textSize="15sp"
+        android:textSize="@dimen/name_size"
         android:layout_below="@+id/playlistTil"
         android:background="@drawable/shape_button3"
         android:text="TẠO PLAYLIST"
@@ -57,7 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="HỦY"
-        android:textSize="15sp"
+        android:textSize="@dimen/name_size"
         android:textColor="@color/fav_playlist_color"
         android:textStyle="bold"
         android:layout_below="@+id/submitBtn"

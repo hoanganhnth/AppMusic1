@@ -32,6 +32,8 @@
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:text="@string/name_song_title"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/name_size"
 
                 />
             <TextView
@@ -41,8 +43,8 @@
                 android:layout_height="wrap_content"
                 android:text="Tên bài hát"
                 android:textStyle="bold"
-                android:textColor="@color/black"
-                android:layout_marginEnd="20dp"
+                android:textColor="@color/textColor"
+                android:layout_marginEnd="@dimen/name_size"
                 />
         </LinearLayout>
 
@@ -57,6 +59,8 @@
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:text="@string/album_song_title"
+                android:textSize="@dimen/name_size"
+                android:textColor="@color/textColor"
 
                />
             <TextView
@@ -65,7 +69,8 @@
                 android:layout_height="wrap_content"
                 android:text="Tên album"
                 android:textStyle="bold"
-                android:textColor="@color/black"
+                android:textSize="@dimen/name_size"
+                android:textColor="@color/textColor"
                 android:layout_marginEnd="20dp"
                 />
         </LinearLayout>
@@ -81,6 +86,8 @@
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:text="@string/author_song_title"
+                android:textSize="@dimen/name_size"
+                android:textColor="@color/textColor"
                  />
             <TextView
                 android:id="@+id/authorSongTv"
@@ -88,7 +95,8 @@
                 android:layout_height="wrap_content"
                 android:text="Tên nghệ sĩ"
                 android:textStyle="bold"
-                android:textColor="@color/black"
+                android:textSize="@dimen/name_size"
+                android:textColor="@color/textColor"
                 android:layout_marginEnd="20dp"/>
         </LinearLayout>
 
@@ -103,6 +111,8 @@
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:text="@string/category_song_title"
+                android:textSize="@dimen/name_size"
+                android:textColor="@color/textColor"
                  />
             <TextView
                 android:id="@+id/categorySongTv"
@@ -110,7 +120,8 @@
                 android:layout_height="wrap_content"
                 android:text="Thể loại"
                 android:textStyle="bold"
-                android:textColor="@color/black"
+                android:textSize="@dimen/name_size"
+                android:textColor="@color/textColor"
                 android:layout_marginEnd="20dp"/>
         </LinearLayout>
     </LinearLayout>
@@ -147,7 +158,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="8.4M"
-                android:textColor="@color/black"
+                android:textSize="@dimen/name_size"
+                android:textColor="@color/textColor"
                 android:layout_gravity="center"
                 android:layout_marginStart="5dp"
                 />
@@ -173,7 +185,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="8.4M"
-                android:textColor="@color/black"
+                android:textSize="@dimen/name_size"
+                android:textColor="@color/textColor"
                 android:layout_gravity="center"
                 android:layout_marginStart="5dp"
                 />

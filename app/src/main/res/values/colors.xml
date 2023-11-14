@@ -7,7 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="grayBg">#F1F1F1</color>
+    <color name="edittext_color">#F1F1F1</color>
     <color name="grayBt">#808080</color>
     <color name="grayEt">#D1C8C8</color>
     <color name="grayTv">#777777</color>
@@ -18,5 +18,10 @@
     <color name="fav_author_color">#4CAF50</color>
     <color name="not_ready_button">#D0B0D5</color>
     <color name="button_big">#D613D3</color>
-
+    <color name="textColor">@color/black</color>
+    <color name="bgColor">@color/white</color>
+    <color name="hint_text_color">#B0B0B0</color>
+    <color name="bg_now_playing">#EAE4E4</color>
+    <color name="background">#FFFFFFFF</color>
+    <color name="dialog_color">#fff</color>
 </resources>

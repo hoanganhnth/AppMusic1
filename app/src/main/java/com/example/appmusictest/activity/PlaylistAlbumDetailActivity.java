@@ -29,6 +29,7 @@ import com.example.appmusictest.model.Playlist;
 import com.example.appmusictest.model.Song;
 import com.example.appmusictest.service.ApiService;
 import com.example.appmusictest.service.DataService;
+import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,7 @@ public class PlaylistAlbumDetailActivity extends AppCompatActivity {
     private Album album;
     private ImageButton backIb, favoriteIb, menuIb;
     private TextView shuffleBtn, titlePlIv, numberSongTv;
-    private ImageView imgPlIv;
+    private ShapeableImageView imgPlIv;
     private int type;
     private static final String TAG = "Pl_Al_Detail_Activity";
 
@@ -125,7 +126,7 @@ public class PlaylistAlbumDetailActivity extends AppCompatActivity {
         TextView namePlaylist = dialog.findViewById(R.id.namePlTv);
         ImageButton addFavIb = dialog.findViewById(R.id.addFavIb);
         TextView addFavTv = dialog.findViewById(R.id.addFavTv);
-        ImageView imgIv = dialog.findViewById(R.id.imgPlIv);
+        ShapeableImageView imgIv = dialog.findViewById(R.id.imgPlIv);
 
         if (type == MyApplication.TYPE_PLAYLIST) {
             namePlaylist.setText(playlist.getTitle());

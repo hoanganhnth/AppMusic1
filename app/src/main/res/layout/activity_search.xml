@@ -35,11 +35,12 @@
         android:elevation="4dp"
         android:hint="@string/search_main_activity_hint"
         android:padding="10dp"
-        android:textColorHint="#B0B0B0"
+        android:textColorHint="@color/hint_text_color"
         android:drawableEnd="@drawable/ic_search"
         android:imeOptions="actionSearch"
         android:singleLine="true"
         android:inputType="textNoSuggestions"
+
         />
 
         <com.google.android.material.tabs.TabLayout
@@ -56,7 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/tabLayout"
-        android:background="@color/grayBg"
+        android:background="@color/edittext_color"
         android:elevation="3dp"/>
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPaper"

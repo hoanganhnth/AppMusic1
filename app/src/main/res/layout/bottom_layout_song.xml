@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="20dp"
     android:orientation="vertical"
     android:background="@drawable/shape_dialog_1">
@@ -12,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         >
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imgDlIv"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -20,6 +21,7 @@
             android:scaleType="centerCrop"
             android:layout_centerVertical="true"
             android:layout_marginEnd="20dp"
+            app:shapeAppearanceOverlay="@style/rounded_corner"
             />
         <LinearLayout
             android:layout_width="wrap_content"
@@ -33,8 +35,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Song"
-                android:textColor="@color/black"
-                android:textSize="15sp"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/name_size"
                 android:textStyle="bold"
 
                 />
@@ -43,6 +45,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Author"
+                android:textSize="@dimen/name_size"
+                android:textColor="@color/textColor"
 
                 />
         </LinearLayout>
@@ -71,8 +75,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/add_to_playlist_title"
-            android:textSize="14sp"
-            android:textColor="@color/black"
+            android:textSize="@dimen/name_size"
+            android:textColor="@color/textColor"
             android:layout_gravity="center"
             />
     </LinearLayout>
@@ -96,8 +100,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/add_to_next_song_title"
-            android:textSize="14sp"
-            android:textColor="@color/black"
+            android:textSize="@dimen/name_size"
+            android:textColor="@color/textColor"
             android:layout_gravity="center"
             />
     </LinearLayout>
@@ -122,8 +126,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/add_to_favorite_title"
-            android:textSize="14sp"
-            android:textColor="@color/black"
+            android:textSize="@dimen/name_size"
+            android:textColor="@color/textColor"
             android:layout_gravity="center"
             />
     </LinearLayout>
@@ -148,8 +152,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/add_song_to_playlist_title"
-            android:textSize="14sp"
-            android:textColor="@color/black"
+            android:textSize="@dimen/name_size"
+            android:textColor="@color/textColor"
             android:layout_gravity="center"
             />
     </LinearLayout>
