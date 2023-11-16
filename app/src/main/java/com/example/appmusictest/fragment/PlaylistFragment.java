@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.appmusictest.R;
 import com.example.appmusictest.adapter.PlaylistAlbumAdapter;
+import com.example.appmusictest.dialog.MyProgress;
 import com.example.appmusictest.model.Playlist;
 import com.example.appmusictest.service.ApiService;
 import com.example.appmusictest.service.DataService;
@@ -33,6 +34,7 @@ public class PlaylistFragment extends Fragment {
     private static final String TAG = "Playlist_Fragment";
     private PlaylistAlbumAdapter playlistAdapter;
     public static TextView noDataTv;
+    private MyProgress myProgress;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,6 +42,8 @@ public class PlaylistFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_playlist, container, false);
 
+        myProgress = new MyProgress(view.getContext());
+        myProgress.show();
         initView(view);
         getData();
         return view;
@@ -60,16 +64,17 @@ public class PlaylistFragment extends Fragment {
             callback.enqueue(new Callback<List<Playlist>>() {
                 @Override
                 public void onResponse(@NonNull Call<List<Playlist>> call, @NonNull Response<List<Playlist>> response) {
-
                     playlists = (ArrayList<Playlist>) response.body();
                     playlistAdapter = new PlaylistAlbumAdapter<>(playlists,getActivity(), 1);
                     playlistAdapter.filter(query);
                     playlistRv.setAdapter(playlistAdapter);
+                    myProgress.dismiss();
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<List<Playlist>> call, @NonNull Throwable t) {
                     Log.d(TAG, "Fail get data due to: " + t.getMessage() );
+                    myProgress.dismiss();
 
                 }
             });

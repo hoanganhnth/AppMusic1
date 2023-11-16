@@ -28,6 +28,7 @@ import com.example.appmusictest.R;
 import com.example.appmusictest.activity.FavoriteAlbumActivity;
 import com.example.appmusictest.activity.FavoritePlaylistActivity;
 import com.example.appmusictest.activity.PlaylistAlbumDetailActivity;
+import com.example.appmusictest.dialog.MyProgress;
 import com.example.appmusictest.model.Album;
 import com.example.appmusictest.model.Playlist;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -41,6 +42,7 @@ public class PlaylistAlbumAdapter<T> extends RecyclerView.Adapter<PlaylistAlbumA
     private static final String TAG = "Playlist_Adapter";
     private boolean isFilter = false;
     private int type;
+    private MyProgress myProgress;
 
     public PlaylistAlbumAdapter(ArrayList<T> arrayList, Context context, int t) {
         this.arrayList = arrayList;
@@ -203,7 +205,8 @@ public class PlaylistAlbumAdapter<T> extends RecyclerView.Adapter<PlaylistAlbumA
     }
 
     public void filter(String query) {
-
+        myProgress = new MyProgress(context);
+        myProgress.show();
         if (!isFilter) {
             isFilter = true;
         }
@@ -234,6 +237,7 @@ public class PlaylistAlbumAdapter<T> extends RecyclerView.Adapter<PlaylistAlbumA
             noDataTv.setVisibility(View.GONE);
             Log.d(TAG, "query :" + lowerQuery);
         }
+        myProgress.dismiss();
         notifyDataSetChanged();
     }
 }

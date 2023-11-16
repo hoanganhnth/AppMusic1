@@ -26,6 +26,7 @@ import com.example.appmusictest.R;
 import com.example.appmusictest.SessionManager;
 import com.example.appmusictest.adapter.AuthorSuggestAdapter;
 import com.example.appmusictest.adapter.PlaylistAlbumSuggestAdapter;
+import com.example.appmusictest.dialog.MyProgress;
 import com.example.appmusictest.model.Album;
 import com.example.appmusictest.model.Author;
 import com.example.appmusictest.model.Playlist;
@@ -56,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
     private PlaylistAlbumSuggestAdapter<Playlist> playlistSuggestAdapter;
     private AuthorSuggestAdapter authorSuggestAdapter;
     private SessionManager sessionManager;
+    private MyProgress myProgress;
+    private boolean getDataSuccess = false;
 
 
     @Override
@@ -63,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sessionManager = new SessionManager(getApplicationContext());
+        myProgress = new MyProgress(this);
+        myProgress.show();
         initView();
         getData();
         setViewData();
@@ -177,11 +182,14 @@ public class MainActivity extends AppCompatActivity {
                 }
                 playlistSuggestAdapter = new PlaylistAlbumSuggestAdapter<>(playlists, MainActivity.this, false);
                 playlistSgRv.setAdapter(playlistSuggestAdapter);
+                getDataSuccess = true;
+                if (getDataSuccess) myProgress.dismiss();
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Playlist>> call, @NonNull Throwable t) {
                 Log.d(TAG, "Fail get data due to: " + t.getMessage() );
+                myProgress.dismiss();
 
             }
         });

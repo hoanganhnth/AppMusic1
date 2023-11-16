@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.appmusictest.R;
 import com.example.appmusictest.adapter.SongAdapter;
+import com.example.appmusictest.dialog.MyProgress;
 import com.example.appmusictest.model.Playlist;
 import com.example.appmusictest.model.Song;
 
@@ -25,6 +26,7 @@ public class FavoriteSongActivity extends AppCompatActivity {
     private RecyclerView songFavRv;
     private TextView numberSongTv,buttonShuffleTv;
     private ImageButton backIb;
+    private MyProgress myProgress;
     private final static String TAG = "Favorite_Song_Activity";
 
     public static ArrayList<Song> getFavSongs() {
@@ -36,6 +38,8 @@ public class FavoriteSongActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite_song);
 
+        myProgress = new MyProgress(this);
+        myProgress.show();
         initView();
         setViewData();
     }
@@ -60,6 +64,7 @@ public class FavoriteSongActivity extends AppCompatActivity {
             intent.putExtra("index", 0);
             startActivity(intent);
         });
+        myProgress.dismiss();
     }
 
     private void initView() {

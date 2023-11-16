@@ -40,6 +40,8 @@
         android:imeOptions="actionSearch"
         android:singleLine="true"
         android:inputType="textNoSuggestions"
+        android:textSize="@dimen/name_size"
+        android:textColor="@color/textColor"
 
         />
 
@@ -51,6 +53,7 @@
             app:tabMode="scrollable"
             android:layout_marginStart="40dp"
             android:layout_marginBottom="10dp"
+            app:tabTextAppearance="@style/CustomTabTextAppearance"
             />
     <View
         android:id="@+id/seView"

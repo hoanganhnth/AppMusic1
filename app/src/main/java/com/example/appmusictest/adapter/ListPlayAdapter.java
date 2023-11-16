@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -54,6 +54,7 @@ public class ListPlayAdapter extends RecyclerView.Adapter<ListPlayAdapter.ViewHo
             holder.authorSongTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),R.color.white));
             Log.d(TAG, "song number " + position + " ís playing");
         } else {
+//            holder.rowRl.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(),R.color.background));
             holder.itemView.setBackground(null);
             holder.nameSongTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),R.color.textColor));
             holder.authorSongTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),R.color.textColor));

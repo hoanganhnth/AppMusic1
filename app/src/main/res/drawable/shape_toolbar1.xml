@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/fav_playlist_color"/>
+            <solid android:color="@color/log_reg_bg"/>
             <corners android:bottomRightRadius="40dp"
                 android:bottomLeftRadius="40dp"/>
         </shape>

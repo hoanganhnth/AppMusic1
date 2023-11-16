@@ -15,18 +15,15 @@ import android.widget.TextView;
 
 import com.example.appmusictest.R;
 
-public class MyProgressDialog {
+public class MyProgress {
     private AlertDialog dialog;
     private ImageView progressBar;
-    private TextView titleDialog, messageDialog;
     private ObjectAnimator objectAnimator;
 
-    public MyProgressDialog(Context context) {
+    public MyProgress(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        View view = LayoutInflater.from(context).inflate(R.layout.custom_dialog_progress, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.custom_dialog_progress2, null);
         progressBar = view.findViewById(R.id.progress_bar);
-        titleDialog = view.findViewById(R.id.titleDialog);
-        messageDialog = view.findViewById(R.id.messageDialog);
 
         objectAnimator = ObjectAnimator.ofFloat(progressBar, "rotation", 0f,360f);
         objectAnimator.setDuration(1500);
@@ -34,7 +31,7 @@ public class MyProgressDialog {
         objectAnimator.start();
         objectAnimator.setInterpolator(new LinearInterpolator());
         builder.setView(view);
-        builder.setCancelable(true);
+        builder.setCancelable(false);
         dialog = builder.create();
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
@@ -53,9 +50,6 @@ public class MyProgressDialog {
         }
     }
 
-    public void setMessage(String text) {
-        messageDialog.setText(text);
-    }
 
 
 }

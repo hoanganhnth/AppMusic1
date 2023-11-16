@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.appmusictest.R;
 import com.example.appmusictest.adapter.SongAdapter;
+import com.example.appmusictest.dialog.MyProgress;
 import com.example.appmusictest.model.Author;
 import com.example.appmusictest.model.Song;
 import com.example.appmusictest.service.ApiService;
@@ -37,7 +38,7 @@ public class AuthorDetailActivity extends AppCompatActivity {
     private SongAdapter songAdapter;
     private static ArrayList<Song> songArrayList;
     private static final String TAG = "Author_Detail_Acti";
-
+    private MyProgress myProgress;
     public static ArrayList<Song> getSongArrayList() {
         return songArrayList;
     }
@@ -46,6 +47,8 @@ public class AuthorDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_author_detail);
+        myProgress = new MyProgress(this);
+        myProgress.show();
         initView();
         getDataIntent();
         setViewData();
@@ -102,12 +105,13 @@ public class AuthorDetailActivity extends AppCompatActivity {
                 songArrayList = (ArrayList<Song>) response.body();
                 songAdapter = new SongAdapter(songArrayList, AuthorDetailActivity.this);
                 listSongRv.setAdapter(songAdapter);
-
+                myProgress.dismiss();
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Song>> call, @NonNull Throwable t) {
                 Log.d(TAG, "Fail to get data from server due to:" + t.getMessage() );
+                myProgress.dismiss();
             }
         });
 

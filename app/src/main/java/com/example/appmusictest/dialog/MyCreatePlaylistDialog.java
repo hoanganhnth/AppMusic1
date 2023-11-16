@@ -33,7 +33,7 @@ public class MyCreatePlaylistDialog {
         builder.setCancelable(true);
         dialog = builder.create();
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
+        playlistEt.requestFocus();
         submitBtn.setBackground(ContextCompat.getDrawable(context, R.drawable.shape_button4));
         playlistEt.addTextChangedListener(new TextWatcher() {
             @Override

@@ -9,7 +9,7 @@
         android:id="@+id/actionRl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bgColor"
+        android:background="@color/item_bg_color"
         >
 
         <ImageButton
@@ -45,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/actionRl"
-        android:background="@color/grayEt"
+        android:background="@color/edittext_color"
         />
 
 

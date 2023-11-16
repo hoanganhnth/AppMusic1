@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.RegisterActivity"
-    android:background="@drawable/back01">
+    android:background="@color/background"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -62,7 +63,9 @@
                 android:layout_height="wrap_content"
                 app:hintEnabled="false"
                 android:layout_marginBottom="10dp"
+                app:boxBackgroundMode="none"
                 >
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/nameEt"
                     android:layout_width="match_parent"
@@ -70,11 +73,12 @@
                     android:background="@drawable/shape_edittext2"
                     android:drawableStart="@drawable/ic_author"
                     android:drawablePadding="10dp"
+                    android:hint="Name"
                     android:inputType="textEmailAddress"
                     android:padding="10dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/grayEt"
-                    android:hint="Name"/>
+                    android:textColor="@color/textColor"
+                    android:textColorHint="@color/text_color_hint"
+                    android:textSize="@dimen/name_size" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -84,6 +88,8 @@
                 app:hintEnabled="false"
                 android:layout_below="@+id/nameTil"
                 android:layout_marginBottom="10dp"
+                app:boxBackgroundMode="none"
+
                 >
                 <EditText
                     android:id="@+id/emailEt"
@@ -94,8 +100,9 @@
                     android:drawablePadding="10dp"
                     android:inputType="textEmailAddress"
                     android:padding="10dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/grayEt"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/name_size"
+                    android:textColorHint="@color/text_color_hint"
                     android:hint="Email"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -107,7 +114,10 @@
                 android:layout_below="@+id/emailTil"
                 app:passwordToggleEnabled="true"
                 android:layout_marginBottom="10dp"
+                app:boxBackgroundMode="none"
+                app:passwordToggleTint="@color/textColor"
                 >
+
                 <EditText
                     android:id="@+id/passwordEt"
                     android:layout_width="match_parent"
@@ -115,11 +125,12 @@
                     android:background="@drawable/shape_edittext2"
                     android:drawableStart="@drawable/ic_lock"
                     android:drawablePadding="10dp"
+                    android:hint="Password"
                     android:inputType="textPassword"
                     android:padding="10dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/grayEt"
-                    android:hint="Password"/>
+                    android:textColor="@color/textColor"
+                    android:textColorHint="@color/text_color_hint"
+                    android:textSize="@dimen/name_size" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -129,6 +140,8 @@
                 app:hintEnabled="false"
                 android:layout_below="@+id/passwordTil"
                 app:passwordToggleEnabled="true"
+                app:boxBackgroundMode="none"
+                app:passwordToggleTint="@color/textColor"
                 >
                 <EditText
                     android:id="@+id/passwordCfEt"
@@ -139,8 +152,9 @@
                     android:drawablePadding="10dp"
                     android:inputType="textPassword"
                     android:padding="10dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/grayEt"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/name_size"
+                    android:textColorHint="@color/text_color_hint"
                     android:hint="Confirm Password"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -156,6 +170,7 @@
                 android:text="REGISTER"
                 android:textStyle="bold"
                 android:clickable="true"
+                android:textSize="@dimen/name_size"
                 android:textColor="@color/white"
                 android:layout_marginTop="20dp"
                 />

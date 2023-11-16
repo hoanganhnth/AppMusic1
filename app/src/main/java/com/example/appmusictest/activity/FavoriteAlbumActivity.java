@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.appmusictest.MyApplication;
 import com.example.appmusictest.R;
 import com.example.appmusictest.adapter.PlaylistAlbumAdapter;
+import com.example.appmusictest.dialog.MyProgress;
 import com.example.appmusictest.model.Album;
 import com.example.appmusictest.model.Playlist;
 
@@ -26,6 +27,7 @@ public class FavoriteAlbumActivity extends AppCompatActivity {
     private TextView numberAlbumTv;
     private ImageButton backIb;
     private final static String TAG = "Favorite_Album_Ac";
+    private MyProgress myProgress;
 
     public static ArrayList<Album> getFavAlbum() {
         return favAlbum;
@@ -35,6 +37,8 @@ public class FavoriteAlbumActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favforite_album);
+        myProgress = new MyProgress(this);
+        myProgress.show();
         initView();
         setViewData();
     }
@@ -50,6 +54,7 @@ public class FavoriteAlbumActivity extends AppCompatActivity {
         backIb.setOnClickListener(v -> {
             onBackPressed();
         });
+        myProgress.dismiss();
     }
 
     private void initView() {

@@ -42,18 +42,19 @@
                     android:inputType="textNoSuggestions"
                     android:textColor="@color/textColor"
                     android:padding="10dp"
+                    android:textSize="@dimen/name_size"
                     android:singleLine="true"
-                    android:textColorHint="#B0B0B0" />
+                    android:textColorHint="@color/text_color_hint" />
                 <ImageButton
                     android:id="@+id/logOutIb"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_exit_gray"
                     android:background="@android:color/transparent"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginEnd="10dp"
                     />
             </RelativeLayout>
 
@@ -272,7 +273,7 @@
                 android:layout_below="@+id/favoriteRl"
                 layout="@layout/layout_main_playlist_suggest"
                 android:layout_marginBottom="20dp"
-                android:layout_marginStart="20dp"
+
                  />
             <include
                 android:id="@+id/albumSuggestRl"
@@ -281,7 +282,6 @@
                 android:layout_below="@+id/playlistSuggestRl"
                 layout="@layout/layout_main_album_suggest"
                 android:layout_marginBottom="20dp"
-                android:layout_marginStart="20dp"
                 />
             <include
                 android:id="@+id/authorSuggestRl"
@@ -290,7 +290,6 @@
                 android:layout_below="@+id/albumSuggestRl"
                 layout="@layout/layout_main_author_suggest"
                 android:layout_marginBottom="80dp"
-                android:layout_marginStart="20dp"
                 />
         </RelativeLayout>
     </ScrollView>

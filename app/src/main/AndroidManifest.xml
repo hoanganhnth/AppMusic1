@@ -76,7 +76,7 @@
         <activity
             android:name=".activity.LoginActivity"
             android:exported="false"
-            android:theme="@style/AppTheme.Playlist">
+          >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

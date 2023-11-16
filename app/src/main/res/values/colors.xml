@@ -19,9 +19,13 @@
     <color name="not_ready_button">#D0B0D5</color>
     <color name="button_big">#D613D3</color>
     <color name="textColor">@color/black</color>
-    <color name="bgColor">@color/white</color>
+    <color name="item_bg_color">@color/white</color>
     <color name="hint_text_color">#B0B0B0</color>
     <color name="bg_now_playing">#EAE4E4</color>
     <color name="background">#FFFFFFFF</color>
     <color name="dialog_color">#fff</color>
+    <color name="action_bar">#808080</color>
+    <color name="actionbar_press">#F3EFEF</color>
+    <color name="log_reg_bg">#AD1CC6</color>
+    <color name="text_color_hint">#B0B0B0</color>
 </resources>

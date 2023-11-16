@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginUser() {
         myProgressDialog.show();
-        myProgressDialog.setMessage("Logging account");
+        myProgressDialog.setMessage("Logging account ...");
         sessionManager.createSession("", email);
         startActivity(new Intent(this, MainActivity.class));
         finish();

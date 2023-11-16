@@ -162,7 +162,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         repeatIb.setOnClickListener(v -> {
             if (repeat) {
                 repeat = false;
-                repeatIb.setColorFilter(ContextCompat.getColor(this,R.color.grayBt));
+                repeatIb.setColorFilter(ContextCompat.getColor(this,R.color.action_bar));
             }
             else {
                 repeat = true;
@@ -179,7 +179,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
             else {
                 activeShuffle = false;
                 refreshSongs();
-                shuffleIb.setColorFilter(ContextCompat.getColor(this,R.color.grayBt));
+                shuffleIb.setColorFilter(ContextCompat.getColor(this,R.color.action_bar));
                 Log.d(TAG, "Refresh songs");
             }
             listPlayFragment.onSongChanged();
@@ -188,6 +188,18 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
 
         menuIb.setOnClickListener(v -> {
             showDialog();
+        });
+
+        favoriteIb.setOnClickListener(v -> {
+            if (!FavoriteSongActivity.isInFav(currentSongs.get(songPosition))) {
+                Toast.makeText(this, R.string.add_favorite_notification, Toast.LENGTH_SHORT).show();
+                FavoriteSongActivity.addSong(currentSongs.get(songPosition));
+                favoriteIb.setImageResource(R.drawable.ic_favorite_purple);
+            } else {
+                Toast.makeText(this, R.string.remove_favorite_notification, Toast.LENGTH_SHORT).show();
+                FavoriteSongActivity.removeSong(currentSongs.get(songPosition));
+                favoriteIb.setImageResource(R.drawable.ic_favorite_gray);
+            }
         });
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -472,12 +484,12 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         if (repeat) {
             repeatIb.setColorFilter(ContextCompat.getColor(getApplicationContext(),R.color.fav_playlist_color));
         } else {
-            repeatIb.setColorFilter(ContextCompat.getColor(getApplicationContext(),R.color.grayBt));
+            repeatIb.setColorFilter(ContextCompat.getColor(getApplicationContext(),R.color.action_bar));
         }
         if (activeShuffle) {
             shuffleIb.setColorFilter(ContextCompat.getColor(getApplicationContext(),R.color.fav_playlist_color));
         } else {
-            shuffleIb.setColorFilter(ContextCompat.getColor(getApplicationContext(),R.color.grayBt));
+            shuffleIb.setColorFilter(ContextCompat.getColor(getApplicationContext(),R.color.action_bar));
         }
         Log.d(TAG, "init layout");
     }

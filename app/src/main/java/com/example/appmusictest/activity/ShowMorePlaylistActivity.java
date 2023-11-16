@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.appmusictest.R;
 import com.example.appmusictest.adapter.PlaylistAlbumSuggestAdapter;
+import com.example.appmusictest.dialog.MyProgress;
 import com.example.appmusictest.model.Album;
 import com.example.appmusictest.model.Playlist;
 
@@ -26,12 +27,13 @@ public class ShowMorePlaylistActivity extends AppCompatActivity {
     private ArrayList<? extends Playlist> playlistArrayList;
     private ArrayList<? extends Album> albumArrayList;
     private static final String TAG = "Show More Playlist";
+    private MyProgress myProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_more_playlist);
-
+        myProgress = new MyProgress(this);
         initView();
         getDataIntent();
         setViewData();
@@ -56,6 +58,7 @@ public class ShowMorePlaylistActivity extends AppCompatActivity {
                 showMoreRv.setAdapter(albumSuggestAdapter);
             }
         }
+        myProgress.dismiss();
 
 
     }

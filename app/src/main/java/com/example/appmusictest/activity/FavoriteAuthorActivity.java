@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 
 import com.example.appmusictest.R;
 import com.example.appmusictest.adapter.AuthorAdapter;
+import com.example.appmusictest.dialog.MyProgress;
 import com.example.appmusictest.model.Album;
 import com.example.appmusictest.model.Author;
 
@@ -22,6 +23,7 @@ public class FavoriteAuthorActivity extends AppCompatActivity {
     private ImageButton backIb;
     private AuthorAdapter adapter;
     private final static String TAG = "Favorite_Album_Ac";
+    private MyProgress myProgress;
 
 
     public static ArrayList<Author> getFavAuthor() {
@@ -32,6 +34,8 @@ public class FavoriteAuthorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite_author);
+        myProgress = new MyProgress(this);
+        myProgress.show();
         initView();
         setViewData();
     }
@@ -40,6 +44,7 @@ public class FavoriteAuthorActivity extends AppCompatActivity {
         adapter = new AuthorAdapter(favAuthor, this);
         authorFavRv.setAdapter(adapter);
         backIb.setOnClickListener(v -> onBackPressed());
+        myProgress.dismiss();
     }
 
     private void initView() {

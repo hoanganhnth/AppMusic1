@@ -10,12 +10,16 @@
         <item name="colorSecondaryVariant">@color/fav_playlist_color</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/bgColor</item>
+        <item name="android:statusBarColor">@color/item_bg_color</item>
         <item name="colorAccent">@color/fav_playlist_color</item>
 <!--        <item name="android:textColor">@color/textColor</item>-->
 
 
         <!-- Customize your theme here. -->
+    </style>
+    <style name="CustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">@dimen/name_size</item> <!-- Set your desired text size here -->
+        <item name="android:textStyle">normal</item>
     </style>
     <style name="DialogAnimation">
         <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
@@ -44,5 +48,9 @@
     </style>
     <style name="rounded_corner">
         <item name="cornerSize">10dp</item>
+    </style>
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxStrokeColor">@color/fav_playlist_color</item>
+        <item name="android:width">2dp</item>
     </style>
 </resources>

@@ -2,6 +2,7 @@ package com.example.appmusictest.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
@@ -24,12 +25,14 @@ import com.bumptech.glide.Glide;
 import com.example.appmusictest.MyApplication;
 import com.example.appmusictest.R;
 import com.example.appmusictest.adapter.SongAdapter;
+import com.example.appmusictest.dialog.MyProgress;
 import com.example.appmusictest.model.Album;
 import com.example.appmusictest.model.Playlist;
 import com.example.appmusictest.model.Song;
 import com.example.appmusictest.service.ApiService;
 import com.example.appmusictest.service.DataService;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.play.integrity.internal.m;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,12 +51,15 @@ public class PlaylistAlbumDetailActivity extends AppCompatActivity {
     private TextView shuffleBtn, titlePlIv, numberSongTv;
     private ShapeableImageView imgPlIv;
     private int type;
+    private MyProgress myProgress;
     private static final String TAG = "Pl_Al_Detail_Activity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist_album_detail);
+        myProgress = new MyProgress(this);
+        myProgress.show();
         initView();
         getDataIntent();
         setViewData();
@@ -246,11 +252,13 @@ public class PlaylistAlbumDetailActivity extends AppCompatActivity {
                 } else {
                     shuffleBtn.setVisibility(View.VISIBLE);
                 }
+                myProgress.dismiss();
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Song>> call, @NonNull Throwable t) {
                 Log.d(TAG, "Fail to get data from server due to:" + t.getMessage() );
+                myProgress.dismiss();
             }
         });
     }

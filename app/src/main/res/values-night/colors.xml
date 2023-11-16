@@ -2,10 +2,12 @@
 <resources>
     <color name="white">#FFFFFFFF</color>
     <color name="textColor">@color/white</color>
-    <color name="bgColor">#2F2D38</color>
+    <color name="item_bg_color">#2F2D38</color>
     <color name="hint_text_color">#EDEDED</color>
     <color name="edittext_color">#535252</color>
-    <color name="bg_now_playing">#ff000000</color>
+    <color name="bg_now_playing">#2F2D38</color>
     <color name="background">#161422</color>
     <color name="dialog_color">#232532</color>
+    <color name="action_bar">#FFFFFFFF</color>
+    <color name="log_reg_bg">#161422</color>
 </resources>

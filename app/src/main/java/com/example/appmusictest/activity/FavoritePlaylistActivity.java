@@ -14,6 +14,7 @@ import com.example.appmusictest.MyApplication;
 import com.example.appmusictest.R;
 import com.example.appmusictest.adapter.PlaylistAlbumAdapter;
 import com.example.appmusictest.dialog.MyCreatePlaylistDialog;
+import com.example.appmusictest.dialog.MyProgress;
 import com.example.appmusictest.model.Playlist;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class FavoritePlaylistActivity extends AppCompatActivity {
     private RecyclerView playlistFavRv;
     private TextView numberPlaylistTv;
     private ImageButton backIb;
+    private MyProgress myProgress;
     private final static String TAG = "Favorite_Playlist_Ac";
 
     public static ArrayList<Playlist> getFavPlaylists() {
@@ -37,6 +39,8 @@ public class FavoritePlaylistActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite_playlist);
+        myProgress = new MyProgress(this);
+        myProgress.show();
         initView();
         setViewData();
     }
@@ -64,6 +68,7 @@ public class FavoritePlaylistActivity extends AppCompatActivity {
         addPlaylistRl.setOnClickListener(v -> {
             showDialogAddPlaylist();
         });
+        myProgress.dismiss();
     }
 
     private void showDialogAddPlaylist() {
