@@ -30,6 +30,7 @@ import com.example.appmusictest.dialog.MyProgress;
 import com.example.appmusictest.model.Album;
 import com.example.appmusictest.model.Author;
 import com.example.appmusictest.model.Playlist;
+import com.example.appmusictest.model.Song;
 import com.example.appmusictest.service.ApiService;
 import com.example.appmusictest.service.DataService;
 
@@ -134,10 +135,48 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getData() {
+        getDataFav();
         getDataPlaylist();
         getDataAlbum();
         getDataAuthor();
 
+    }
+
+    private void getDataFav() {
+        getDataFavSong();
+        getDataFavPlaylist();
+        getDataFavAlbum();
+        getDataFavAuthor();
+    }
+
+    private void getDataFavAlbum() {
+    }
+
+    private void getDataFavAuthor() {
+    }
+
+    private void getDataFavPlaylist() {
+    }
+
+    private void getDataFavSong() {
+        DataService dataService = ApiService.getService();
+        // name api
+        Call<List<Song>> callback = dataService.getSongByPlaylist("1");
+        callback.enqueue(new Callback<List<Song>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Song>> call, @NonNull Response<List<Song>> response) {
+
+                FavoriteSongActivity.setFavSongs((ArrayList<Song>) response.body());
+                updateUiFavSong();
+                myProgress.dismiss();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Song>> call, @NonNull Throwable t) {
+                Log.d(TAG, "Fail to get data from server due to:" + t.getMessage() );
+                myProgress.dismiss();
+            }
+        });
     }
 
     private void getDataAuthor() {
@@ -229,27 +268,46 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateUi() {
         searchEt.setText("");
-        if (FavoriteSongActivity.getSize() == 0) {
-            numberSongTv.setText("");
-        } else {
-            numberSongTv.setText(String.valueOf(FavoriteSongActivity.getSize()));
-        }
+        updateUiFav();
+    }
 
-        if (FavoritePlaylistActivity.getSize() == 0) {
-            numberPlaylistTv.setText("");
+    private void updateUiFav() {
+        updateUiFavSong();
+        updateUiFavPlaylist();
+        updateUiFavAlbum();
+        updateUiFavAuthor();
+    }
+
+    private void updateUiFavAuthor() {
+        if (FavoriteAuthorActivity.getSize() == 0) {
+            numberAuthorTv.setText("");
         } else {
-            numberPlaylistTv.setText(String.valueOf(FavoritePlaylistActivity.getSize()));
+            numberAuthorTv.setText(String.valueOf(FavoriteAuthorActivity.getSize()));
         }
+    }
+
+    private void updateUiFavAlbum() {
 
         if (FavoriteAlbumActivity.getSize() == 0) {
             numberAlbumTv.setText("");
         } else {
             numberAlbumTv.setText(String.valueOf(FavoriteAlbumActivity.getSize()));
         }
-        if (FavoriteAuthorActivity.getSize() == 0) {
-            numberAuthorTv.setText("");
+    }
+
+    private void updateUiFavPlaylist() {
+        if (FavoritePlaylistActivity.getSize() == 0) {
+            numberPlaylistTv.setText("");
         } else {
-            numberAuthorTv.setText(String.valueOf(FavoriteAuthorActivity.getSize()));
+            numberPlaylistTv.setText(String.valueOf(FavoritePlaylistActivity.getSize()));
+        }
+    }
+
+    private void updateUiFavSong() {
+        if (FavoriteSongActivity.getSize() == 0) {
+            numberSongTv.setText("");
+        } else {
+            numberSongTv.setText(String.valueOf(FavoriteSongActivity.getSize()));
         }
     }
 

@@ -1,5 +1,6 @@
 package com.example.appmusictest.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,9 +16,16 @@ import com.example.appmusictest.adapter.SongAdapter;
 import com.example.appmusictest.dialog.MyProgress;
 import com.example.appmusictest.model.Playlist;
 import com.example.appmusictest.model.Song;
+import com.example.appmusictest.service.ApiService;
+import com.example.appmusictest.service.DataService;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FavoriteSongActivity extends AppCompatActivity {
 
@@ -33,6 +41,10 @@ public class FavoriteSongActivity extends AppCompatActivity {
         return favSongs;
     }
 
+    public static void setFavSongs(ArrayList<Song> favSongs) {
+        FavoriteSongActivity.favSongs = favSongs;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,17 +56,32 @@ public class FavoriteSongActivity extends AppCompatActivity {
         setViewData();
     }
 
-    private void setViewData() {
+    private void getDataServer() {
+        DataService dataService = ApiService.getService();
+        // name api
+        Call<List<Song>> callback = dataService.getSongByPlaylist("1");
+        callback.enqueue(new Callback<List<Song>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Song>> call, @NonNull Response<List<Song>> response) {
 
+                favSongs = (ArrayList<Song>) response.body();
+                songAdapter.notifyDataSetChanged();
+                updateUi();
+                myProgress.dismiss();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Song>> call, @NonNull Throwable t) {
+                Log.d(TAG, "Fail to get data from server due to:" + t.getMessage() );
+                myProgress.dismiss();
+            }
+        });
+    }
+
+    private void setViewData() {
         songAdapter = new SongAdapter(favSongs, this);
         songFavRv.setAdapter(songAdapter);
-
-        if (!favSongs.isEmpty()) {
-            buttonShuffleTv.setVisibility(View.VISIBLE);
-            numberSongTv.setVisibility(View.VISIBLE);
-            numberSongTv.setText("Tất cả " + favSongs.size() + " bài hát");
-        }
-
+        updateUi();
         backIb.setOnClickListener(v -> {
             onBackPressed();
         });
@@ -65,7 +92,17 @@ public class FavoriteSongActivity extends AppCompatActivity {
             startActivity(intent);
         });
         myProgress.dismiss();
+
     }
+
+    public void updateUi() {
+        if (!favSongs.isEmpty()) {
+            buttonShuffleTv.setVisibility(View.VISIBLE);
+            numberSongTv.setVisibility(View.VISIBLE);
+            numberSongTv.setText("Tất cả " + favSongs.size() + " bài hát");
+        }
+    }
+
 
     private void initView() {
         songFavRv = findViewById(R.id.songFavRv);
