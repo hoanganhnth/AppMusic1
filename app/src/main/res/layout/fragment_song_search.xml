@@ -9,10 +9,10 @@
     android:paddingEnd="10dp">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/authorRv"
+        android:id="@+id/songRv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/row_author"
+        tools:listitem="@layout/row_songs"
         android:layout_alignParentStart="true"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         />

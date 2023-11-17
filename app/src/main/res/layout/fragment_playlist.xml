@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.PlaylistFragment"
+    tools:context=".fragment.SearchPlaylistFragment"
     android:paddingStart="20dp"
     android:paddingEnd="20dp">
 

@@ -31,8 +31,9 @@ public class MyProgress {
         objectAnimator.start();
         objectAnimator.setInterpolator(new LinearInterpolator());
         builder.setView(view);
-        builder.setCancelable(false);
+        builder.setCancelable(true);
         dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 

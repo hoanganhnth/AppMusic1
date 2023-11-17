@@ -54,6 +54,7 @@
             android:layout_marginStart="40dp"
             android:layout_marginBottom="10dp"
             app:tabTextAppearance="@style/CustomTabTextAppearance"
+            android:background="@android:color/transparent"
             />
     <View
         android:id="@+id/seView"

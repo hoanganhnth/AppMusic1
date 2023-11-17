@@ -105,6 +105,9 @@ public class AuthorDetailActivity extends AppCompatActivity {
                 songArrayList = (ArrayList<Song>) response.body();
                 songAdapter = new SongAdapter(songArrayList, AuthorDetailActivity.this);
                 listSongRv.setAdapter(songAdapter);
+                if (songArrayList.isEmpty()) {
+                    buttonShuffleTv.setVisibility(View.GONE);
+                }
                 myProgress.dismiss();
             }
 

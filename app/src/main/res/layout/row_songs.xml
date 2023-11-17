@@ -14,8 +14,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="5dp"
-        android:paddingTop="5dp"
         android:paddingBottom="5dp"
         >
         <com.google.android.material.imageview.ShapeableImageView
