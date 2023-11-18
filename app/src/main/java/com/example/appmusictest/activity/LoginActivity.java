@@ -1,5 +1,6 @@
 package com.example.appmusictest.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -12,6 +13,15 @@ import android.widget.Toast;
 import com.example.appmusictest.SessionManager;
 import com.example.appmusictest.dialog.MyProgressDialog;
 import com.example.appmusictest.R;
+import com.example.appmusictest.model.api.LoginRequest;
+import com.example.appmusictest.model.api.LoginResponse;
+import com.example.appmusictest.model.api.RegisterResponse;
+import com.example.appmusictest.service.ApiService;
+import com.example.appmusictest.service.DataService;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -60,8 +70,36 @@ public class LoginActivity extends AppCompatActivity {
         myProgressDialog.show();
         myProgressDialog.setMessage("Logging account ...");
         sessionManager.createSession("", email);
+//        performUserLogin();
         startActivity(new Intent(this, MainActivity.class));
         finish();
+    }
+
+    private void performUserLogin() {
+        LoginRequest loginRequest = new LoginRequest(email, password);
+        DataService dataService = ApiService.getService();
+        Call<LoginResponse> callback = dataService.performUserLoginIn(loginRequest);
+        callback.enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
+                if (response.code() == 200) {
+                    assert response.body() != null;
+                    if (response.body().getErrCode().equals("0")) {
+                        Toast.makeText(LoginActivity.this, "Đăng nhập thành công.", Toast.LENGTH_SHORT).show();
+                    } else if (response.body().getMessage().equals("Mật khẩu không đúng")){
+                        Toast.makeText(LoginActivity.this, "Mật khẩu không đúng. Vui lòng nhập lại", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Tài khoản không tồn tại.", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {
+
+            }
+        });
     }
 
     private void initView() {

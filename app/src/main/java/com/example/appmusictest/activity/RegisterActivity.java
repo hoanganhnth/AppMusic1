@@ -1,5 +1,6 @@
 package com.example.appmusictest.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,6 +14,14 @@ import android.widget.Toast;
 import com.example.appmusictest.dialog.MyProgressDialog;
 import com.example.appmusictest.R;
 import com.example.appmusictest.SessionManager;
+import com.example.appmusictest.model.api.RegisterRequest;
+import com.example.appmusictest.model.api.RegisterResponse;
+import com.example.appmusictest.service.ApiService;
+import com.example.appmusictest.service.DataService;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -73,8 +82,33 @@ public class RegisterActivity extends AppCompatActivity {
     private void createUserAccount() {
         myProgressDialog.show();
         myProgressDialog.setMessage("Create account ...");
+//        performSignUp();
         sessionManager.createSession(name, email);
         startActivity(new Intent(this, MainActivity.class));
         finish();
+    }
+
+    private void performSignUp() {
+        RegisterRequest registerRequest = new RegisterRequest(name, email, password);
+        DataService dataService = ApiService.getService();
+        Call<RegisterResponse> callback = dataService.performUserSignUp(registerRequest);
+        callback.enqueue(new Callback<RegisterResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<RegisterResponse> call, @NonNull Response<RegisterResponse> response) {
+                if (response.code() == 200) {
+                    assert response.body() != null;
+                    if (response.body().getErrCode().equals("0")) {
+                        Toast.makeText(RegisterActivity.this, "Đăng kí thành công. Bây giờ hãy đăng nhập vào ứng dụng.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(RegisterActivity.this, "Email đã tồn tại. Vui lòng nhập email khác. ", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<RegisterResponse> call, @NonNull Throwable t) {
+
+            }
+        });
     }
 }
