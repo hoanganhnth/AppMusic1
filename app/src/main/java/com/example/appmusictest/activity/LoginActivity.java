@@ -1,11 +1,15 @@
 package com.example.appmusictest.activity;
 
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,7 +19,6 @@ import com.example.appmusictest.dialog.MyProgressDialog;
 import com.example.appmusictest.R;
 import com.example.appmusictest.model.api.LoginRequest;
 import com.example.appmusictest.model.api.LoginResponse;
-import com.example.appmusictest.model.api.RegisterResponse;
 import com.example.appmusictest.service.ApiService;
 import com.example.appmusictest.service.DataService;
 
@@ -46,10 +49,9 @@ public class LoginActivity extends AppCompatActivity {
            startActivity(new Intent(this, RegisterActivity.class));
        });
        loginBtn1.setOnClickListener(v -> {
-            validateData();
-
+           hideKeyboard();
+           validateData();
        });
-
     }
 
     private void validateData() {
@@ -69,16 +71,25 @@ public class LoginActivity extends AppCompatActivity {
     private void loginUser() {
         myProgressDialog.show();
         myProgressDialog.setMessage("Logging account ...");
-        sessionManager.createSession("", email);
-//        performUserLogin();
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
+        performUserLogin();
+
+    }
+
+    private void hideKeyboard() {
+        try {
+            InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
     }
 
     private void performUserLogin() {
         LoginRequest loginRequest = new LoginRequest(email, password);
         DataService dataService = ApiService.getService();
-        Call<LoginResponse> callback = dataService.performUserLoginIn(loginRequest);
+//        Call<LoginResponse> callback = dataService.performUserLoginIn(loginRequest);
+        Call<LoginResponse> callback = dataService.performUserLoginIn(email, password);
+
         callback.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
@@ -86,6 +97,9 @@ public class LoginActivity extends AppCompatActivity {
                     assert response.body() != null;
                     if (response.body().getErrCode().equals("0")) {
                         Toast.makeText(LoginActivity.this, "Đăng nhập thành công.", Toast.LENGTH_SHORT).show();
+                        sessionManager.createSession("", email);
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
                     } else if (response.body().getMessage().equals("Mật khẩu không đúng")){
                         Toast.makeText(LoginActivity.this, "Mật khẩu không đúng. Vui lòng nhập lại", Toast.LENGTH_SHORT).show();
                     } else {
@@ -93,11 +107,13 @@ public class LoginActivity extends AppCompatActivity {
 
                     }
                 }
+                myProgressDialog.dismiss();
             }
 
             @Override
             public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {
-
+                myProgressDialog.dismiss();
+                Log.d(TAG, "Not get data from server due to " + t.getMessage());
             }
         });
     }

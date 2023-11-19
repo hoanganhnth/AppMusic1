@@ -3,9 +3,10 @@ package com.example.appmusictest.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -40,8 +41,20 @@ public class RegisterActivity extends AppCompatActivity {
         myProgressDialog = new MyProgressDialog(this);
         sessionManager = new SessionManager(getApplicationContext());
         initView();
-        registerBt.setOnClickListener(v -> validateData());
+        registerBt.setOnClickListener(v -> {
+            hideKeyboard();
+            validateData();
+        });
         backBtn.setOnClickListener(v -> onBackPressed());
+    }
+
+    private void hideKeyboard() {
+        try {
+            InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
     }
 
     private void initView() {
@@ -80,18 +93,18 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void createUserAccount() {
+
         myProgressDialog.show();
         myProgressDialog.setMessage("Create account ...");
-//        performSignUp();
-        sessionManager.createSession(name, email);
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
+        performSignUp();
+
     }
 
     private void performSignUp() {
         RegisterRequest registerRequest = new RegisterRequest(name, email, password);
         DataService dataService = ApiService.getService();
-        Call<RegisterResponse> callback = dataService.performUserSignUp(registerRequest);
+//        Call<RegisterResponse> callback = dataService.performUserSignUp(registerRequest);
+        Call<RegisterResponse> callback = dataService.performUserSignUp(name, email, password);
         callback.enqueue(new Callback<RegisterResponse>() {
             @Override
             public void onResponse(@NonNull Call<RegisterResponse> call, @NonNull Response<RegisterResponse> response) {
@@ -99,15 +112,18 @@ public class RegisterActivity extends AppCompatActivity {
                     assert response.body() != null;
                     if (response.body().getErrCode().equals("0")) {
                         Toast.makeText(RegisterActivity.this, "Đăng kí thành công. Bây giờ hãy đăng nhập vào ứng dụng.", Toast.LENGTH_SHORT).show();
+                        onBackPressed();
                     } else {
                         Toast.makeText(RegisterActivity.this, "Email đã tồn tại. Vui lòng nhập email khác. ", Toast.LENGTH_SHORT).show();
                     }
                 }
+                myProgressDialog.dismiss();
             }
 
             @Override
             public void onFailure(@NonNull Call<RegisterResponse> call, @NonNull Throwable t) {
-
+                myProgressDialog.dismiss();
+                Log.d(TAG, "Not get data from server due to " + t.getMessage());
             }
         });
     }

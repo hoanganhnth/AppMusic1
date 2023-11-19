@@ -17,26 +17,32 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface DataService {
-//    @GET("/currentday")
-//    Call<List<Playlist>> getPlaylistCurrentDay();
-//
-//    @FormUrlEncoded
-//    @POST("/listsong")
-//    Call<List<Song>> getSongByPlaylist(@Field("idPlaylist") String idPlaylist);
-    @GET("playlistforcurrentday.php")
+    @GET("/currentday")
     Call<List<Playlist>> getPlaylistCurrentDay();
 
     @FormUrlEncoded
-    @POST("listsong.php")
+    @POST("/listsong")
     Call<List<Song>> getSongByPlaylist(@Field("idPlaylist") String idPlaylist);
+//    @GET("playlistforcurrentday.php")
+//    Call<List<Playlist>> getPlaylistCurrentDay();
+//
+//    @FormUrlEncoded
+//    @POST("listsong.php")
+//    Call<List<Song>> getSongByPlaylist(@Field("idPlaylist") String idPlaylist);
+
+//    @POST("/register'")
+//    Call<RegisterResponse> performUserSignUp(@Body RegisterRequest registerRequest);
+//
+//    @POST("/login'")
+//    Call<LoginResponse> performUserLoginIn(@Body LoginRequest loginRequest);
 
     @FormUrlEncoded
-    @POST("/register'")
-    Call<RegisterResponse> performUserSignUp(@Body RegisterRequest registerRequest);
+    @POST("/register")
+    Call<RegisterResponse> performUserSignUp(@Field("username") String username, @Field("email") String email, @Field("password") String password);
 
     @FormUrlEncoded
-    @POST("/login'")
-    Call<LoginResponse> performUserLoginIn(@Body LoginRequest loginRequest);
+    @POST("/login")
+    Call<LoginResponse> performUserLoginIn(@Field("email") String email, @Field("password") String password);
 
 
 
