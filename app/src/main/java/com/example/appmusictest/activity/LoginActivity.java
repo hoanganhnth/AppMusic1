@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                     assert response.body() != null;
                     if (response.body().getErrCode().equals("0")) {
                         Toast.makeText(LoginActivity.this, "Đăng nhập thành công.", Toast.LENGTH_SHORT).show();
-                        sessionManager.createSession("", email);
+                        sessionManager.createSession(response.body().getUsername(), email, response.body().getIdUser());
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
                     } else if (response.body().getMessage().equals("Mật khẩu không đúng")){

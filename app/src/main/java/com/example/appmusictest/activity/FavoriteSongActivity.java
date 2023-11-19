@@ -29,7 +29,7 @@ import retrofit2.Response;
 
 public class FavoriteSongActivity extends AppCompatActivity {
 
-    private static ArrayList<Song> favSongs = new ArrayList<>();
+    private static ArrayList<Song> favSongs;
     private SongAdapter songAdapter;
     private RecyclerView songFavRv;
     private TextView numberSongTv,buttonShuffleTv;
@@ -53,7 +53,15 @@ public class FavoriteSongActivity extends AppCompatActivity {
         myProgress = new MyProgress(this);
         myProgress.show();
         initView();
+        getData();
         setViewData();
+    }
+
+    private void getData() {
+        if (getIntent() != null) {
+            favSongs = getIntent().getParcelableArrayListExtra("favSongs");
+            if (favSongs == null) favSongs = new ArrayList<>();
+        }
     }
 
     private void getDataServer() {

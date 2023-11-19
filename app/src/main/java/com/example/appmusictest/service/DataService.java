@@ -2,10 +2,14 @@ package com.example.appmusictest.service;
 
 import com.example.appmusictest.model.Playlist;
 import com.example.appmusictest.model.Song;
+import com.example.appmusictest.model.api.AlbumsResponse;
+import com.example.appmusictest.model.api.AuthorsResponse;
 import com.example.appmusictest.model.api.LoginRequest;
 import com.example.appmusictest.model.api.LoginResponse;
+import com.example.appmusictest.model.api.PlaylistsResponse;
 import com.example.appmusictest.model.api.RegisterRequest;
 import com.example.appmusictest.model.api.RegisterResponse;
+import com.example.appmusictest.model.api.SongsResponse;
 
 import java.util.List;
 
@@ -43,6 +47,25 @@ public interface DataService {
     @FormUrlEncoded
     @POST("/login")
     Call<LoginResponse> performUserLoginIn(@Field("email") String email, @Field("password") String password);
+
+    @FormUrlEncoded
+    @POST("/getfavsongs")
+    Call<SongsResponse> getFavSong(@Field("idUser") String idUser);
+
+    @FormUrlEncoded
+    @POST("/getfavalbums")
+    Call<AlbumsResponse> getFavAlbum(@Field("idUser") String idUser);
+
+    @FormUrlEncoded
+    @POST("/getfavplaylists")
+    Call<PlaylistsResponse> getFavPlaylist(@Field("idUser") String idUser);
+
+    @FormUrlEncoded
+    @POST("/getfavAuthors")
+    Call<AuthorsResponse> getFavAuthor(@Field("idUser") String idUser);
+
+
+
 
 
 

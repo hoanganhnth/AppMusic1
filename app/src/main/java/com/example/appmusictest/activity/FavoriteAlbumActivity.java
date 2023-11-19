@@ -21,7 +21,7 @@ import java.util.Iterator;
 
 public class FavoriteAlbumActivity extends AppCompatActivity {
 
-    private static ArrayList<Album> favAlbum = new ArrayList<>();
+    private static ArrayList<Album> favAlbum;
     private PlaylistAlbumAdapter adapter;
     private RecyclerView albumFavRv;
     private TextView numberAlbumTv;
@@ -40,7 +40,15 @@ public class FavoriteAlbumActivity extends AppCompatActivity {
         myProgress = new MyProgress(this);
         myProgress.show();
         initView();
+        getData();
         setViewData();
+    }
+
+    private void getData() {
+        if (getIntent() != null) {
+            favAlbum = getIntent().getParcelableArrayListExtra("favAlbums");
+            if (favAlbum == null) favAlbum = new ArrayList<>();
+        }
     }
 
     private void setViewData() {

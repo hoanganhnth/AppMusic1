@@ -18,7 +18,7 @@ import java.util.Iterator;
 
 public class FavoriteAuthorActivity extends AppCompatActivity {
 
-    private static ArrayList<Author> favAuthor = new ArrayList<>();
+    private static ArrayList<Author> favAuthor;
     private RecyclerView authorFavRv;
     private ImageButton backIb;
     private AuthorAdapter adapter;
@@ -37,7 +37,15 @@ public class FavoriteAuthorActivity extends AppCompatActivity {
         myProgress = new MyProgress(this);
         myProgress.show();
         initView();
+        getData();
         setViewData();
+    }
+
+    private void getData() {
+        if (getIntent() != null) {
+            favAuthor = getIntent().getParcelableArrayListExtra("favAuthors");
+            if (favAuthor == null) favAuthor = new ArrayList<>();
+        }
     }
 
     private void setViewData() {

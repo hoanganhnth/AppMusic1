@@ -22,7 +22,7 @@ import java.util.Iterator;
 
 public class FavoritePlaylistActivity extends AppCompatActivity {
 
-    private static ArrayList<Playlist> favPlaylists = new ArrayList<>();
+    private static ArrayList<Playlist> favPlaylists;
     private  PlaylistAlbumAdapter playlistAdapter;
     private RelativeLayout addPlaylistRl;
     private RecyclerView playlistFavRv;
@@ -42,7 +42,15 @@ public class FavoritePlaylistActivity extends AppCompatActivity {
         myProgress = new MyProgress(this);
         myProgress.show();
         initView();
+        getData();
         setViewData();
+    }
+
+    private void getData() {
+        if (getIntent() != null) {
+            favPlaylists = getIntent().getParcelableArrayListExtra("favPlaylists");
+            if (favPlaylists == null) favPlaylists = new ArrayList<>();
+        }
     }
 
     private void initView() {

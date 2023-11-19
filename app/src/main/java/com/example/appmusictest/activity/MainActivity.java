@@ -10,6 +10,7 @@ import android.content.Intent;
 
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -31,6 +32,10 @@ import com.example.appmusictest.model.Album;
 import com.example.appmusictest.model.Author;
 import com.example.appmusictest.model.Playlist;
 import com.example.appmusictest.model.Song;
+import com.example.appmusictest.model.api.AlbumsResponse;
+import com.example.appmusictest.model.api.AuthorsResponse;
+import com.example.appmusictest.model.api.PlaylistsResponse;
+import com.example.appmusictest.model.api.SongsResponse;
 import com.example.appmusictest.service.ApiService;
 import com.example.appmusictest.service.DataService;
 
@@ -49,9 +54,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView numberSongTv,numberPlaylistTv,numberAlbumTv,numberAuthorTv;
     private ImageButton logOutIb,showMoreIb,showMoreAlbumIb;
     private ScrollView viewSv;
-    private ArrayList<Playlist> playlists;
-    private ArrayList<Album> albums;
-    private ArrayList<Author> authors;
+    private ArrayList<Playlist> playlists, favPlaylist;
+    private ArrayList<Album> albums, favAlbums;
+    private ArrayList<Author> authors, favAuthors;
+    private ArrayList<Song> favSongs;
     private RecyclerView playlistSgRv,albumSgRv, authorSgRv;
     private static final String TAG = "Main_Activity";
     private PlaylistAlbumSuggestAdapter<Album> albumSuggestAdapter;
@@ -60,13 +66,18 @@ public class MainActivity extends AppCompatActivity {
     private SessionManager sessionManager;
     private MyProgress myProgress;
     private boolean getDataSuccess = false;
+    private static String idUser = "";
 
+    public static String getIdUser() {
+        return idUser;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sessionManager = new SessionManager(getApplicationContext());
+        idUser = sessionManager.getIdUser();
         myProgress = new MyProgress(this);
         myProgress.show();
         initView();
@@ -89,16 +100,40 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "NOT enter");
             return false;
         });
-        songFavRl.setOnClickListener(v -> startActivity(new Intent(this, FavoriteSongActivity.class)));
-        playlistFavRl.setOnClickListener(v -> startActivity(new Intent(this, FavoritePlaylistActivity.class)));
-        albumFavRl.setOnClickListener(v -> startActivity(new Intent(this, FavoriteAlbumActivity.class)));
-        authorFavRl.setOnClickListener(v -> startActivity(new Intent(this, FavoriteAuthorActivity.class)));
+        songFavRl.setOnClickListener(v -> {
+            Intent intent = new Intent(this, FavoriteSongActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList("favSongs", favSongs);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        });
+        playlistFavRl.setOnClickListener(v -> {
+            Intent intent = new Intent(this, FavoritePlaylistActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList("favPlaylists", favPlaylist);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        });
+        albumFavRl.setOnClickListener(v -> {
+            Intent intent = new Intent(this, FavoriteAlbumActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList("favAlbums", favAlbums);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        });
+        authorFavRl.setOnClickListener(v -> {
+            Intent intent = new Intent(this, FavoriteAuthorActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList("favAuthors", favAuthors);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        });
 
         logOutIb.setOnClickListener(v -> sessionManager.logOutSession());
         showMoreIb.setOnClickListener(v -> {
             Intent intent = new Intent(this, ShowMorePlaylistActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putSerializable("playlists", playlists);
+            bundle.putParcelableArrayList("playlists", playlists);
             intent.putExtras(bundle);
             startActivity(intent);
         });
@@ -106,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         showMoreAlbumIb.setOnClickListener( v-> {
             Intent intent = new Intent(this, ShowMorePlaylistActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putSerializable("albums", albums);
+            bundle.putParcelableArrayList("albums", albums);
             intent.putExtras(bundle);
             startActivity(intent);
         });
@@ -135,7 +170,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getData() {
-        getDataFav();
         getDataPlaylist();
         getDataAlbum();
         getDataAuthor();
@@ -146,33 +180,118 @@ public class MainActivity extends AppCompatActivity {
         getDataFavSong();
         getDataFavPlaylist();
         getDataFavAlbum();
-        getDataFavAuthor();
+//        getDataFavAuthor();
     }
 
     private void getDataFavAlbum() {
+        DataService dataService = ApiService.getService();
+        // name api
+        Call<AlbumsResponse> callback = dataService.getFavAlbum(idUser);
+        callback.enqueue(new Callback<AlbumsResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<AlbumsResponse> call, @NonNull Response<AlbumsResponse> response) {
+                if (response.code() == 200) {
+                    assert response.body() != null;
+                    if (response.body().getErrCode().equals("0")) {
+                        favAlbums = response.body().getAlbums();
+                        if (favAlbums.isEmpty()) {
+                            numberAlbumTv.setText("");
+                        } else {
+                            numberAlbumTv.setText(String.valueOf(favAlbums.size()));
+                        }
+
+                    }
+                }
+                myProgress.dismiss();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<AlbumsResponse> call, @NonNull Throwable t) {
+                Log.d(TAG, "Fail to get data from server due to:" + t.getMessage() );
+                myProgress.dismiss();
+            }
+        });
     }
 
     private void getDataFavAuthor() {
+        DataService dataService = ApiService.getService();
+        Call<AuthorsResponse> callback = dataService.getFavAuthor(idUser);
+        callback.enqueue(new Callback<AuthorsResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<AuthorsResponse> call, @NonNull Response<AuthorsResponse> response) {
+                if (response.code() == 200) {
+                    assert response.body() != null;
+                    if (response.body().getErrCode().equals("0")) {
+                        favAuthors = response.body().getAuthors();
+                        if (favAuthors.isEmpty()) {
+                            numberPlaylistTv.setText("");
+                        } else {
+                            numberPlaylistTv.setText(String.valueOf(favAuthors.size()));
+                        }
+                    }
+                }
+                myProgress.dismiss();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<AuthorsResponse> call, @NonNull Throwable t) {
+                Log.d(TAG, "Fail to get data from server due to:" + t.getMessage() );
+                myProgress.dismiss();
+            }
+        });
     }
 
     private void getDataFavPlaylist() {
+        DataService dataService = ApiService.getService();
+        Call<PlaylistsResponse> callback = dataService.getFavPlaylist(idUser);
+        callback.enqueue(new Callback<PlaylistsResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<PlaylistsResponse> call, @NonNull Response<PlaylistsResponse> response) {
+                if (response.code() == 200) {
+                    assert response.body() != null;
+                    if (response.body().getErrCode().equals("0")) {
+                        favPlaylist = response.body().getPlaylists();
+                        if (favPlaylist.isEmpty()) {
+                            numberPlaylistTv.setText("");
+                        } else {
+                            numberPlaylistTv.setText(String.valueOf(favPlaylist.size()));
+                        }
+                    }
+                }
+                myProgress.dismiss();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<PlaylistsResponse> call, @NonNull Throwable t) {
+                Log.d(TAG, "Fail to get data from server due to:" + t.getMessage() );
+                myProgress.dismiss();
+            }
+        });
     }
 
     private void getDataFavSong() {
         DataService dataService = ApiService.getService();
         // name api
-        Call<List<Song>> callback = dataService.getSongByPlaylist("1");
-        callback.enqueue(new Callback<List<Song>>() {
+        Call<SongsResponse> callback = dataService.getFavSong(idUser);
+        callback.enqueue(new Callback<SongsResponse>() {
             @Override
-            public void onResponse(@NonNull Call<List<Song>> call, @NonNull Response<List<Song>> response) {
-
-                FavoriteSongActivity.setFavSongs((ArrayList<Song>) response.body());
-                updateUiFavSong();
+            public void onResponse(@NonNull Call<SongsResponse> call, @NonNull Response<SongsResponse> response) {
+                if (response.code() == 200) {
+                    assert response.body() != null;
+                    if (response.body().getErrCode().equals("0")) {
+                        favSongs = response.body().getSongs();
+                        if (favSongs.isEmpty()) {
+                            numberSongTv.setText("");
+                        } else {
+                            numberSongTv.setText(String.valueOf(favSongs.size()));
+                        }
+                    }
+                }
                 myProgress.dismiss();
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<Song>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<SongsResponse> call, @NonNull Throwable t) {
                 Log.d(TAG, "Fail to get data from server due to:" + t.getMessage() );
                 myProgress.dismiss();
             }
@@ -272,44 +391,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateUiFav() {
-        updateUiFavSong();
-        updateUiFavPlaylist();
-        updateUiFavAlbum();
-        updateUiFavAuthor();
+        getDataFav();
     }
 
-    private void updateUiFavAuthor() {
-        if (FavoriteAuthorActivity.getSize() == 0) {
-            numberAuthorTv.setText("");
-        } else {
-            numberAuthorTv.setText(String.valueOf(FavoriteAuthorActivity.getSize()));
-        }
-    }
-
-    private void updateUiFavAlbum() {
-
-        if (FavoriteAlbumActivity.getSize() == 0) {
-            numberAlbumTv.setText("");
-        } else {
-            numberAlbumTv.setText(String.valueOf(FavoriteAlbumActivity.getSize()));
-        }
-    }
-
-    private void updateUiFavPlaylist() {
-        if (FavoritePlaylistActivity.getSize() == 0) {
-            numberPlaylistTv.setText("");
-        } else {
-            numberPlaylistTv.setText(String.valueOf(FavoritePlaylistActivity.getSize()));
-        }
-    }
-
-    private void updateUiFavSong() {
-        if (FavoriteSongActivity.getSize() == 0) {
-            numberSongTv.setText("");
-        } else {
-            numberSongTv.setText(String.valueOf(FavoriteSongActivity.getSize()));
-        }
-    }
 
     @Override
     protected void onDestroy() {

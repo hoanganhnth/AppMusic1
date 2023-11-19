@@ -1,11 +1,16 @@
 package com.example.appmusictest.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Song implements Serializable {
+public class Song implements Parcelable {
     @SerializedName("id")
     @Expose
     private String id;
@@ -44,6 +49,29 @@ public class Song implements Serializable {
 
     public Song() {
     }
+
+    protected Song(Parcel in) {
+        id = in.readString();
+        title = in.readString();
+        nameAuthor = in.readString();
+        idAlbum = in.readString();
+        idCategory = in.readString();
+        idPlaylist = in.readString();
+        artUrl = in.readString();
+        pathUrl = in.readString();
+    }
+
+    public static final Creator<Song> CREATOR = new Creator<Song>() {
+        @Override
+        public Song createFromParcel(Parcel in) {
+            return new Song(in);
+        }
+
+        @Override
+        public Song[] newArray(int size) {
+            return new Song[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -107,5 +135,22 @@ public class Song implements Serializable {
 
     public void setPathUrl(String pathUrl) {
         this.pathUrl = pathUrl;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(title);
+        dest.writeString(nameAuthor);
+        dest.writeString(idAlbum);
+        dest.writeString(idCategory);
+        dest.writeString(idPlaylist);
+        dest.writeString(artUrl);
+        dest.writeString(pathUrl);
     }
 }
