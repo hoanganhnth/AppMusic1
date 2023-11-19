@@ -65,18 +65,6 @@ public class FavoriteAuthorActivity extends AppCompatActivity {
         Log.d(TAG, "added to favorite");
     }
 
-    public static void removeAuthor(Author author) {
-        Iterator<Author> iterator = favAuthor.iterator();
-        while (iterator.hasNext()) {
-            Author obj = iterator.next();
-            if (obj.getId().equals(author.getId())) {
-                iterator.remove();
-                break;
-            }
-        }
-        Log.d(TAG, "remove from favorite");
-    }
-
     public static boolean isInFav(Author author) {
         for (Author author1 : favAuthor) {
             if (author.getId().equals(author1.getId())) {

@@ -3,18 +3,16 @@ package com.example.appmusictest.service;
 import com.example.appmusictest.model.Playlist;
 import com.example.appmusictest.model.Song;
 import com.example.appmusictest.model.api.AlbumsResponse;
+import com.example.appmusictest.model.api.ApiResponse;
 import com.example.appmusictest.model.api.AuthorsResponse;
-import com.example.appmusictest.model.api.LoginRequest;
 import com.example.appmusictest.model.api.LoginResponse;
 import com.example.appmusictest.model.api.PlaylistsResponse;
-import com.example.appmusictest.model.api.RegisterRequest;
 import com.example.appmusictest.model.api.RegisterResponse;
 import com.example.appmusictest.model.api.SongsResponse;
 
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -61,12 +59,40 @@ public interface DataService {
     Call<PlaylistsResponse> getFavPlaylist(@Field("idUser") String idUser);
 
     @FormUrlEncoded
-    @POST("/getfavAuthors")
+    @POST("/getfavauthors")
     Call<AuthorsResponse> getFavAuthor(@Field("idUser") String idUser);
 
+    @FormUrlEncoded
+    @POST("/addfavsong")
+    Call<ApiResponse> addFavSong(@Field("idUser") String idUser, @Field("idSong") String idSong);
 
+    @FormUrlEncoded
+    @POST("/removefavsong")
+    Call<ApiResponse> removeFavSong(@Field("idUser") String idUser, @Field("idSong") String idSong);
 
+    @FormUrlEncoded
+    @POST("/addfavalbum")
+    Call<ApiResponse> addFavAlbum(@Field("idUser") String idUser, @Field("idAlbum") String idAlbum);
 
+    @FormUrlEncoded
+    @POST("/removefavalbum")
+    Call<ApiResponse> removeFavAlbum(@Field("idUser") String idUser, @Field("idAlbum") String idAlbum);
+
+    @FormUrlEncoded
+    @POST("/addfavplaylist")
+    Call<ApiResponse> addFavPlaylist(@Field("idUser") String idUser, @Field("idPlaylist") String idPlaylist);
+
+    @FormUrlEncoded
+    @POST("/removefavalbum")
+    Call<ApiResponse> removeFavAuthor(@Field("idUser") String idUser, @Field("idPlaylist") String idPlaylist);
+
+    @FormUrlEncoded
+    @POST("/addfavauthor")
+    Call<ApiResponse> addFavAuthor(@Field("idUser") String idUser, @Field("idAuthor") String idAuthor);
+
+    @FormUrlEncoded
+    @POST("/removefavauthor")
+    Call<ApiResponse> removeFavPlaylist(@Field("idUser") String idUser, @Field("idAuthor") String idAuthor);
 
 
 }

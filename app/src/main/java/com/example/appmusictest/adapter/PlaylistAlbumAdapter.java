@@ -22,9 +22,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.appmusictest.FavoriteHelper;
+import com.example.appmusictest.MyApplication;
 import com.example.appmusictest.R;
 import com.example.appmusictest.activity.FavoriteAlbumActivity;
 import com.example.appmusictest.activity.FavoritePlaylistActivity;
+import com.example.appmusictest.activity.MainActivity;
 import com.example.appmusictest.activity.PlaylistAlbumDetailActivity;
 import com.example.appmusictest.dialog.MyProgress;
 import com.example.appmusictest.model.Album;
@@ -88,15 +91,13 @@ public class PlaylistAlbumAdapter<T> extends RecyclerView.Adapter<PlaylistAlbumA
             }
             holder.rowFvIb.setOnClickListener(v -> {
                 if (!FavoritePlaylistActivity.isInFav(model)) {
-                    FavoritePlaylistActivity.addPlaylist(model);
+                    FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),model.getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_PLAYLIST);
                     holder.rowFvIb.setImageResource(R.drawable.ic_favorite_purple);
-                    Toast.makeText(v.getContext(), R.string.add_favorite_notification, Toast.LENGTH_SHORT).show();
                 } else if (activity.equals(FavoritePlaylistActivity.class.getSimpleName())){
                     showDialog(position, model, null);
                 } else {
                     holder.rowFvIb.setImageResource(R.drawable.ic_favorite_gray);
-                    FavoritePlaylistActivity.removePlaylist(model);
-                    Toast.makeText(v.getContext(), R.string.remove_favorite_notification, Toast.LENGTH_SHORT).show();
+                    FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),model.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_PLAYLIST);
                 }
             });
         } else if (type == TYPE_ALBUM) {
@@ -127,15 +128,14 @@ public class PlaylistAlbumAdapter<T> extends RecyclerView.Adapter<PlaylistAlbumA
             }
             holder.rowFvIb.setOnClickListener(v -> {
                 if (!FavoriteAlbumActivity.isInFav(model)) {
-                    FavoriteAlbumActivity.addAlbum(model);
+                    FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),model.getId(), FavoriteHelper.TYPE_ADD, TYPE_ALBUM);
                     holder.rowFvIb.setImageResource(R.drawable.ic_favorite_purple);
-                    Toast.makeText(v.getContext(), R.string.add_favorite_notification, Toast.LENGTH_SHORT).show();
                 } else if (activity.equals(FavoriteAlbumActivity.class.getSimpleName())){
                     showDialog(position,null, model);
                 } else {
                     holder.rowFvIb.setImageResource(R.drawable.ic_favorite_gray);
-                    FavoriteAlbumActivity.removeAlbum(model);
-                    Toast.makeText(v.getContext(), R.string.remove_favorite_notification, Toast.LENGTH_SHORT).show();
+                    FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),model.getId(), FavoriteHelper.TYPE_DELETE, TYPE_ALBUM);
+
                 }
             });
         }
@@ -169,15 +169,15 @@ public class PlaylistAlbumAdapter<T> extends RecyclerView.Adapter<PlaylistAlbumA
 
         submitBtn.setOnClickListener(v -> {
             if (type == TYPE_PLAYLIST) {
-                FavoritePlaylistActivity.removePlaylist(playlist);
+                FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),playlist.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_PLAYLIST);
             } else if (type == TYPE_ALBUM) {
-                FavoriteAlbumActivity.removeAlbum(album);
-            }
+                FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),album.getId(), FavoriteHelper.TYPE_DELETE, TYPE_ALBUM);
 
+            }
+            arrayList.remove(pos);
             notifyItemRemoved(pos);
-            notifyItemRangeChanged(pos, FavoritePlaylistActivity.getSize());
+            notifyItemRangeChanged(pos, arrayList.size() - pos);
             dialog.dismiss();
-            Toast.makeText(v.getContext(), R.string.remove_favorite_notification, Toast.LENGTH_SHORT).show();
         });
         cancelBtn.setOnClickListener(v -> dialog.dismiss());
     }

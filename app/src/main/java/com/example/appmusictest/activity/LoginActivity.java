@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.example.appmusictest.SessionManager;
 import com.example.appmusictest.dialog.MyProgressDialog;
 import com.example.appmusictest.R;
-import com.example.appmusictest.model.api.LoginRequest;
 import com.example.appmusictest.model.api.LoginResponse;
 import com.example.appmusictest.service.ApiService;
 import com.example.appmusictest.service.DataService;
@@ -85,9 +84,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void performUserLogin() {
-        LoginRequest loginRequest = new LoginRequest(email, password);
         DataService dataService = ApiService.getService();
-//        Call<LoginResponse> callback = dataService.performUserLoginIn(loginRequest);
         Call<LoginResponse> callback = dataService.performUserLoginIn(email, password);
 
         callback.enqueue(new Callback<LoginResponse>() {

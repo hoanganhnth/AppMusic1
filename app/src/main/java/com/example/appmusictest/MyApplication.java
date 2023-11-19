@@ -13,6 +13,9 @@ public class MyApplication extends Application {
     public static final String EXIT = "exit";
     public static final int TYPE_PLAYLIST = 1;
     public static final int TYPE_ALBUM = 2;
+    public static final int TYPE_SONG = 3;
+    public static final int TYPE_AUTHOR = 4;
+
 
     @Override
     public void onCreate() {

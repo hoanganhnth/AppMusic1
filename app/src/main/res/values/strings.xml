@@ -42,4 +42,5 @@
     <string name="add_song_to_playlist_title">Thêm vào playlist</string>
     <string name="followedAuthorTitle">Đã theo dõi</string>
     <string name="followAuthorTitle">Theo dõi</string>
+    <string name="error_add_fav_title">Đã có lỗi trong quá trình thêm</string>
 </resources>

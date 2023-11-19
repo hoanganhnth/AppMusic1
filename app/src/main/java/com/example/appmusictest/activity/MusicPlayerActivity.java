@@ -28,7 +28,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -36,6 +35,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.appmusictest.FavoriteHelper;
+import com.example.appmusictest.MyApplication;
 import com.example.appmusictest.NotificationReceiver;
 import com.example.appmusictest.R;
 import com.example.appmusictest.adapter.PlaylistAddAdapter;
@@ -192,12 +193,10 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
 
         favoriteIb.setOnClickListener(v -> {
             if (!FavoriteSongActivity.isInFav(currentSongs.get(songPosition))) {
-                Toast.makeText(this, R.string.add_favorite_notification, Toast.LENGTH_SHORT).show();
-                FavoriteSongActivity.addSong(currentSongs.get(songPosition));
+                FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),currentSongs.get(songPosition).getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_SONG);
                 favoriteIb.setImageResource(R.drawable.ic_favorite_purple);
             } else {
-                Toast.makeText(this, R.string.remove_favorite_notification, Toast.LENGTH_SHORT).show();
-                FavoriteSongActivity.removeSong(currentSongs.get(songPosition));
+                FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),currentSongs.get(songPosition).getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_SONG);
                 favoriteIb.setImageResource(R.drawable.ic_favorite_gray);
             }
         });
@@ -299,13 +298,11 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         });
         addFavoriteLn.setOnClickListener( v -> {
             if (!FavoriteSongActivity.isInFav(currentSongs.get(songPosition))) {
-                Toast.makeText(this, R.string.add_favorite_notification, Toast.LENGTH_SHORT).show();
-                FavoriteSongActivity.addSong(currentSongs.get(songPosition));
+                FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),currentSongs.get(songPosition).getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_SONG);
             } else {
-                Toast.makeText(this, R.string.remove_favorite_notification, Toast.LENGTH_SHORT).show();
-                FavoriteSongActivity.removeSong(currentSongs.get(songPosition));
+                FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),currentSongs.get(songPosition).getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_SONG);
             }
-                dialog.dismiss();
+            dialog.dismiss();
         });
 
         seeAuthorLn.setOnClickListener( v -> {

@@ -119,32 +119,16 @@ public class FavoriteSongActivity extends AppCompatActivity {
         buttonShuffleTv = findViewById(R.id.buttonShuffleTv);
     }
 
-    public static void addSong(Song song) {
-        favSongs.add(song);
-        Log.d(TAG, "added to favorite");
-    }
-
-    public static void removeSong(Song song) {
-        Iterator<Song> iterator = favSongs.iterator();
-        while (iterator.hasNext()) {
-            Song obj = iterator.next();
-            if (obj.getId().equals(song.getId())) {
-                iterator.remove();
-            }
-        }
-        Log.d(TAG, "remove from favorite");
-    }
-
     public static int getSize() {
         return favSongs.size();
     }
 
     public static boolean isInFav(Song song) {
-        for (Song song1 : favSongs) {
-            if (song1.getId().equals(song.getId())) {
-                return true;
-            }
-        }
-        return false;
+//        for (Song song1 : favSongs) {
+//            if (song1.getId().equals(song.getId())) {
+//                return true;
+//            }
+//        }
+        return true;
     }
 }

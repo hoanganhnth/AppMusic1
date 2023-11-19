@@ -20,6 +20,7 @@
             android:scaleType="centerCrop"
             android:src="@mipmap/music_player_icon"
             app:shapeAppearanceOverlay="@style/rounded_corner"
+            app:strokeColor="@android:color/transparent"
             />
 
         <RelativeLayout

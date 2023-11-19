@@ -1,6 +1,7 @@
 package com.example.appmusictest.adapter;
 
 import static com.example.appmusictest.MyApplication.TYPE_ALBUM;
+import static com.example.appmusictest.MyApplication.TYPE_AUTHOR;
 import static com.example.appmusictest.MyApplication.TYPE_PLAYLIST;
 
 import android.app.AlertDialog;
@@ -20,10 +21,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.appmusictest.FavoriteHelper;
 import com.example.appmusictest.R;
 import com.example.appmusictest.activity.AuthorDetailActivity;
 import com.example.appmusictest.activity.FavoritePlaylistActivity;
 import com.example.appmusictest.activity.FavoriteAuthorActivity;
+import com.example.appmusictest.activity.MainActivity;
 import com.example.appmusictest.model.Author;
 
 import java.util.ArrayList;
@@ -72,15 +75,14 @@ public class AuthorAdapter extends RecyclerView.Adapter<AuthorAdapter.ViewHolder
         }
         holder.authorFvIb.setOnClickListener(v -> {
             if (!FavoriteAuthorActivity.isInFav(model)) {
-                FavoriteAuthorActivity.addAuthor(model);
+
+                FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),model.getId(), FavoriteHelper.TYPE_ADD, TYPE_AUTHOR);
                 holder.authorFvIb.setImageResource(R.drawable.ic_favorite_purple);
-                Toast.makeText(v.getContext(), R.string.add_favorite_notification, Toast.LENGTH_SHORT).show();
             } else if (activity.equals(FavoriteAuthorActivity.class.getSimpleName())){
                 showDialog(position, model);
             } else {
                 holder.authorFvIb.setImageResource(R.drawable.ic_favorite_gray);
-                FavoriteAuthorActivity.removeAuthor(model);
-                Toast.makeText(v.getContext(), R.string.remove_favorite_notification, Toast.LENGTH_SHORT).show();
+                FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),model.getId(), FavoriteHelper.TYPE_DELETE, TYPE_AUTHOR);
             }
         });
     }
@@ -110,9 +112,10 @@ public class AuthorAdapter extends RecyclerView.Adapter<AuthorAdapter.ViewHolder
 
         submitBtn.setOnClickListener(v -> {
 
-            FavoriteAuthorActivity.removeAuthor(author);
+            FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),author.getId(), FavoriteHelper.TYPE_DELETE, TYPE_AUTHOR);
+            arrayList.remove(pos);
             notifyItemRemoved(pos);
-            notifyItemRangeChanged(pos, FavoritePlaylistActivity.getSize());
+            notifyItemRangeChanged(pos, arrayList.size() - pos) ;
             dialog.dismiss();
             Toast.makeText(v.getContext(), R.string.remove_favorite_notification, Toast.LENGTH_SHORT).show();
         });

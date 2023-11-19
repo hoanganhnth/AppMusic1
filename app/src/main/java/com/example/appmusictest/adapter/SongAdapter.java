@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,9 +22,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.appmusictest.FavoriteHelper;
+import com.example.appmusictest.MyApplication;
 import com.example.appmusictest.R;
 import com.example.appmusictest.activity.FavoritePlaylistActivity;
 import com.example.appmusictest.activity.FavoriteSongActivity;
+import com.example.appmusictest.activity.MainActivity;
 import com.example.appmusictest.activity.MusicPlayerActivity;
 import com.example.appmusictest.dialog.MyCreatePlaylistDialog;
 import com.example.appmusictest.model.Song;
@@ -115,15 +117,13 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
         addFavLn.setOnClickListener( v -> {
             if (!FavoriteSongActivity.isInFav(songArrayList.get(pos))) {
-                Toast.makeText(context, R.string.add_favorite_notification, Toast.LENGTH_SHORT).show();
-                FavoriteSongActivity.addSong(songArrayList.get(pos));
-            } else {
+                FavoriteHelper.actionWithFav(context,MainActivity.getIdUser(),songArrayList.get(pos).getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_SONG);
 
+            } else {
                 if (context.getClass().getSimpleName().equals(FavoriteSongActivity.class.getSimpleName())) {
                     showDeleteDialog(context, pos);
                 } else {
-                    Toast.makeText(context, R.string.remove_favorite_notification, Toast.LENGTH_SHORT).show();
-                    FavoriteSongActivity.removeSong(songArrayList.get(pos));
+                    FavoriteHelper.actionWithFav(context,MainActivity.getIdUser(),songArrayList.get(pos).getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_SONG);
                 }
             }
             dialog.dismiss();
@@ -186,10 +186,10 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         dialog.show();
 
         submitBtn.setOnClickListener(v -> {
-            Toast.makeText(context, R.string.remove_favorite_notification, Toast.LENGTH_SHORT).show();
-            FavoriteSongActivity.removeSong(songArrayList.get(pos));
+            FavoriteHelper.actionWithFav(context,MainActivity.getIdUser(),songArrayList.get(pos).getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_SONG);
+            songArrayList.remove(pos);
             notifyItemRemoved(pos);
-            notifyItemRangeChanged(pos, FavoriteSongActivity.getSize());
+            notifyItemRangeChanged(pos, songArrayList.size() - pos);
             dialog.dismiss();
         });
         cancelBtn.setOnClickListener(v -> dialog.dismiss());

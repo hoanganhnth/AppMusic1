@@ -1,5 +1,8 @@
 package com.example.appmusictest.activity;
 
+import static com.example.appmusictest.MyApplication.TYPE_ALBUM;
+import static com.example.appmusictest.MyApplication.TYPE_AUTHOR;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.appmusictest.FavoriteHelper;
 import com.example.appmusictest.R;
 import com.example.appmusictest.adapter.SongAdapter;
 import com.example.appmusictest.dialog.MyProgress;
@@ -63,10 +67,10 @@ public class AuthorDetailActivity extends AppCompatActivity {
                 .into(imgBgIv);
         followTv.setOnClickListener(v -> {
             if (FavoriteAuthorActivity.isInFav(author)) {
-                FavoriteAuthorActivity.removeAuthor(author);
+                FavoriteHelper.actionWithFav(this, MainActivity.getIdUser(),author.getId(), FavoriteHelper.TYPE_DELETE, TYPE_AUTHOR);
                 followTv.setText(R.string.followAuthorTitle);
             } else {
-                FavoriteAuthorActivity.addAuthor(author);
+                FavoriteHelper.actionWithFav(this, MainActivity.getIdUser(),author.getId(), FavoriteHelper.TYPE_ADD, TYPE_AUTHOR);
                 followTv.setText(R.string.followedAuthorTitle);
             }
         });

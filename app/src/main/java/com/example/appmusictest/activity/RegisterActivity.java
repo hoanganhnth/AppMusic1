@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.example.appmusictest.dialog.MyProgressDialog;
 import com.example.appmusictest.R;
 import com.example.appmusictest.SessionManager;
-import com.example.appmusictest.model.api.RegisterRequest;
 import com.example.appmusictest.model.api.RegisterResponse;
 import com.example.appmusictest.service.ApiService;
 import com.example.appmusictest.service.DataService;
@@ -101,9 +100,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void performSignUp() {
-        RegisterRequest registerRequest = new RegisterRequest(name, email, password);
         DataService dataService = ApiService.getService();
-//        Call<RegisterResponse> callback = dataService.performUserSignUp(registerRequest);
         Call<RegisterResponse> callback = dataService.performUserSignUp(name, email, password);
         callback.enqueue(new Callback<RegisterResponse>() {
             @Override
