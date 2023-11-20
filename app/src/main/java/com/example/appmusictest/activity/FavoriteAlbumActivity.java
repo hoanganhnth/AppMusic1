@@ -9,12 +9,11 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.appmusictest.MyApplication;
 import com.example.appmusictest.R;
-import com.example.appmusictest.adapter.PlaylistAlbumAdapter;
+import com.example.appmusictest.adapter.AlbumAdapter;
 import com.example.appmusictest.dialog.MyProgress;
 import com.example.appmusictest.model.Album;
-import com.example.appmusictest.model.Playlist;
+
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,7 +21,7 @@ import java.util.Iterator;
 public class FavoriteAlbumActivity extends AppCompatActivity {
 
     private static ArrayList<Album> favAlbum;
-    private PlaylistAlbumAdapter adapter;
+    private AlbumAdapter adapter;
     private RecyclerView albumFavRv;
     private TextView numberAlbumTv;
     private ImageButton backIb;
@@ -52,7 +51,7 @@ public class FavoriteAlbumActivity extends AppCompatActivity {
     }
 
     private void setViewData() {
-        adapter = new PlaylistAlbumAdapter<>(favAlbum, this, MyApplication.TYPE_ALBUM);
+        adapter = new AlbumAdapter(favAlbum, this);
         albumFavRv.setAdapter(adapter);
 
         if (!favAlbum.isEmpty()) {
@@ -89,11 +88,11 @@ public class FavoriteAlbumActivity extends AppCompatActivity {
     }
 
     public static boolean isInFav(Album album) {
-        for (Album album1 : favAlbum) {
-            if (album1.getId().equals(album.getId())) {
-                return true;
-            }
-        }
+//        for (Album album1 : favAlbum) {
+//            if (album1.getId().equals(album.getId())) {
+//                return true;
+//            }
+//        }
         return false;
     }
 

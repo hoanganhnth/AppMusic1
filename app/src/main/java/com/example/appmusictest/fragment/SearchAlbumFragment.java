@@ -13,8 +13,9 @@ import android.widget.TextView;
 
 import com.example.appmusictest.MyApplication;
 import com.example.appmusictest.R;
+import com.example.appmusictest.adapter.AlbumAdapter;
 import com.example.appmusictest.adapter.AuthorAdapter;
-import com.example.appmusictest.adapter.PlaylistAlbumAdapter;
+import com.example.appmusictest.adapter.PlaylistAdapter;
 import com.example.appmusictest.dialog.MyProgress;
 import com.example.appmusictest.model.Album;
 import com.example.appmusictest.model.Author;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 public class SearchAlbumFragment extends Fragment {
 
     private ArrayList<Album> albums = new ArrayList<>();
-    private PlaylistAlbumAdapter albumAdapter;
+    private AlbumAdapter albumAdapter;
     private RecyclerView recyclerView;
     private TextView noDataTv;
     private static final String TAG = "SearchAlbumFragment";
@@ -50,7 +51,7 @@ public class SearchAlbumFragment extends Fragment {
     }
 
     private void setViewData() {
-        albumAdapter = new PlaylistAlbumAdapter<>(albums, getActivity(), MyApplication.TYPE_ALBUM);
+        albumAdapter = new AlbumAdapter(albums, getActivity());
         recyclerView.setAdapter(albumAdapter);
         if (albums.size() == 0) {
             noDataTv.setVisibility(View.VISIBLE);

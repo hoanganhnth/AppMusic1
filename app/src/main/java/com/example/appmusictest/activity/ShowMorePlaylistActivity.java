@@ -10,7 +10,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.appmusictest.R;
-import com.example.appmusictest.adapter.PlaylistAlbumSuggestAdapter;
+import com.example.appmusictest.adapter.AlbumSuggestAdapter;
+import com.example.appmusictest.adapter.PlaylistSuggestAdapter;
 import com.example.appmusictest.dialog.MyProgress;
 import com.example.appmusictest.model.Album;
 import com.example.appmusictest.model.Playlist;
@@ -22,10 +23,10 @@ public class ShowMorePlaylistActivity extends AppCompatActivity {
     private TextView titleMoreTv;
     private ImageButton backIb;
     private RecyclerView showMoreRv;
-    private PlaylistAlbumSuggestAdapter<Playlist> playlistSuggestAdapter;
-    private PlaylistAlbumSuggestAdapter<Album> albumSuggestAdapter;
-    private ArrayList<? extends Playlist> playlistArrayList;
-    private ArrayList<? extends Album> albumArrayList;
+    private PlaylistSuggestAdapter playlistSuggestAdapter;
+    private AlbumSuggestAdapter albumSuggestAdapter;
+    private ArrayList<Playlist> playlistArrayList;
+    private ArrayList<Album> albumArrayList;
     private static final String TAG = "Show More Playlist";
     private MyProgress myProgress;
 
@@ -48,12 +49,12 @@ public class ShowMorePlaylistActivity extends AppCompatActivity {
             playlistArrayList = bundle.getParcelableArrayList("playlists");
             albumArrayList = bundle.getParcelableArrayList("albums");
             if (playlistArrayList != null) {
-                playlistSuggestAdapter = new PlaylistAlbumSuggestAdapter<>(playlistArrayList, this, true);
+                playlistSuggestAdapter = new PlaylistSuggestAdapter(playlistArrayList,playlistArrayList, this, true);
                 showMoreRv.setLayoutManager(new GridLayoutManager(this, 2));
                 showMoreRv.setAdapter(playlistSuggestAdapter);
                 Log.d(TAG, "SIZE :" + playlistArrayList.size());
             } else {
-                albumSuggestAdapter = new PlaylistAlbumSuggestAdapter<>(albumArrayList, this, true);
+                albumSuggestAdapter = new AlbumSuggestAdapter(albumArrayList, albumArrayList, this, true);
                 showMoreRv.setLayoutManager(new GridLayoutManager(this, 2));
                 showMoreRv.setAdapter(albumSuggestAdapter);
             }

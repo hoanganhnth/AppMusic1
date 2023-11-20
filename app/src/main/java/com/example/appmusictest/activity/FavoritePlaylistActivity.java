@@ -10,9 +10,8 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.appmusictest.MyApplication;
 import com.example.appmusictest.R;
-import com.example.appmusictest.adapter.PlaylistAlbumAdapter;
+import com.example.appmusictest.adapter.PlaylistAdapter;
 import com.example.appmusictest.dialog.MyCreatePlaylistDialog;
 import com.example.appmusictest.dialog.MyProgress;
 import com.example.appmusictest.model.Playlist;
@@ -23,7 +22,7 @@ import java.util.Iterator;
 public class FavoritePlaylistActivity extends AppCompatActivity {
 
     private static ArrayList<Playlist> favPlaylists;
-    private  PlaylistAlbumAdapter playlistAdapter;
+    private PlaylistAdapter playlistAdapter;
     private RelativeLayout addPlaylistRl;
     private RecyclerView playlistFavRv;
     private TextView numberPlaylistTv;
@@ -61,7 +60,7 @@ public class FavoritePlaylistActivity extends AppCompatActivity {
     }
 
     private void setViewData() {
-        playlistAdapter = new PlaylistAlbumAdapter<>(favPlaylists, this, MyApplication.TYPE_PLAYLIST);
+        playlistAdapter = new PlaylistAdapter(favPlaylists, this);
         playlistFavRv.setAdapter(playlistAdapter);
 
         if (!favPlaylists.isEmpty()) {
@@ -103,11 +102,11 @@ public class FavoritePlaylistActivity extends AppCompatActivity {
     }
 
     public static boolean isInFav(Playlist playlist) {
-        for (Playlist playlist1 : favPlaylists) {
-            if (playlist1.getId().equals(playlist.getId())) {
-                return true;
-            }
-        }
+//        for (Playlist playlist1 : favPlaylists) {
+//            if (playlist1.getId().equals(playlist.getId())) {
+//                return true;
+//            }
+//        }
         return false;
     }
 

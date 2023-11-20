@@ -6,34 +6,23 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.appmusictest.MyApplication;
 import com.example.appmusictest.R;
-import com.example.appmusictest.adapter.PlaylistAlbumAdapter;
 import com.example.appmusictest.adapter.SongAdapter;
-import com.example.appmusictest.dialog.MyProgress;
-import com.example.appmusictest.model.Album;
-import com.example.appmusictest.model.Playlist;
+
 import com.example.appmusictest.model.Song;
-import com.example.appmusictest.service.ApiService;
-import com.example.appmusictest.service.DataService;
+
 
 import java.util.ArrayList;
-import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class SearchSongFragment extends Fragment {
 
     private ArrayList<Song> songs = new ArrayList<>();
-//    private ArrayList<Song> songsFilter;
     private SongAdapter songAdapter;
     private RecyclerView recyclerView;
     private TextView noDataTv;

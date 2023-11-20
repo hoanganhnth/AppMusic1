@@ -16,14 +16,14 @@ import androidx.core.content.ContextCompat;
 
 import com.example.appmusictest.R;
 import com.example.appmusictest.activity.FavoritePlaylistActivity;
-import com.example.appmusictest.adapter.PlaylistAlbumAdapter;
+import com.example.appmusictest.adapter.PlaylistAdapter;
 import com.example.appmusictest.model.Playlist;
 
 public class MyCreatePlaylistDialog {
     private AlertDialog dialog;
     private EditText playlistEt;
     private TextView submitBtn,cancelBtn;
-    public MyCreatePlaylistDialog(Context context, PlaylistAlbumAdapter adapter) {
+    public MyCreatePlaylistDialog(Context context, PlaylistAdapter adapter) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View view = LayoutInflater.from(context).inflate(R.layout.custom_dialog_add,null);
         playlistEt = view.findViewById(R.id.playlistEt);

@@ -66,11 +66,11 @@ public class FavoriteAuthorActivity extends AppCompatActivity {
     }
 
     public static boolean isInFav(Author author) {
-        for (Author author1 : favAuthor) {
-            if (author.getId().equals(author1.getId())) {
-                return true;
-            }
-        }
+//        for (Author author1 : favAuthor) {
+//            if (author.getId().equals(author1.getId())) {
+//                return true;
+//            }
+//        }
         return false;
     }
 

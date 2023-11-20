@@ -10,7 +10,6 @@ import android.content.Intent;
 
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -25,8 +24,9 @@ import android.widget.TextView;
 
 import com.example.appmusictest.R;
 import com.example.appmusictest.SessionManager;
+import com.example.appmusictest.adapter.AlbumSuggestAdapter;
 import com.example.appmusictest.adapter.AuthorSuggestAdapter;
-import com.example.appmusictest.adapter.PlaylistAlbumSuggestAdapter;
+import com.example.appmusictest.adapter.PlaylistSuggestAdapter;
 import com.example.appmusictest.dialog.MyProgress;
 import com.example.appmusictest.model.Album;
 import com.example.appmusictest.model.Author;
@@ -50,23 +50,23 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText searchEt;
     private RelativeLayout songFavRl, playlistFavRl, albumFavRl, authorFavRl;
-    private RelativeLayout showMorePlaylistRl,showMoreAlbumRl;
     private TextView numberSongTv,numberPlaylistTv,numberAlbumTv,numberAuthorTv;
-    private ImageButton logOutIb,showMoreIb,showMoreAlbumIb;
+    private ImageButton logOutIb;
     private ScrollView viewSv;
-    private ArrayList<Playlist> playlists, favPlaylist;
-    private ArrayList<Album> albums, favAlbums;
-    private ArrayList<Author> authors, favAuthors;
+    private ArrayList<Playlist> playlists, favPlaylist,showPlaylist;
+    private ArrayList<Album> albums, favAlbums, showAlbum;
+    private ArrayList<Author> authors, favAuthors, showAuthor;
     private ArrayList<Song> favSongs;
     private RecyclerView playlistSgRv,albumSgRv, authorSgRv;
     private static final String TAG = "Main_Activity";
-    private PlaylistAlbumSuggestAdapter<Album> albumSuggestAdapter;
-    private PlaylistAlbumSuggestAdapter<Playlist> playlistSuggestAdapter;
+    private AlbumSuggestAdapter albumSuggestAdapter;
+    private PlaylistSuggestAdapter playlistSuggestAdapter;
     private AuthorSuggestAdapter authorSuggestAdapter;
     private SessionManager sessionManager;
     private MyProgress myProgress;
     private boolean getDataSuccess = false;
     private static String idUser = "";
+    private int numberSuggest = 4;
 
     public static String getIdUser() {
         return idUser;
@@ -130,21 +130,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         logOutIb.setOnClickListener(v -> sessionManager.logOutSession());
-        showMoreIb.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ShowMorePlaylistActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList("playlists", playlists);
-            intent.putExtras(bundle);
-            startActivity(intent);
-        });
-
-        showMoreAlbumIb.setOnClickListener( v-> {
-            Intent intent = new Intent(this, ShowMorePlaylistActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList("albums", albums);
-            intent.putExtras(bundle);
-            startActivity(intent);
-        });
 
     }
 
@@ -157,13 +142,9 @@ public class MainActivity extends AppCompatActivity {
         authorFavRl = findViewById(R.id.authorFavRl);
         numberSongTv = findViewById(R.id.numberSongTv);
         logOutIb = findViewById(R.id.logOutIb);
-        showMoreIb = findViewById(R.id.showMoreIb);
-        showMorePlaylistRl = findViewById(R.id.showMorePlaylistRl);
         numberPlaylistTv = findViewById(R.id.numberPlaylistTv);
         albumSgRv = findViewById(R.id.albumSuggestRv);
-        showMoreAlbumRl = findViewById(R.id.showMoreAlbumRl);
         viewSv = findViewById(R.id.viewSv);
-        showMoreAlbumIb = findViewById(R.id.showMoreAlbumIb);
         numberAlbumTv = findViewById(R.id.numberAlbumTv);
         authorSgRv = findViewById(R.id.authorSuggestRv);
         numberAuthorTv = findViewById(R.id.numberAuthorTv);
@@ -317,12 +298,10 @@ public class MainActivity extends AppCompatActivity {
         albums.add(new Album("3","test3", "https://imgmusic.com/uploads/album/cover/78/IndieInspirational_Vol2.jpg"));
         albums.add(new Album("4","test4", "https://imgmusic.com/uploads/album/cover/66/EmotionalBuilds_Vol1-update.jpg"));
         albums.add(new Album("5","test5", "https://imgmusic.com/uploads/album/cover/11/IndieReflections_Vol1_highrez.jpg"));
-        albumSuggestAdapter = new PlaylistAlbumSuggestAdapter<>(albums, this, false);
+        showAlbum = new ArrayList<>(albums.subList(0,  Math.min(albums.size(), numberSuggest)));
+        albumSuggestAdapter = new AlbumSuggestAdapter(showAlbum, albums, this, false);
         albumSgRv.setAdapter(albumSuggestAdapter);
 
-        if (albums.size() >= 5) {
-            showMoreAlbumRl.setVisibility(View.VISIBLE);
-        }
         Log.d(TAG, "album size "  + albums.size());
     }
 
@@ -335,10 +314,8 @@ public class MainActivity extends AppCompatActivity {
 
                 playlists = (ArrayList<Playlist>) response.body();
                 assert playlists != null;
-                if (playlists.size() >= 3) {
-                    showMorePlaylistRl.setVisibility(View.VISIBLE);
-                }
-                playlistSuggestAdapter = new PlaylistAlbumSuggestAdapter<>(playlists, MainActivity.this, false);
+                showPlaylist = new ArrayList<>(playlists.subList(0,  Math.min(playlists.size(), numberSuggest)));
+                playlistSuggestAdapter = new PlaylistSuggestAdapter(showPlaylist,playlists, MainActivity.this, false);
                 playlistSgRv.setAdapter(playlistSuggestAdapter);
                 getDataSuccess = true;
                 if (getDataSuccess) myProgress.dismiss();

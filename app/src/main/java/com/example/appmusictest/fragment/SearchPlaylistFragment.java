@@ -13,17 +13,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.appmusictest.R;
-import com.example.appmusictest.adapter.PlaylistAlbumAdapter;
+import com.example.appmusictest.adapter.PlaylistAdapter;
 import com.example.appmusictest.model.Playlist;
-import com.example.appmusictest.service.ApiService;
-import com.example.appmusictest.service.DataService;
-
 import java.util.ArrayList;
-import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class SearchPlaylistFragment extends Fragment {
@@ -32,7 +25,7 @@ public class SearchPlaylistFragment extends Fragment {
 
     private RecyclerView playlistRv;
     private static final String TAG = "Playlist_Fragment";
-    private PlaylistAlbumAdapter playlistAdapter;
+    private PlaylistAdapter playlistAdapter;
     public static TextView noDataTv;
 
     public void setPlaylists(ArrayList<Playlist> playlists) {
@@ -54,7 +47,7 @@ public class SearchPlaylistFragment extends Fragment {
     }
 
     private void setViewData() {
-        playlistAdapter = new PlaylistAlbumAdapter<>(playlists,getActivity(), 1);
+        playlistAdapter = new PlaylistAdapter(playlists,getActivity());
         playlistRv.setAdapter(playlistAdapter);
         if (playlists.size() == 0) {
             noDataTv.setVisibility(View.VISIBLE);

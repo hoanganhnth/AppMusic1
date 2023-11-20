@@ -21,7 +21,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.appmusictest.R;
-import com.example.appmusictest.adapter.PlaylistAlbumAdapter;
 import com.example.appmusictest.dialog.MyProgress;
 import com.example.appmusictest.fragment.SearchAlbumFragment;
 import com.example.appmusictest.fragment.SearchAuthorsFragment;

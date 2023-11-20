@@ -19,6 +19,7 @@
         tools:listitem="@layout/row_playlist_suggest"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
+        android:layout_centerHorizontal="true"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         />
 </RelativeLayout>
