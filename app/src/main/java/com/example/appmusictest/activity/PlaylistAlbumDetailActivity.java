@@ -30,6 +30,7 @@ import com.example.appmusictest.dialog.MyProgress;
 import com.example.appmusictest.model.Album;
 import com.example.appmusictest.model.Playlist;
 import com.example.appmusictest.model.Song;
+import com.example.appmusictest.model.api.SongsResponse;
 import com.example.appmusictest.service.ApiService;
 import com.example.appmusictest.service.DataService;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -224,34 +225,44 @@ public class PlaylistAlbumDetailActivity extends AppCompatActivity {
 
     private void getDataFromServer() {
         if (playlist != null) {
-            getData(playlist.getId());
             type = MyApplication.TYPE_PLAYLIST;
+            getData(playlist.getId(), type);
         } else if (album != null) {
-            getData(album.getId());
             type = MyApplication.TYPE_ALBUM;
+            getData(album.getId(), type);
+
         }
     }
 
-    private void getData(String idPlaylist) {
+    private void getData(String id, int type) {
         DataService dataService = ApiService.getService();
-        Call<List<Song>> callback = dataService.getSongByPlaylist(idPlaylist);
-        callback.enqueue(new Callback<List<Song>>() {
+        Call<SongsResponse> callback;
+        if (type == MyApplication.TYPE_ALBUM) {
+             callback = dataService.getAlbumSongs(id);
+        } else {
+             callback = dataService.getPlaylistSongs(id);
+        }
+        callback.enqueue(new Callback<SongsResponse>() {
             @Override
-            public void onResponse(@NonNull Call<List<Song>> call, @NonNull Response<List<Song>> response) {
-
-                songArrayList = (ArrayList<Song>) response.body();
-                recyclerView.setAdapter(new SongAdapter(songArrayList, PlaylistAlbumDetailActivity.this));
-                numberSongTv.setText(songArrayList.size() + " " + getString(R.string.playlist_title));
-                if (songArrayList.isEmpty()) {
-                    shuffleBtn.setVisibility(View.GONE);
-                } else {
-                    shuffleBtn.setVisibility(View.VISIBLE);
+            public void onResponse(@NonNull Call<SongsResponse> call, @NonNull Response<SongsResponse> response) {
+                if (response.code() == 200) {
+                    if (response.body().getErrCode().equals("0")) {
+                        songArrayList = response.body().getSongs();
+                        recyclerView.setAdapter(new SongAdapter(songArrayList, PlaylistAlbumDetailActivity.this));
+                        numberSongTv.setText(songArrayList.size() + " " + getString(R.string.playlist_title));
+                        if (songArrayList.isEmpty()) {
+                            shuffleBtn.setVisibility(View.GONE);
+                        } else {
+                            shuffleBtn.setVisibility(View.VISIBLE);
+                        }
+                        myProgress.dismiss();
+                    }
                 }
-                myProgress.dismiss();
+
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<Song>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<SongsResponse> call, @NonNull Throwable t) {
                 Log.d(TAG, "Fail to get data from server due to:" + t.getMessage() );
                 myProgress.dismiss();
             }

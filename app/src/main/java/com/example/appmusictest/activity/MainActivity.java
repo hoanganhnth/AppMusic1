@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.appmusictest.R;
 import com.example.appmusictest.SessionManager;
@@ -161,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
         getDataFavSong();
         getDataFavPlaylist();
         getDataFavAlbum();
-//        getDataFavAuthor();
+        getDataFavAuthor();
     }
 
     private void getDataFavAlbum() {
@@ -205,9 +206,9 @@ public class MainActivity extends AppCompatActivity {
                     if (response.body().getErrCode().equals("0")) {
                         favAuthors = response.body().getAuthors();
                         if (favAuthors.isEmpty()) {
-                            numberPlaylistTv.setText("");
+                            numberAuthorTv.setText("");
                         } else {
-                            numberPlaylistTv.setText(String.valueOf(favAuthors.size()));
+                            numberAuthorTv.setText(String.valueOf(favAuthors.size()));
                         }
                     }
                 }
@@ -281,28 +282,62 @@ public class MainActivity extends AppCompatActivity {
 
     private void getDataAuthor() {
         authors = new ArrayList<>();
-        authors.add(new Author("1", "author1", "https://upload.wikimedia.org/wikipedia/vi/3/32/S%C6%A1n_T%C3%B9ng_M-TP_-_C%C3%B3_ch%E1%BA%AFc_y%C3%AAu_l%C3%A0_%C4%91%C3%A2y.jpg"));
-        authors.add(new Author("2", "author2", "https://cdnphoto.dantri.com.vn/ecdPkKw4WCg-NR0Zi2shwRYyUlo=/thumb_w/1020/2022/11/10/micheal-jackson-1668044313441.jpg"));
-        authors.add(new Author("3", "author3", "https://cdn.tuoitre.vn/thumb_w/1100/471584752817336320/2023/9/5/jack-messi-1-16938973854241419756685.jpg"));
-        authors.add(new Author("4", "author4", "https://images2.thanhnien.vn/528068263637045248/2023/8/30/1-1693385246169701996465.jpg"));
-        authors.add(new Author("5", "author5", "https://suckhoedoisong.qltns.mediacdn.vn/thumb_w/640/324455921873985536/2023/9/6/dam-vinh-hung-16939936357631285203697.png"));
-        authorSuggestAdapter = new AuthorSuggestAdapter(authors, this);
-        authorSgRv.setAdapter(authorSuggestAdapter);
+        DataService dataService = ApiService.getService();
+        Call<AuthorsResponse> callback = dataService.getFavAuthor(idUser);
+        callback.enqueue(new Callback<AuthorsResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<AuthorsResponse> call, @NonNull Response<AuthorsResponse> response) {
+                if (response.code() == 200) {
+                    if (response.body().getErrCode().equals("0")) {
+                        authors = response.body().getAuthors();
+                        showAuthor = new ArrayList<>(authors.subList(0,  Math.min(authors.size(), numberSuggest)));
+                        authorSuggestAdapter = new AuthorSuggestAdapter(authors, MainActivity.this);
+                        authorSgRv.setAdapter(authorSuggestAdapter);
+                        myProgress.dismiss();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<AuthorsResponse> call, @NonNull Throwable t) {
+                Log.d(TAG, "Fail get data due to: " + t.getMessage());
+                myProgress.dismiss();
+
+            }
+        });
+
 
     }
 
     private void getDataAlbum() {
         albums = new ArrayList<>();
-        albums.add(new Album("1","test1", "https://imgmusic.com/uploads/album/cover/2/ZPP_Pop_Rock_Inspirational_vol1_highrez.jpg"));
-        albums.add(new Album("2","test2", "https://imgmusic.com/uploads/album/cover/197/poprockinsp_vol2_ZPP067.jpg"));
-        albums.add(new Album("3","test3", "https://imgmusic.com/uploads/album/cover/78/IndieInspirational_Vol2.jpg"));
-        albums.add(new Album("4","test4", "https://imgmusic.com/uploads/album/cover/66/EmotionalBuilds_Vol1-update.jpg"));
-        albums.add(new Album("5","test5", "https://imgmusic.com/uploads/album/cover/11/IndieReflections_Vol1_highrez.jpg"));
-        showAlbum = new ArrayList<>(albums.subList(0,  Math.min(albums.size(), numberSuggest)));
-        albumSuggestAdapter = new AlbumSuggestAdapter(showAlbum, albums, this, false);
-        albumSgRv.setAdapter(albumSuggestAdapter);
+        DataService dataService = ApiService.getService();
+        Call<AlbumsResponse> callback = dataService.getAllAlbums();
+        callback.enqueue(new Callback<AlbumsResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<AlbumsResponse> call, @NonNull Response<AlbumsResponse> response) {
+                if (response.code() == 200) {
+                    if (response.body().getErrCode().equals("0")) {
+                        albums = response.body().getAlbums();
+                        showAlbum = new ArrayList<>(albums.subList(0,  Math.min(albums.size(), numberSuggest)));
+                        albumSuggestAdapter = new AlbumSuggestAdapter(showAlbum, albums, MainActivity.this, false);
+                        albumSgRv.setAdapter(albumSuggestAdapter);
+                        myProgress.dismiss();
+                    }
+                }
 
-        Log.d(TAG, "album size "  + albums.size());
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<AlbumsResponse> call, @NonNull Throwable t) {
+                Log.d(TAG, "Fail get data due to: " + t.getMessage() );
+                myProgress.dismiss();
+
+            }
+        });
+
+
     }
 
     private void getDataPlaylist() {

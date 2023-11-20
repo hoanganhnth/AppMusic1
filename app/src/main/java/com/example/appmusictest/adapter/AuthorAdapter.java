@@ -117,7 +117,6 @@ public class AuthorAdapter extends RecyclerView.Adapter<AuthorAdapter.ViewHolder
             notifyItemRemoved(pos);
             notifyItemRangeChanged(pos, arrayList.size() - pos) ;
             dialog.dismiss();
-            Toast.makeText(v.getContext(), R.string.remove_favorite_notification, Toast.LENGTH_SHORT).show();
         });
         cancelBtn.setOnClickListener(v -> dialog.dismiss());
     }

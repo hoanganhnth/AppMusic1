@@ -71,7 +71,7 @@ public class FavoriteAuthorActivity extends AppCompatActivity {
 //                return true;
 //            }
 //        }
-        return false;
+        return true;
     }
 
     public static int getSize() {

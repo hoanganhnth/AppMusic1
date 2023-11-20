@@ -24,7 +24,7 @@ public class FavoriteHelper {
     }
     public static void actionWithFav(Context context, String idUser, String id, boolean actionAdd, int type) {
         DataService dataService = ApiService.getService();
-        Call<ApiResponse> callback;
+        Call<ApiResponse> callback ;
         switch (type) {
             case MyApplication.TYPE_PLAYLIST:
                 if (actionAdd) {
@@ -47,13 +47,13 @@ public class FavoriteHelper {
                     callback = dataService.removeFavSong(idUser, id);
                 }
                 break;
-//            case MyApplication.TYPE_AUTHOR:
-//                if (actionAdd) {
-//                    callback = dataService.addFavAuthor(idUser, id);
-//                } else {
-//                    callback = dataService.removeFavAuthor(idUser, id);
-//                }
-//                break;
+            case MyApplication.TYPE_AUTHOR:
+                if (actionAdd) {
+                    callback = dataService.addFavAuthor(idUser, id);
+                } else {
+                    callback = dataService.removeFavAuthor(idUser, id);
+                }
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + type);
         }
@@ -73,4 +73,5 @@ public class FavoriteHelper {
             }
         });
     }
+
 }

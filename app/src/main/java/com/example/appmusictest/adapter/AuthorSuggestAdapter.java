@@ -23,7 +23,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AuthorSuggestAdapter extends RecyclerView.Adapter<AuthorSuggestAdapter.ViewHolder> {
     private ArrayList<Author> authors;
+    private ArrayList<Author> authorAll;
     private Context context;
+
 
     public AuthorSuggestAdapter(ArrayList<Author> authors, Context context) {
         this.authors = authors;

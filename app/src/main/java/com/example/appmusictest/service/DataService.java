@@ -22,6 +22,10 @@ public interface DataService {
     @GET("/currentday")
     Call<List<Playlist>> getPlaylistCurrentDay();
 
+    @GET("/albums")
+    Call<AlbumsResponse> getAllAlbums();
+
+
     @FormUrlEncoded
     @POST("/listsong")
     Call<List<Song>> getSongByPlaylist(@Field("idPlaylist") String idPlaylist);
@@ -83,8 +87,8 @@ public interface DataService {
     Call<ApiResponse> addFavPlaylist(@Field("idUser") String idUser, @Field("idPlaylist") String idPlaylist);
 
     @FormUrlEncoded
-    @POST("/removefavalbum")
-    Call<ApiResponse> removeFavAuthor(@Field("idUser") String idUser, @Field("idPlaylist") String idPlaylist);
+    @POST("/removefavplaylist")
+    Call<ApiResponse> removeFavPlaylist(@Field("idUser") String idUser, @Field("idPlaylist") String idPlaylist);
 
     @FormUrlEncoded
     @POST("/addfavauthor")
@@ -92,7 +96,22 @@ public interface DataService {
 
     @FormUrlEncoded
     @POST("/removefavauthor")
-    Call<ApiResponse> removeFavPlaylist(@Field("idUser") String idUser, @Field("idAuthor") String idAuthor);
+    Call<ApiResponse> removeFavAuthor(@Field("idUser") String idUser, @Field("idAuthor") String idAuthor);
 
+    @FormUrlEncoded
+    @POST("/getalbumsongs")
+    Call<SongsResponse> getAlbumSongs(@Field("idAlbum") String idAlbum);
+
+    @FormUrlEncoded
+    @POST("/getplaylistsongs")
+    Call<SongsResponse> getPlaylistSongs(@Field("idPlaylist") String idPlaylist);
+
+    @FormUrlEncoded
+    @POST("/getauthorsongs")
+    Call<SongsResponse> getAuthorSongs(@Field("idAuthor") String idAuthor);
+
+    @FormUrlEncoded
+    @POST("/getauthoralbums")
+    Call<AlbumsResponse> getAuthorAlbums(@Field("idAuthor") String idAuthor);
 
 }

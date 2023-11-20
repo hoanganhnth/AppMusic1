@@ -102,6 +102,7 @@
 
             </RelativeLayout>
             <RelativeLayout
+                android:id="@+id/listSongRl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/authorView1"
@@ -125,7 +126,38 @@
                     android:layout_marginTop="10dp"
                     tools:listitem="@layout/row_songs"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="3"
+                    />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/listAlbumRl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/listSongRl"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
 
+                >
+                <TextView
+                    android:id="@+id/listAlbumTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/album_song_title"
+                    android:layout_marginTop="30dp"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/title_size"
+                    />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/listAlbumRv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/listAlbumTv"
+                    android:layout_marginTop="10dp"
+                    tools:listitem="@layout/row_playlist_suggest"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="3"
+                    android:layout_marginBottom="80dp"
                     />
             </RelativeLayout>
         </RelativeLayout>
