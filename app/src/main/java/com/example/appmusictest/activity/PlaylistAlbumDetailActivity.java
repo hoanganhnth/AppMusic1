@@ -85,6 +85,7 @@ public class PlaylistAlbumDetailActivity extends AppCompatActivity {
     }
 
     private void setViewDataAlbum() {
+
         titlePlIv.setText(album.getTitle());
         Glide.with(this)
                 .load(album.getArtUrl())
@@ -92,14 +93,16 @@ public class PlaylistAlbumDetailActivity extends AppCompatActivity {
                 .into(imgPlIv);
         favoriteIb.setOnClickListener(v -> {
             if (FavoriteAlbumActivity.isInFav(album)) {
-                FavoriteHelper.actionWithFav(this, MainActivity.getIdUser(),album.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_PLAYLIST);
+                FavoriteHelper.actionWithFav(this, MainActivity.getIdUser(),album.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_ALBUM, album);
                 favoriteIb.setImageResource(R.drawable.ic_favorite_gray);
             } else {
                 favoriteIb.setImageResource(R.drawable.ic_favorite_purple);
-                FavoriteHelper.actionWithFav(this, MainActivity.getIdUser(),album.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_PLAYLIST);
+                FavoriteHelper.actionWithFav(this, MainActivity.getIdUser(),album.getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_ALBUM, album);
 
             }
         });
+
+        Log.d(TAG, "ALBUM SETVIEW");
     }
 
     private void setViewDataPlaylist() {
@@ -110,14 +113,15 @@ public class PlaylistAlbumDetailActivity extends AppCompatActivity {
                 .into(imgPlIv);
         favoriteIb.setOnClickListener(v -> {
             if (FavoritePlaylistActivity.isInFav(playlist)) {
-                FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),playlist.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_PLAYLIST);
+                FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),playlist.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_PLAYLIST, playlist);
                 favoriteIb.setImageResource(R.drawable.ic_favorite_gray);
             } else {
-                FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),playlist.getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_PLAYLIST);
+                FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),playlist.getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_PLAYLIST, playlist);
                 favoriteIb.setImageResource(R.drawable.ic_favorite_purple);
             }
         });
 
+        Log.d(TAG, "playlist SETVIEW");
     }
 
     private void showDialog() {
@@ -147,10 +151,10 @@ public class PlaylistAlbumDetailActivity extends AppCompatActivity {
             }
             addFavLn.setOnClickListener(v -> {
                 if (!FavoritePlaylistActivity.isInFav(playlist)) {
-                    FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),playlist.getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_PLAYLIST);
+                    FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),playlist.getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_PLAYLIST, playlist);
                     favoriteIb.setImageResource(R.drawable.ic_favorite_purple);
                 } else {
-                    FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),playlist.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_PLAYLIST);
+                    FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),playlist.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_PLAYLIST, playlist);
                     favoriteIb.setImageResource(R.drawable.ic_favorite_gray);
                 }
                 dialog.dismiss();
@@ -169,10 +173,10 @@ public class PlaylistAlbumDetailActivity extends AppCompatActivity {
             }
             addFavLn.setOnClickListener(v -> {
                 if (!FavoriteAlbumActivity.isInFav(album)) {
-                    FavoriteHelper.actionWithFav(this, MainActivity.getIdUser(),album.getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_ALBUM);
+                    FavoriteHelper.actionWithFav(this, MainActivity.getIdUser(),album.getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_ALBUM, album);
                     favoriteIb.setImageResource(R.drawable.ic_favorite_purple);
                 } else {
-                    FavoriteHelper.actionWithFav(this, MainActivity.getIdUser(),album.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_ALBUM);
+                    FavoriteHelper.actionWithFav(this, MainActivity.getIdUser(),album.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_ALBUM, album);
 
                     favoriteIb.setImageResource(R.drawable.ic_favorite_gray);
                 }
@@ -277,7 +281,7 @@ public class PlaylistAlbumDetailActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        updateUi();
+        updateUi();
     }
 
     private void updateUi() {

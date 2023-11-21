@@ -69,6 +69,9 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
             if (songArrayList.get(position).getId().equals(MusicPlayerActivity.nowPlayingId)) {
                 intent.putExtra("index", MusicPlayerActivity.songPosition);
                 intent.putExtra("class", "NowPlaying");
+            } else if (context.getClass().getSimpleName().equals("FavoriteSongActivity")){
+                intent.putExtra("index", position);
+                intent.putExtra("class", "FavoriteSongActivity");
             } else {
                 intent.putExtra("index", position);
                 intent.putExtra("class", "SongAdapter");
@@ -117,13 +120,13 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
         addFavLn.setOnClickListener( v -> {
             if (!FavoriteSongActivity.isInFav(songArrayList.get(pos))) {
-                FavoriteHelper.actionWithFav(context,MainActivity.getIdUser(),songArrayList.get(pos).getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_SONG);
+                FavoriteHelper.actionWithFav(context,MainActivity.getIdUser(),songArrayList.get(pos).getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_SONG, songArrayList.get(pos));
 
             } else {
                 if (context.getClass().getSimpleName().equals(FavoriteSongActivity.class.getSimpleName())) {
                     showDeleteDialog(context, pos);
                 } else {
-                    FavoriteHelper.actionWithFav(context,MainActivity.getIdUser(),songArrayList.get(pos).getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_SONG);
+                    FavoriteHelper.actionWithFav(context,MainActivity.getIdUser(),songArrayList.get(pos).getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_SONG, songArrayList.get(pos));
                 }
             }
             dialog.dismiss();
@@ -186,7 +189,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         dialog.show();
 
         submitBtn.setOnClickListener(v -> {
-            FavoriteHelper.actionWithFav(context,MainActivity.getIdUser(),songArrayList.get(pos).getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_SONG);
+            FavoriteHelper.actionWithFav(context,MainActivity.getIdUser(),songArrayList.get(pos).getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_SONG, songArrayList.get(pos));
             songArrayList.remove(pos);
             notifyItemRemoved(pos);
             notifyItemRangeChanged(pos, songArrayList.size() - pos);

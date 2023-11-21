@@ -30,6 +30,10 @@ public class FavoriteAuthorActivity extends AppCompatActivity {
         return favAuthor;
     }
 
+    public static void setFavAuthor(ArrayList<Author> favAuthor) {
+        FavoriteAuthorActivity.favAuthor = favAuthor;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +41,7 @@ public class FavoriteAuthorActivity extends AppCompatActivity {
         myProgress = new MyProgress(this);
         myProgress.show();
         initView();
-        getData();
+//        getData();
         setViewData();
     }
 
@@ -64,17 +68,28 @@ public class FavoriteAuthorActivity extends AppCompatActivity {
         favAuthor.add(author);
         Log.d(TAG, "added to favorite");
     }
-
+    public static void removeAuthor(Author author) {
+        Iterator<Author> iterator = favAuthor.iterator();
+        while (iterator.hasNext()) {
+            Author obj = iterator.next();
+            if (obj.getId().equals(author.getId())) {
+                iterator.remove();
+                break;
+            }
+        }
+        Log.d(TAG, "remove from favorite");
+    }
     public static boolean isInFav(Author author) {
-//        for (Author author1 : favAuthor) {
-//            if (author.getId().equals(author1.getId())) {
-//                return true;
-//            }
-//        }
-        return true;
+        for (Author author1 : favAuthor) {
+            if (author.getId().equals(author1.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static int getSize() {
+        if (favAuthor == null) favAuthor = new ArrayList<>();
         return favAuthor.size();
     }
 }

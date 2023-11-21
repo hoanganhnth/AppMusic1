@@ -193,10 +193,10 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
 
         favoriteIb.setOnClickListener(v -> {
             if (!FavoriteSongActivity.isInFav(currentSongs.get(songPosition))) {
-                FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),currentSongs.get(songPosition).getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_SONG);
+                FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),currentSongs.get(songPosition).getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_SONG, currentSongs.get(songPosition));
                 favoriteIb.setImageResource(R.drawable.ic_favorite_purple);
             } else {
-                FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),currentSongs.get(songPosition).getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_SONG);
+                FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),currentSongs.get(songPosition).getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_SONG, currentSongs.get(songPosition));
                 favoriteIb.setImageResource(R.drawable.ic_favorite_gray);
             }
         });
@@ -298,9 +298,9 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         });
         addFavoriteLn.setOnClickListener( v -> {
             if (!FavoriteSongActivity.isInFav(currentSongs.get(songPosition))) {
-                FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),currentSongs.get(songPosition).getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_SONG);
+                FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),currentSongs.get(songPosition).getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_SONG, currentSongs.get(songPosition));
             } else {
-                FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),currentSongs.get(songPosition).getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_SONG);
+                FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),currentSongs.get(songPosition).getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_SONG, currentSongs.get(songPosition));
             }
             dialog.dismiss();
         });

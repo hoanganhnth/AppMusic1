@@ -22,7 +22,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginTop="20dp"
-          android:paddingStart="25dp"
+          android:paddingStart="30dp"
           android:paddingEnd="20dp"
           android:layout_marginBottom="20dp">
           <ImageButton
@@ -55,6 +55,8 @@
             tools:listitem="@layout/row_playlist"
             android:layout_below="@+id/addPlaylistRl"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginBottom="80dp"
+
             />
     </RelativeLayout>
 

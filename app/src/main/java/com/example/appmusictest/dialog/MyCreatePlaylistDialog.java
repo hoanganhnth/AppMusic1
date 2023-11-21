@@ -12,12 +12,21 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.example.appmusictest.R;
 import com.example.appmusictest.activity.FavoritePlaylistActivity;
+import com.example.appmusictest.activity.MainActivity;
 import com.example.appmusictest.adapter.PlaylistAdapter;
 import com.example.appmusictest.model.Playlist;
+import com.example.appmusictest.model.api.ApiResponse;
+import com.example.appmusictest.service.ApiService;
+import com.example.appmusictest.service.DataService;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MyCreatePlaylistDialog {
     private AlertDialog dialog;
@@ -58,16 +67,37 @@ public class MyCreatePlaylistDialog {
 
         submitBtn.setOnClickListener(v -> {
             if (!playlistEt.getText().toString().isEmpty()) {
-                FavoritePlaylistActivity.addPlaylist(new Playlist("4", playlistEt.getText().toString(),""));
-                dialog.dismiss();
-                if (adapter != null) {
-                    adapter.notifyDataSetChanged();
-                }
-
-                Toast.makeText(context, "Đã tạo playlist", Toast.LENGTH_SHORT).show();
+                createDataServer(context, playlistEt.getText().toString(), adapter);
             }
         });
         cancelBtn.setOnClickListener(v -> dialog.dismiss());
+    }
+
+    private void createDataServer(Context context, String title, PlaylistAdapter adapter) {
+        DataService dataService = ApiService.getService();
+        Call<ApiResponse> callback = dataService.createPlaylist(MainActivity.getIdUser(), title, "");
+        callback.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<ApiResponse> call, @NonNull Response<ApiResponse> response) {
+                if (response.code() == 200) {
+                    assert response.body() != null;
+                    if (response.body().getErrCode().equals("0")) {
+//                        FavoritePlaylistActivity.addPlaylist(new Playlist("100", playlistEt.getText().toString(),"", ""));
+
+                        if (adapter != null) {
+                            adapter.notifyItemInserted(FavoritePlaylistActivity.getSize() - 1);
+                        }
+                    }
+                    Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ApiResponse> call, @NonNull Throwable t) {
+
+            }
+        });
     }
 
     public void show() {

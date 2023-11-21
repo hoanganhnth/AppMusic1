@@ -78,13 +78,13 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
         }
         holder.rowFvIb.setOnClickListener(v -> {
             if (!FavoritePlaylistActivity.isInFav(model)) {
-                FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),model.getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_PLAYLIST);
+                FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),model.getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_PLAYLIST, model);
                 holder.rowFvIb.setImageResource(R.drawable.ic_favorite_purple);
             } else if (activity.equals(FavoritePlaylistActivity.class.getSimpleName())){
                 showDialog(position, model);
             } else {
                 holder.rowFvIb.setImageResource(R.drawable.ic_favorite_gray);
-                FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),model.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_PLAYLIST);
+                FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),model.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_PLAYLIST, model);
             }
         });
     }
@@ -113,7 +113,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
 
         submitBtn.setOnClickListener(v -> {
 
-            FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),playlist.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_PLAYLIST);
+            FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),playlist.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_PLAYLIST, playlist);
 
             arrayList.remove(pos);
             notifyItemRemoved(pos);

@@ -23,23 +23,16 @@ public class Playlist implements Parcelable {
     @Expose
     private String artUrl;
 
-    public Playlist(Parcel in) {
-        id = in.readString();
-        title = in.readString();
-        artUrl = in.readString();
+    @SerializedName("idUser")
+    @Expose
+    private String idUser;
+
+    public Playlist(String id, String title, String artUrl, String idUser) {
+        this.id = id;
+        this.title = title;
+        this.artUrl = artUrl;
+        this.idUser = idUser;
     }
-
-    public static final Creator<Playlist> CREATOR = new Creator<Playlist>() {
-        @Override
-        public Playlist createFromParcel(Parcel in) {
-            return new Playlist(in);
-        }
-
-        @Override
-        public Playlist[] newArray(int size) {
-            return new Playlist[size];
-        }
-    };
 
     public String getId() {
         return id;
@@ -65,6 +58,33 @@ public class Playlist implements Parcelable {
         this.artUrl = artUrl;
     }
 
+    public String getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
+    }
+
+    protected Playlist(Parcel in) {
+        id = in.readString();
+        title = in.readString();
+        artUrl = in.readString();
+        idUser = in.readString();
+    }
+
+    public static final Creator<Playlist> CREATOR = new Creator<Playlist>() {
+        @Override
+        public Playlist createFromParcel(Parcel in) {
+            return new Playlist(in);
+        }
+
+        @Override
+        public Playlist[] newArray(int size) {
+            return new Playlist[size];
+        }
+    };
+
     @Override
     public int describeContents() {
         return 0;
@@ -75,12 +95,7 @@ public class Playlist implements Parcelable {
         dest.writeString(id);
         dest.writeString(title);
         dest.writeString(artUrl);
-    }
-
-    public Playlist(String id, String title, String artUrl) {
-        this.id = id;
-        this.title = title;
-        this.artUrl = artUrl;
+        dest.writeString(idUser);
     }
 }
 

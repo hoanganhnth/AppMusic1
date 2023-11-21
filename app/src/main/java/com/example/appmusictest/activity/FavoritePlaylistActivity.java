@@ -34,6 +34,10 @@ public class FavoritePlaylistActivity extends AppCompatActivity {
         return favPlaylists;
     }
 
+    public static void setFavPlaylists(ArrayList<Playlist> favPlaylists) {
+        FavoritePlaylistActivity.favPlaylists = favPlaylists;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +45,6 @@ public class FavoritePlaylistActivity extends AppCompatActivity {
         myProgress = new MyProgress(this);
         myProgress.show();
         initView();
-        getData();
         setViewData();
     }
 
@@ -102,11 +105,11 @@ public class FavoritePlaylistActivity extends AppCompatActivity {
     }
 
     public static boolean isInFav(Playlist playlist) {
-//        for (Playlist playlist1 : favPlaylists) {
-//            if (playlist1.getId().equals(playlist.getId())) {
-//                return true;
-//            }
-//        }
+        for (Playlist playlist1 : favPlaylists) {
+            if (playlist1.getId().equals(playlist.getId())) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -116,6 +119,7 @@ public class FavoritePlaylistActivity extends AppCompatActivity {
         }
     }
     public static int getSize() {
+        if (favPlaylists == null) favPlaylists = new ArrayList<>();
         return favPlaylists.size();
     }
 

@@ -68,14 +68,14 @@ public class AuthorDetailActivity extends AppCompatActivity {
         nameAuthorTv.setText(author.getName());
         backIb.setOnClickListener(v -> onBackPressed());
         Glide.with(this)
-                .load(author.getUrlArt())
+                .load(author.getArtUrl())
                 .into(imgBgIv);
         followTv.setOnClickListener(v -> {
             if (FavoriteAuthorActivity.isInFav(author)) {
-                FavoriteHelper.actionWithFav(this, MainActivity.getIdUser(),author.getId(), FavoriteHelper.TYPE_DELETE, TYPE_AUTHOR);
+                FavoriteHelper.actionWithFav(this, MainActivity.getIdUser(),author.getId(), FavoriteHelper.TYPE_DELETE, TYPE_AUTHOR, author);
                 followTv.setText(R.string.followAuthorTitle);
             } else {
-                FavoriteHelper.actionWithFav(this, MainActivity.getIdUser(),author.getId(), FavoriteHelper.TYPE_ADD, TYPE_AUTHOR);
+                FavoriteHelper.actionWithFav(this, MainActivity.getIdUser(),author.getId(), FavoriteHelper.TYPE_ADD, TYPE_AUTHOR, author);
                 followTv.setText(R.string.followedAuthorTitle);
             }
         });

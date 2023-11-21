@@ -32,6 +32,10 @@ public class FavoriteAlbumActivity extends AppCompatActivity {
         return favAlbum;
     }
 
+    public static void setFavAlbum(ArrayList<Album> favAlbum) {
+        FavoriteAlbumActivity.favAlbum = favAlbum;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +43,7 @@ public class FavoriteAlbumActivity extends AppCompatActivity {
         myProgress = new MyProgress(this);
         myProgress.show();
         initView();
-        getData();
+//        getData();
         setViewData();
     }
 
@@ -88,15 +92,16 @@ public class FavoriteAlbumActivity extends AppCompatActivity {
     }
 
     public static boolean isInFav(Album album) {
-//        for (Album album1 : favAlbum) {
-//            if (album1.getId().equals(album.getId())) {
-//                return true;
-//            }
-//        }
+        for (Album album1 : favAlbum) {
+            if (album1.getId().equals(album.getId())) {
+                return true;
+            }
+        }
         return false;
     }
 
     public static int getSize() {
+        if (favAlbum == null) favAlbum = new ArrayList<>();
         return favAlbum.size();
     }
 }

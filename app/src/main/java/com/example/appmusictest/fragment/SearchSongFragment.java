@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class SearchSongFragment extends Fragment {
 
-    private ArrayList<Song> songs = new ArrayList<>();
+    private ArrayList<Song> songs ;
     private SongAdapter songAdapter;
     private RecyclerView recyclerView;
     private TextView noDataTv;
@@ -31,8 +31,12 @@ public class SearchSongFragment extends Fragment {
     public void setSongs(ArrayList<Song> songs) {
         this.songs = songs;
         if (songAdapter != null) {
-            songAdapter.notifyDataSetChanged();
+            updateUi();
         }
+    }
+    public int getSize() {
+        if (songs == null) songs = new ArrayList<>();
+        return songs.size();
     }
 
     @Override
@@ -48,70 +52,18 @@ public class SearchSongFragment extends Fragment {
     }
 
     private void setViewData() {
+        if (songs == null) {
+            songs = new ArrayList<>();
+        }
+        updateUi();
+    }
+    private void updateUi() {
         songAdapter = new SongAdapter(songs, getActivity());
         recyclerView.setAdapter(songAdapter);
-        if (songs.size() == 0) {
+        if (songs.size() != 0) {
+            noDataTv.setVisibility(View.GONE);
+        } else {
             noDataTv.setVisibility(View.VISIBLE);
         }
     }
-
-//    private void getData() {
-//        songs = new ArrayList<>();
-//        songsFilter = new ArrayList<>();
-//        Bundle bundle = getArguments();
-//        if (bundle != null) {
-//            String query = bundle.getString("query");
-//
-//
-//            getDataServer(query);
-//
-//
-//        }
-//    }
-
-//    private void getDataServer(String query) {
-//        DataService dataService = ApiService.getService();
-//        Call<List<Song>> callback = dataService.getSongByPlaylist("1");
-//        callback.enqueue(new Callback<List<Song>>() {
-//            @Override
-//            public void onResponse(@NonNull Call<List<Song>> call, @NonNull Response<List<Song>> response) {
-//                songs = (ArrayList<Song>) response.body();
-//
-//                filter(query);
-//
-//            }
-//
-//            @Override
-//            public void onFailure(@NonNull Call<List<Song>> call, @NonNull Throwable t) {
-//                Log.d(TAG, "Fail get data due to: " + t.getMessage());
-//                myProgress.dismiss();
-//
-//            }
-//        });
-//    }
-
-//    public void filter(String query) {
-//        myProgress = new MyProgress(getContext());
-//        myProgress.show();
-//        String lowerQuery = query.toLowerCase();
-//        songsFilter.clear();
-//        if (!lowerQuery.equals("")) {
-//            for (int i = 0; i < songs.size(); i++) {
-//                if ((songs.get(i)).getTitle().toLowerCase().contains(lowerQuery)) {
-//                    songsFilter.add(songs.get(i));
-//                }
-//            }
-//        }
-//        if (songsFilter.isEmpty()) {
-//            Log.d(TAG, "not data query");
-//            noDataTv.setVisibility(View.VISIBLE);
-//        } else {
-//            noDataTv.setVisibility(View.GONE);
-//            Log.d(TAG, "query :" + lowerQuery);
-//        }
-//        myProgress.dismiss();
-//        songAdapter = new SongAdapter(songsFilter, getActivity());
-//        recyclerView.setAdapter(songAdapter);
-//        songAdapter.notifyDataSetChanged();
-//    }
 }

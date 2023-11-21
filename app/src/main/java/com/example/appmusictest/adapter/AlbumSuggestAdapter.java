@@ -47,8 +47,6 @@ public class AlbumSuggestAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        Log.d(TAG, "SIZE " + arrayList.size());
-        Log.d(TAG, "VIEW TYPE = " + viewType);
         if (bigSize) {
             view = LayoutInflater.from(context).inflate(R.layout.row_playlist_suggest_big, parent, false);
             return new BigViewHolder(view);
@@ -66,9 +64,7 @@ public class AlbumSuggestAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-        Log.d(TAG, "POSITION " + position);
         if (getItemViewType(position) == VIEW_TYPE_NORMAL) {
-            Log.d(TAG, "onBindViewHolder" + getItemViewType(position));
             Album modelAlbum = arrayList.get(position);
             ((NormalViewHolder) holder).titleSuggestTv.setText(modelAlbum.getTitle());
             Glide.with(context)
@@ -83,7 +79,6 @@ public class AlbumSuggestAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 context.startActivity(intent);
           });
         } else if (getItemViewType(position) == VIEW_TYPE_END) {
-            Log.d(TAG, "onBindViewHolder" + getItemViewType(position));
                 ((EndViewHolder) holder).showMoreAlbumIb.setOnClickListener(v -> {
                 Intent intent = new Intent(context, ShowMorePlaylistActivity.class);
                 Bundle bundle = new Bundle();
@@ -92,7 +87,6 @@ public class AlbumSuggestAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 context.startActivity(intent);
             });
         } else if (getItemViewType(position) == VIEW_TYPE_BIG) {
-            Log.d(TAG, "onBindViewHolder" + getItemViewType(position));
             Album modelAlbum = arrayList.get(position);
             ((BigViewHolder) holder).titleSuggestTv.setText(modelAlbum.getTitle());
             Glide.with(context)

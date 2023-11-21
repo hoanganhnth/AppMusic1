@@ -8,6 +8,7 @@ import com.example.appmusictest.model.api.AuthorsResponse;
 import com.example.appmusictest.model.api.LoginResponse;
 import com.example.appmusictest.model.api.PlaylistsResponse;
 import com.example.appmusictest.model.api.RegisterResponse;
+import com.example.appmusictest.model.api.SearchResponse;
 import com.example.appmusictest.model.api.SongsResponse;
 
 import java.util.List;
@@ -113,5 +114,13 @@ public interface DataService {
     @FormUrlEncoded
     @POST("/getauthoralbums")
     Call<AlbumsResponse> getAuthorAlbums(@Field("idAuthor") String idAuthor);
+
+    @FormUrlEncoded
+    @POST("/createplaylist")
+    Call<ApiResponse> createPlaylist(@Field("idUser") String idUser, @Field("title") String title, @Field("artUrl") String artUrl);
+
+    @FormUrlEncoded
+    @POST("/search")
+    Call<SearchResponse> search(@Field("text") String text);
 
 }

@@ -103,30 +103,30 @@ public class MainActivity extends AppCompatActivity {
         });
         songFavRl.setOnClickListener(v -> {
             Intent intent = new Intent(this, FavoriteSongActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList("favSongs", favSongs);
-            intent.putExtras(bundle);
+//            Bundle bundle = new Bundle();
+//            bundle.putParcelableArrayList("favSongs", favSongs);
+//            intent.putExtras(bundle);
             startActivity(intent);
         });
         playlistFavRl.setOnClickListener(v -> {
             Intent intent = new Intent(this, FavoritePlaylistActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList("favPlaylists", favPlaylist);
-            intent.putExtras(bundle);
+//            Bundle bundle = new Bundle();
+//            bundle.putParcelableArrayList("favPlaylists", favPlaylist);
+//            intent.putExtras(bundle);
             startActivity(intent);
         });
         albumFavRl.setOnClickListener(v -> {
             Intent intent = new Intent(this, FavoriteAlbumActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList("favAlbums", favAlbums);
-            intent.putExtras(bundle);
+//            Bundle bundle = new Bundle();
+//            bundle.putParcelableArrayList("favAlbums", favAlbums);
+//            intent.putExtras(bundle);
             startActivity(intent);
         });
         authorFavRl.setOnClickListener(v -> {
             Intent intent = new Intent(this, FavoriteAuthorActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList("favAuthors", favAuthors);
-            intent.putExtras(bundle);
+//            Bundle bundle = new Bundle();
+//            bundle.putParcelableArrayList("favAuthors", favAuthors);
+//            intent.putExtras(bundle);
             startActivity(intent);
         });
 
@@ -155,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
         getDataPlaylist();
         getDataAlbum();
         getDataAuthor();
+        getDataFav();
 
     }
 
@@ -176,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
                     assert response.body() != null;
                     if (response.body().getErrCode().equals("0")) {
                         favAlbums = response.body().getAlbums();
+                        FavoriteAlbumActivity.setFavAlbum(favAlbums);
                         if (favAlbums.isEmpty()) {
                             numberAlbumTv.setText("");
                         } else {
@@ -205,6 +207,7 @@ public class MainActivity extends AppCompatActivity {
                     assert response.body() != null;
                     if (response.body().getErrCode().equals("0")) {
                         favAuthors = response.body().getAuthors();
+                        FavoriteAuthorActivity.setFavAuthor(favAuthors);
                         if (favAuthors.isEmpty()) {
                             numberAuthorTv.setText("");
                         } else {
@@ -233,6 +236,7 @@ public class MainActivity extends AppCompatActivity {
                     assert response.body() != null;
                     if (response.body().getErrCode().equals("0")) {
                         favPlaylist = response.body().getPlaylists();
+                        FavoritePlaylistActivity.setFavPlaylists(favPlaylist);
                         if (favPlaylist.isEmpty()) {
                             numberPlaylistTv.setText("");
                         } else {
@@ -262,6 +266,7 @@ public class MainActivity extends AppCompatActivity {
                     assert response.body() != null;
                     if (response.body().getErrCode().equals("0")) {
                         favSongs = response.body().getSongs();
+                        FavoriteSongActivity.setFavSongs(favSongs);
                         if (favSongs.isEmpty()) {
                             numberSongTv.setText("");
                         } else {
@@ -290,6 +295,7 @@ public class MainActivity extends AppCompatActivity {
                 if (response.code() == 200) {
                     if (response.body().getErrCode().equals("0")) {
                         authors = response.body().getAuthors();
+                        FavoriteAuthorActivity.setFavAuthor(authors);
                         showAuthor = new ArrayList<>(authors.subList(0,  Math.min(authors.size(), numberSuggest)));
                         authorSuggestAdapter = new AuthorSuggestAdapter(authors, MainActivity.this);
                         authorSgRv.setAdapter(authorSuggestAdapter);
@@ -403,7 +409,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateUiFav() {
-        getDataFav();
+        if (FavoriteSongActivity.getSize() == 0) {
+            numberSongTv.setText("");
+        } else {
+            numberSongTv.setText(String.valueOf(FavoriteSongActivity.getSize()));
+        }
+        if (FavoriteAlbumActivity.getSize() == 0) {
+            numberAlbumTv.setText("");
+        } else {
+            numberAlbumTv.setText(String.valueOf(FavoriteAlbumActivity.getSize()));
+        }
+        if (FavoritePlaylistActivity.getSize() == 0) {
+            numberPlaylistTv.setText("");
+        } else {
+            numberPlaylistTv.setText(String.valueOf(FavoritePlaylistActivity.getSize()));
+        }
+        if (FavoriteAuthorActivity.getSize() == 0) {
+            numberAuthorTv.setText("");
+        } else {
+            numberAuthorTv.setText(String.valueOf(FavoriteAuthorActivity.getSize()));
+        }
     }
 
 

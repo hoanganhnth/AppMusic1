@@ -6,6 +6,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.appmusictest.activity.FavoriteAlbumActivity;
+import com.example.appmusictest.activity.FavoriteAuthorActivity;
+import com.example.appmusictest.activity.FavoritePlaylistActivity;
+import com.example.appmusictest.activity.FavoriteSongActivity;
+import com.example.appmusictest.model.Album;
+import com.example.appmusictest.model.Author;
+import com.example.appmusictest.model.Playlist;
+import com.example.appmusictest.model.Song;
 import com.example.appmusictest.model.api.ApiResponse;
 import com.example.appmusictest.service.ApiService;
 import com.example.appmusictest.service.DataService;
@@ -22,7 +30,7 @@ public class FavoriteHelper {
     public static boolean isInFavSong() {
         return true;
     }
-    public static void actionWithFav(Context context, String idUser, String id, boolean actionAdd, int type) {
+    public static void actionWithFav(Context context, String idUser, String id, boolean actionAdd, int type, Object ob) {
         DataService dataService = ApiService.getService();
         Call<ApiResponse> callback ;
         switch (type) {
@@ -43,6 +51,7 @@ public class FavoriteHelper {
             case MyApplication.TYPE_SONG:
                 if (actionAdd) {
                     callback = dataService.addFavSong(idUser, id);
+
                 } else {
                     callback = dataService.removeFavSong(idUser, id);
                 }
@@ -63,6 +72,39 @@ public class FavoriteHelper {
                 if (response.code() == 200) {
                     assert response.body() != null;
                     Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+
+                    if (response.body().getErrCode().equals("0")) {
+                        switch (type) {
+                            case MyApplication.TYPE_SONG:
+                                if (actionAdd) {
+                                    FavoriteSongActivity.addSong((Song) ob);
+                                } else {
+                                    FavoriteSongActivity.removeSong((Song) ob);
+                                }
+                                break;
+                            case MyApplication.TYPE_ALBUM:
+                                if (actionAdd) {
+                                    FavoriteAlbumActivity.addAlbum((Album) ob);
+                                } else {
+                                    FavoriteAlbumActivity.removeAlbum((Album) ob);
+                                }
+                                break;
+                            case MyApplication.TYPE_PLAYLIST:
+                                if (actionAdd) {
+                                    FavoritePlaylistActivity.addPlaylist((Playlist) ob);
+                                } else {
+                                    FavoritePlaylistActivity.removePlaylist((Playlist) ob);
+                                }
+                                break;
+                            case MyApplication.TYPE_AUTHOR:
+                                if (actionAdd) {
+                                    FavoriteAuthorActivity.addAuthor((Author) ob);
+                                } else {
+                                    FavoriteAuthorActivity.removeAuthor((Author) ob);
+                                }
+                                break;
+                        }
+                    }
                 }
             }
 

@@ -5,9 +5,18 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Album implements Parcelable {
+    @SerializedName("id")
+    @Expose
     private String id;
+    @SerializedName("title")
+    @Expose
     private String title;
+    @SerializedName("artUrl")
+    @Expose
     private String artUrl;
 
     public Album(String id, String title, String artUrl) {

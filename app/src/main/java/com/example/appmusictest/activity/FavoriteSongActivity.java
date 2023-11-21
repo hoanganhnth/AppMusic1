@@ -53,7 +53,7 @@ public class FavoriteSongActivity extends AppCompatActivity {
         myProgress = new MyProgress(this);
         myProgress.show();
         initView();
-        getData();
+//        getData();
         setViewData();
     }
 
@@ -62,28 +62,6 @@ public class FavoriteSongActivity extends AppCompatActivity {
             favSongs = getIntent().getParcelableArrayListExtra("favSongs");
             if (favSongs == null) favSongs = new ArrayList<>();
         }
-    }
-
-    private void getDataServer() {
-        DataService dataService = ApiService.getService();
-        // name api
-        Call<List<Song>> callback = dataService.getSongByPlaylist("1");
-        callback.enqueue(new Callback<List<Song>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Song>> call, @NonNull Response<List<Song>> response) {
-
-                favSongs = (ArrayList<Song>) response.body();
-                songAdapter.notifyDataSetChanged();
-                updateUi();
-                myProgress.dismiss();
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<Song>> call, @NonNull Throwable t) {
-                Log.d(TAG, "Fail to get data from server due to:" + t.getMessage() );
-                myProgress.dismiss();
-            }
-        });
     }
 
     private void setViewData() {
@@ -120,15 +98,33 @@ public class FavoriteSongActivity extends AppCompatActivity {
     }
 
     public static int getSize() {
+        if (favSongs == null) favSongs = new ArrayList<>();
         return favSongs.size();
     }
 
+    public static void addSong(Song song) {
+        favSongs.add(song);
+        Log.d(TAG, "size: " + getSize());
+        Log.d(TAG, "added to favorite");
+    }
+
+    public static void removeSong(Song song) {
+        Iterator<Song> iterator = favSongs.iterator();
+        while (iterator.hasNext()) {
+            Song obj = iterator.next();
+            if (obj.getId().equals(song.getId())) {
+                iterator.remove();
+                break;
+            }
+        }
+        Log.d(TAG, "remove from favorite");
+    }
     public static boolean isInFav(Song song) {
-//        for (Song song1 : favSongs) {
-//            if (song1.getId().equals(song.getId())) {
-//                return true;
-//            }
-//        }
-        return true;
+        for (Song song1 : favSongs) {
+            if (song1.getId().equals(song.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

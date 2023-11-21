@@ -3,7 +3,6 @@ package com.example.appmusictest.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +42,8 @@ public class AuthorSuggestAdapter extends RecyclerView.Adapter<AuthorSuggestAdap
     public void onBindViewHolder(@NonNull AuthorSuggestAdapter.ViewHolder holder, int position) {
         holder.titleSuggestTv.setText(authors.get(position).getName());
         Glide.with(context)
-                .load(authors.get(position).getUrlArt())
+                .load(authors.get(position).getArtUrl())
+                .placeholder(R.mipmap.music_player_icon_round)
                 .into(holder.imgSuggestCiv);
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, AuthorDetailActivity.class);

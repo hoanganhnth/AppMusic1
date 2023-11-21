@@ -5,21 +5,30 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Author implements Parcelable {
+    @SerializedName("id")
+    @Expose
     private String id;
+    @SerializedName("name")
+    @Expose
     private String name;
-    private String urlArt;
+    @SerializedName("artUrl")
+    @Expose
+    private String artUrl;
 
     public Author(String id, String name, String urlArt) {
         this.id = id;
         this.name = name;
-        this.urlArt = urlArt;
+        this.artUrl = urlArt;
     }
 
     protected Author(Parcel in) {
         id = in.readString();
         name = in.readString();
-        urlArt = in.readString();
+        artUrl = in.readString();
     }
 
     public static final Creator<Author> CREATOR = new Creator<Author>() {
@@ -50,12 +59,12 @@ public class Author implements Parcelable {
         this.name = name;
     }
 
-    public String getUrlArt() {
-        return urlArt;
+    public String getArtUrl() {
+        return artUrl;
     }
 
-    public void setUrlArt(String urlArt) {
-        this.urlArt = urlArt;
+    public void setArtUrl(String artUrl) {
+        this.artUrl = artUrl;
     }
 
     @Override
@@ -67,6 +76,6 @@ public class Author implements Parcelable {
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeString(name);
-        dest.writeString(urlArt);
+        dest.writeString(artUrl);
     }
 }

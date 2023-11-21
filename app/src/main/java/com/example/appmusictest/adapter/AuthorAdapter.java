@@ -1,8 +1,6 @@
 package com.example.appmusictest.adapter;
 
-import static com.example.appmusictest.MyApplication.TYPE_ALBUM;
 import static com.example.appmusictest.MyApplication.TYPE_AUTHOR;
-import static com.example.appmusictest.MyApplication.TYPE_PLAYLIST;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -15,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +21,6 @@ import com.bumptech.glide.Glide;
 import com.example.appmusictest.FavoriteHelper;
 import com.example.appmusictest.R;
 import com.example.appmusictest.activity.AuthorDetailActivity;
-import com.example.appmusictest.activity.FavoritePlaylistActivity;
 import com.example.appmusictest.activity.FavoriteAuthorActivity;
 import com.example.appmusictest.activity.MainActivity;
 import com.example.appmusictest.model.Author;
@@ -55,8 +51,8 @@ public class AuthorAdapter extends RecyclerView.Adapter<AuthorAdapter.ViewHolder
         Author model = arrayList.get(position);
         holder.authorTv.setText(model.getName());
         Glide.with(context)
-                .load(model.getUrlArt())
-                .placeholder(R.mipmap.music_player_icon)
+                .load(model.getArtUrl())
+                .placeholder(R.mipmap.music_player_icon_round)
                 .into(holder.authorIv);
 
         holder.itemView.setOnClickListener(v -> {
@@ -76,13 +72,13 @@ public class AuthorAdapter extends RecyclerView.Adapter<AuthorAdapter.ViewHolder
         holder.authorFvIb.setOnClickListener(v -> {
             if (!FavoriteAuthorActivity.isInFav(model)) {
 
-                FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),model.getId(), FavoriteHelper.TYPE_ADD, TYPE_AUTHOR);
+                FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),model.getId(), FavoriteHelper.TYPE_ADD, TYPE_AUTHOR, model);
                 holder.authorFvIb.setImageResource(R.drawable.ic_favorite_purple);
             } else if (activity.equals(FavoriteAuthorActivity.class.getSimpleName())){
                 showDialog(position, model);
             } else {
                 holder.authorFvIb.setImageResource(R.drawable.ic_favorite_gray);
-                FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),model.getId(), FavoriteHelper.TYPE_DELETE, TYPE_AUTHOR);
+                FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),model.getId(), FavoriteHelper.TYPE_DELETE, TYPE_AUTHOR, model);
             }
         });
     }
@@ -112,7 +108,7 @@ public class AuthorAdapter extends RecyclerView.Adapter<AuthorAdapter.ViewHolder
 
         submitBtn.setOnClickListener(v -> {
 
-            FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),author.getId(), FavoriteHelper.TYPE_DELETE, TYPE_AUTHOR);
+            FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),author.getId(), FavoriteHelper.TYPE_DELETE, TYPE_AUTHOR, author);
             arrayList.remove(pos);
             notifyItemRemoved(pos);
             notifyItemRangeChanged(pos, arrayList.size() - pos) ;

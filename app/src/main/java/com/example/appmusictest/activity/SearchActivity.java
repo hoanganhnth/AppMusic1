@@ -30,6 +30,7 @@ import com.example.appmusictest.model.Album;
 import com.example.appmusictest.model.Author;
 import com.example.appmusictest.model.Playlist;
 import com.example.appmusictest.model.Song;
+import com.example.appmusictest.model.api.SearchResponse;
 import com.example.appmusictest.service.ApiService;
 import com.example.appmusictest.service.DataService;
 import com.google.android.material.tabs.TabLayout;
@@ -44,13 +45,10 @@ import retrofit2.Response;
 
 public class SearchActivity extends AppCompatActivity {
 
-    private TabLayout tabLayout;
-    private ViewPager2 viewPager2;
     private ImageButton backIb;
     private EditText searchEt;
     private static final String TAG = "Search_activity";
-    private final String[] labelFragment = new String[]{"Playlist", "Author", "Album", "Song"};
-    private ArrayList<Fragment> fragmentArrayList;
+    private final String[] labelFragment = new String[]{"Playlist","Song", "Author", "Album"};
     private SearchPlaylistFragment searchPlaylistFragment;
     private ArrayList<Song> songs = new ArrayList<>();
     private ArrayList<Playlist> playlists = new ArrayList<>();
@@ -59,7 +57,6 @@ public class SearchActivity extends AppCompatActivity {
     private SearchAuthorsFragment searchAuthorsFragment;
     private SearchAlbumFragment searchAlbumFragment;
     private SearchSongFragment searchSongFragment;
-    private String query;
     private MyProgress myProgress;
     private int numberSuccess = 0;
 
@@ -69,40 +66,36 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         searchEt = findViewById(R.id.searchEt);
-        tabLayout = findViewById(R.id.tabLayout);
-        viewPager2 = findViewById(R.id.viewPaper);
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
+        ViewPager2 viewPager2 = findViewById(R.id.viewPaper);
         backIb = findViewById(R.id.backIb);
+        myProgress = new MyProgress(this);
+        myProgress.show();
 
-
-        query = getIntent().getStringExtra("query");
+        String query = getIntent().getStringExtra("query");
         searchEt.setText(query);
 
 
-        fragmentArrayList = new ArrayList<>();
+        ArrayList<Fragment> fragmentArrayList = new ArrayList<>();
 
         searchPlaylistFragment = new SearchPlaylistFragment();
+        searchSongFragment = new SearchSongFragment();
         searchAuthorsFragment = new SearchAuthorsFragment();
         searchAlbumFragment = new SearchAlbumFragment();
-        searchSongFragment = new SearchSongFragment();
-        getDataServer(query);
-//        Bundle bundle = new Bundle();
-//        bundle.putString("query", query);
-//        searchPlaylistFragment.setArguments(bundle);
-//        searchAuthorsFragment.setArguments(bundle);
-//        searchAlbumFragment.setArguments(bundle);
-//        searchSongFragment.setArguments(bundle);
+
 
         fragmentArrayList.add(searchPlaylistFragment);
+        fragmentArrayList.add(searchSongFragment);
         fragmentArrayList.add(searchAuthorsFragment);
         fragmentArrayList.add(searchAlbumFragment);
-        fragmentArrayList.add(searchSongFragment);
 
-        ViewPaperMainFragmentAdapter adapter = new ViewPaperMainFragmentAdapter(this,fragmentArrayList);
+        getDataServer(query);
+        ViewPaperMainFragmentAdapter adapter = new ViewPaperMainFragmentAdapter(this, fragmentArrayList);
         viewPager2.setAdapter(adapter);
 
         new TabLayoutMediator(tabLayout, viewPager2, (tab, position)
                 -> tab.setText(labelFragment[position])).attach();
-        viewPager2.setCurrentItem(1, false);
+        viewPager2.setCurrentItem(0, false);
 
         searchEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
@@ -111,11 +104,9 @@ public class SearchActivity extends AppCompatActivity {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH || event.getAction() == KeyEvent.KEYCODE_ENTER) {
                     String query = searchEt.getText().toString().trim();
                     getDataServer(query);
-//                    searchEt.clearFocus();
                     InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     in.hideSoftInputFromWindow(searchEt.getApplicationWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS); return true;
                 }
-                Log.d(TAG, "NOT enter");
                 return false;
             }
         });
@@ -126,12 +117,41 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void getDataServer(String query) {
-        myProgress = new MyProgress(this);
-        myProgress.show();
-        getDataSearchSong(query);
-        getDataSearchPlaylist(query);
-        getDataSearchAlbum(query);
-        getDataSearchAuthor(query);
+
+        DataService dataService = ApiService.getService();
+        Call<SearchResponse> callback = dataService.search(query);
+        callback.enqueue(new Callback<SearchResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<SearchResponse> call, @NonNull Response<SearchResponse> response) {
+                if (response.code() == 200) {
+                    if (response.body().getErrCode().equals("0")) {
+                        albums = response.body().getResult().getAlbums();
+                        searchAlbumFragment.setAlbums(albums);
+                        Log.d(TAG, "album size:" + searchAlbumFragment.getSize());
+                        authors = response.body().getResult().getAuthors();
+                        searchAuthorsFragment.setAuthors(authors);
+                        Log.d(TAG, "author size:" + searchAuthorsFragment.getSize());
+                        playlists = response.body().getResult().getPlaylists();
+                        searchPlaylistFragment.setPlaylists(playlists);
+                        Log.d(TAG, "playlist size:" + searchPlaylistFragment.getSize());
+                        songs = response.body().getResult().getSongs();
+                        searchSongFragment.setSongs(songs);
+                        Log.d(TAG, "song size:" + searchSongFragment.getSize());
+                        myProgress.dismiss();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<SearchResponse> call, @NonNull Throwable t) {
+                myProgress.dismiss();
+            }
+        });
+
+//        getDataSearchSong(query);
+//        getDataSearchPlaylist(query);
+//        getDataSearchAlbum(query);
+//        getDataSearchAuthor(query);
     }
 
     private void getDataSearchAuthor(String query) {
