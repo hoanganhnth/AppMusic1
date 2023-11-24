@@ -1,7 +1,6 @@
 package com.example.appmusictest.adapter;
 
 
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -62,10 +61,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
         String activity = context.getClass().getSimpleName();
 
         holder.rowTv.setText(model.getTitle());
-        Glide.with(context)
-                .load(model.getArtUrl())
-                .placeholder(R.mipmap.music_player_icon)
-                .into(holder.rowIv);
+        Glide.with(context).load(model.getArtUrl()).placeholder(R.mipmap.music_player_icon).into(holder.rowIv);
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, PlaylistAlbumDetailActivity.class);
@@ -75,25 +71,27 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
             context.startActivity(intent);
         });
 
-
+        if (FavoriteAlbumActivity.isInFav(model)) {
+            holder.rowFvIb.setImageResource(R.drawable.ic_favorite_purple);
+        }
         holder.rowFvIb.setOnClickListener(v -> {
             if (!FavoriteAlbumActivity.isInFav(model)) {
-                FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),model.getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_PLAYLIST, model);
+                FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(), model.getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_PLAYLIST, model);
                 holder.rowFvIb.setImageResource(R.drawable.ic_favorite_purple);
-            } else if (activity.equals(FavoritePlaylistActivity.class.getSimpleName())){
+            } else if (activity.equals(FavoritePlaylistActivity.class.getSimpleName())) {
                 showDialog(position, model);
             } else {
                 holder.rowFvIb.setImageResource(R.drawable.ic_favorite_gray);
-                FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),model.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_PLAYLIST, model);
+                FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(), model.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_PLAYLIST, model);
             }
         });
     }
 
     private void showDialog(int pos, Album album) {
         AlertDialog dialog;
-        TextView titleDialogDeleteTv,contentDialogTv,submitBtn,cancelBtn;
+        TextView titleDialogDeleteTv, contentDialogTv, submitBtn, cancelBtn;
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        View view = LayoutInflater.from(context).inflate(R.layout.custom_dialog_delete,null);
+        View view = LayoutInflater.from(context).inflate(R.layout.custom_dialog_delete, null);
 
         titleDialogDeleteTv = view.findViewById(R.id.titleDialogDeleteTv);
         contentDialogTv = view.findViewById(R.id.contentDialogTv);
@@ -113,7 +111,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
 
         submitBtn.setOnClickListener(v -> {
 
-            FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),album.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_PLAYLIST,album);
+            FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(), album.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_PLAYLIST, album);
 
             arrayList.remove(pos);
             notifyItemRemoved(pos);
@@ -132,6 +130,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
         TextView rowTv;
         ShapeableImageView rowIv;
         ImageButton rowFvIb;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             rowIv = itemView.findViewById(R.id.rowIv);

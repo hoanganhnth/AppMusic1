@@ -14,6 +14,7 @@ import com.example.appmusictest.R;
 import com.example.appmusictest.adapter.PlaylistAdapter;
 import com.example.appmusictest.dialog.MyCreatePlaylistDialog;
 import com.example.appmusictest.dialog.MyProgress;
+import com.example.appmusictest.model.Album;
 import com.example.appmusictest.model.Playlist;
 
 import java.util.ArrayList;
@@ -29,9 +30,24 @@ public class FavoritePlaylistActivity extends AppCompatActivity {
     private ImageButton backIb;
     private MyProgress myProgress;
     private final static String TAG = "Favorite_Playlist_Ac";
+    private static ArrayList<Playlist> playlistCreateByUser;
 
     public static ArrayList<Playlist> getFavPlaylists() {
         return favPlaylists;
+    }
+
+    public static ArrayList<Playlist> getPlaylistByUser() {
+        if (playlistCreateByUser == null) {
+            playlistCreateByUser = new ArrayList<>();
+            for (Playlist playlist : favPlaylists) {
+                if (playlist.getIdUser().equals(MainActivity.getIdUser())) {
+                    playlistCreateByUser.add(playlist);
+                    Log.d(TAG, playlist.getTitle());
+                }
+            }
+        }
+
+        return playlistCreateByUser;
     }
 
     public static void setFavPlaylists(ArrayList<Playlist> favPlaylists) {
@@ -123,4 +139,10 @@ public class FavoritePlaylistActivity extends AppCompatActivity {
         return favPlaylists.size();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateUi();
+        playlistAdapter.notifyDataSetChanged();
+    }
 }

@@ -43,5 +43,6 @@ public class SessionManager {
         editor.clear();
         editor.commit();
         context.startActivity(new Intent(context, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        NotificationReceiver.exitApplication(context);
     }
 }

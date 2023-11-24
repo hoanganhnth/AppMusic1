@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.appmusictest.MyApplication;
 import com.example.appmusictest.R;
 import com.example.appmusictest.activity.PlaylistAlbumDetailActivity;
 import com.example.appmusictest.activity.ShowMorePlaylistActivity;
@@ -33,13 +35,12 @@ public class PlaylistSuggestAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private final int VIEW_TYPE_BIG = 3;
 
 
-    public PlaylistSuggestAdapter(ArrayList<Playlist> arrayList, ArrayList<Playlist> arrayListAll , Context context, boolean big ) {
+    public PlaylistSuggestAdapter(ArrayList<Playlist> arrayList, ArrayList<Playlist> arrayListAll, Context context, boolean big) {
         this.arrayList = arrayList;
         this.arrayListAll = arrayListAll;
         this.context = context;
         bigSize = big;
     }
-
 
 
     @NonNull
@@ -49,7 +50,7 @@ public class PlaylistSuggestAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         if (bigSize) {
             view = LayoutInflater.from(context).inflate(R.layout.row_playlist_suggest_big, parent, false);
             return new BigViewHolder(view);
-        } else if (viewType == VIEW_TYPE_NORMAL){
+        } else if (viewType == VIEW_TYPE_NORMAL) {
             view = LayoutInflater.from(context).inflate(R.layout.row_playlist_suggest, parent, false);
             return new NormalViewHolder(view);
         } else {
@@ -65,10 +66,7 @@ public class PlaylistSuggestAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         if (getItemViewType(position) == VIEW_TYPE_NORMAL) {
             Playlist modelPlaylist = arrayList.get(position);
             ((NormalViewHolder) holder).titleSuggestTv.setText(modelPlaylist.getTitle());
-            Glide.with(context)
-                    .load(modelPlaylist.getArtUrl())
-                    .placeholder(R.mipmap.music_player_icon)
-                    .into(((NormalViewHolder) holder).imgSuggestIv);
+            Glide.with(context).load(modelPlaylist.getArtUrl()).placeholder(R.mipmap.music_player_icon).into(((NormalViewHolder) holder).imgSuggestIv);
             holder.itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(context, PlaylistAlbumDetailActivity.class);
                 Bundle bundle = new Bundle();
@@ -77,7 +75,7 @@ public class PlaylistSuggestAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 context.startActivity(intent);
             });
         } else if (getItemViewType(position) == VIEW_TYPE_END) {
-            ((EndViewHolder) holder).showMoreAlbumIb.setOnClickListener(v -> {
+            ((EndViewHolder) holder).showMoreAlbumRl.setOnClickListener(v -> {
                 Intent intent = new Intent(context, ShowMorePlaylistActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putParcelableArrayList("playlists", arrayListAll);
@@ -87,10 +85,7 @@ public class PlaylistSuggestAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         } else if (getItemViewType(position) == VIEW_TYPE_BIG) {
             Playlist modelPlaylist = arrayList.get(position);
             ((BigViewHolder) holder).titleSuggestTv.setText(modelPlaylist.getTitle());
-            Glide.with(context)
-                    .load(modelPlaylist.getArtUrl())
-                    .placeholder(R.mipmap.music_player_icon)
-                    .into(((BigViewHolder) holder).imgSuggestIv);
+            Glide.with(context).load(modelPlaylist.getArtUrl()).placeholder(R.mipmap.music_player_icon).into(((BigViewHolder) holder).imgSuggestIv);
             holder.itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(context, PlaylistAlbumDetailActivity.class);
                 Bundle bundle = new Bundle();
@@ -108,7 +103,7 @@ public class PlaylistSuggestAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public int getItemViewType(int position) {
         if (bigSize) {
             return VIEW_TYPE_BIG;
-        } else if (position == arrayList.size() ) {
+        } else if (position == arrayList.size() && arrayListAll.size() > MyApplication.NUMBER_SUGGEST) {
             return VIEW_TYPE_END;
         } else {
             return VIEW_TYPE_NORMAL;
@@ -117,7 +112,7 @@ public class PlaylistSuggestAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemCount() {
-        if (bigSize) {
+        if (bigSize || arrayListAll.size() <= MyApplication.NUMBER_SUGGEST) {
             return arrayList.size();
         }
         return arrayList.size() + 1;
@@ -126,24 +121,29 @@ public class PlaylistSuggestAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public static class NormalViewHolder extends RecyclerView.ViewHolder {
         TextView titleSuggestTv;
         ShapeableImageView imgSuggestIv;
+
         public NormalViewHolder(@NonNull View itemView) {
             super(itemView);
             titleSuggestTv = itemView.findViewById(R.id.titleSuggestTv);
             imgSuggestIv = itemView.findViewById(R.id.imgSuggestIv);
         }
     }
+
     public static class EndViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout showMoreAlbumRl;
-        ImageButton showMoreAlbumIb;
+        ImageView showMoreAlbumIv;
+
         public EndViewHolder(@NonNull View itemView) {
             super(itemView);
             showMoreAlbumRl = itemView.findViewById(R.id.showMoreAlbumRl);
-            showMoreAlbumIb = itemView.findViewById(R.id.showMoreAlbumIb);
+            showMoreAlbumIv = itemView.findViewById(R.id.showMoreAlbumIv);
         }
     }
+
     public static class BigViewHolder extends RecyclerView.ViewHolder {
         TextView titleSuggestTv;
         ShapeableImageView imgSuggestIv;
+
         public BigViewHolder(@NonNull View itemView) {
             super(itemView);
             titleSuggestTv = itemView.findViewById(R.id.titleSuggestTv);

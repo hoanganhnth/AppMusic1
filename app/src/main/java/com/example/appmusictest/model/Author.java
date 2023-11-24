@@ -15,7 +15,7 @@ public class Author implements Parcelable {
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("artUrl")
+    @SerializedName("avatar")
     @Expose
     private String artUrl;
 

@@ -9,126 +9,127 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none"
-        >
+        android:scrollbars="none">
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
+
             <RelativeLayout
                 android:id="@+id/authorView1"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:background="@drawable/shape_img1"
-                >
+                android:background="@drawable/shape_img1">
+
                 <ImageView
                     android:id="@+id/imgBgIv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@mipmap/ic_launcher"
-                    android:scaleType="centerCrop"
                     android:foreground="#40000000"
-                    />
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/ic_launcher" />
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
                     android:paddingTop="20dp"
-                    >
+                    android:paddingEnd="20dp">
+
                     <RelativeLayout
                         android:id="@+id/toolbarDetailRl"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        >
+                        android:layout_height="wrap_content">
+
                         <ImageButton
                             android:id="@+id/backIb"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@drawable/ic_back_white"
-                            android:scaleType="fitXY"
                             android:background="@android:color/transparent"
-                            />
+                            android:scaleType="fitXY"
+                            android:src="@drawable/ic_back_white" />
                     </RelativeLayout>
+
                     <TextView
                         android:id="@+id/nameAuthorTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/toolbarDetailRl"
                         android:layout_marginTop="90dp"
+                        android:layout_marginBottom="10dp"
                         android:text="Phuong ly"
                         android:textColor="@color/white"
-                        android:textStyle="bold"
                         android:textSize="@dimen/big_size"
-                        android:layout_marginBottom="10dp"
-                        />
+                        android:textStyle="bold" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_below="@id/nameAuthorTv"
-                        >
+                        android:orientation="horizontal">
+
                         <TextView
                             android:id="@+id/followTv"
                             android:layout_width="0dp"
                             android:layout_height="40dp"
-                            android:text="BO QUAN TAM"
                             android:layout_centerHorizontal="true"
-                            android:gravity="center"
-                            android:textSize="@dimen/name_size"
-                            android:textColor="@color/white"
-                            android:background="@drawable/shape_button5"
                             android:layout_marginTop="20dp"
-                            android:layout_weight="1"
                             android:layout_marginEnd="8dp"
-                            />
+                            android:layout_weight="1"
+                            android:background="@drawable/shape_button5"
+                            android:gravity="center"
+                            android:text="BO QUAN TAM"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/name_size" />
+
                         <TextView
                             android:id="@+id/buttonShuffleTv"
                             android:layout_width="0dp"
                             android:layout_height="40dp"
-                            android:text="PHÁT NHẠC"
                             android:layout_centerHorizontal="true"
-                            android:gravity="center"
-                            android:textSize="@dimen/name_size"
-                            android:textColor="@color/white"
-                            android:background="@drawable/shape_button1"
+                            android:layout_marginStart="8dp"
                             android:layout_marginTop="20dp"
                             android:layout_weight="1"
-                            android:layout_marginStart="8dp"
+                            android:background="@drawable/shape_button1"
+                            android:gravity="center"
+                            android:text="PHÁT NHẠC"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/name_size"
 
                             />
                     </LinearLayout>
                 </RelativeLayout>
 
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/listSongRl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/authorView1"
                 android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                >
+                android:paddingEnd="20dp">
+
                 <TextView
                     android:id="@+id/listSongTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/list_song_title"
                     android:layout_marginTop="30dp"
+                    android:text="@string/list_song_title"
                     android:textColor="@color/textColor"
-                    android:textSize="@dimen/title_size"
-                    />
+                    android:textSize="@dimen/title_size" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/listSongRv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/listSongTv"
                     android:layout_marginTop="10dp"
-                    tools:listitem="@layout/row_songs"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="3"
-                    />
+                    tools:listitem="@layout/row_songs" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/listAlbumRl"
                 android:layout_width="match_parent"
@@ -138,40 +139,38 @@
                 android:paddingEnd="20dp"
 
                 >
+
                 <TextView
                     android:id="@+id/listAlbumTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/album_song_title"
                     android:layout_marginTop="30dp"
+                    android:text="@string/album_song_title"
                     android:textColor="@color/textColor"
-                    android:textSize="@dimen/title_size"
-                    />
+                    android:textSize="@dimen/title_size" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/listAlbumRv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/listAlbumTv"
                     android:layout_marginTop="10dp"
-                    tools:listitem="@layout/row_playlist_suggest"
+                    android:layout_marginBottom="80dp"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="3"
-                    android:layout_marginBottom="80dp"
-                    />
+                    tools:listitem="@layout/row_playlist_suggest" />
             </RelativeLayout>
         </RelativeLayout>
 
     </ScrollView>
 
 
-
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/playingFragment"
+        android:name="com.example.appmusictest.fragment.NowPlayingFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:name="com.example.appmusictest.fragment.NowPlayingFragment"
-        tools:layout="@layout/fragment_now_playing"
-        />
+        tools:layout="@layout/fragment_now_playing" />
 </RelativeLayout>

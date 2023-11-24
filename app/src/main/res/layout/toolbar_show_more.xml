@@ -2,15 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="20dp"
-    >
+    android:layout_marginBottom="20dp">
 
     <RelativeLayout
         android:id="@+id/actionRl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/item_bg_color"
-        >
+        android:background="@color/item_bg_color">
 
         <ImageButton
             android:id="@+id/backIb"
@@ -24,8 +22,7 @@
             android:background="@android:color/transparent"
             android:contentDescription="@string/back_btn"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_back_gr"
-            />
+            android:src="@drawable/ic_back_gr" />
 
 
         <TextView
@@ -45,8 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/actionRl"
-        android:background="@color/edittext_color"
-        />
+        android:background="@color/edittext_color" />
 
 
 </RelativeLayout>

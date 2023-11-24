@@ -21,9 +21,8 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/backIb"
         android:layout_centerInParent="true"
-        >
+        android:layout_toEndOf="@id/backIb">
 
         <TextView
             android:id="@+id/titlePlaylistTv"
@@ -40,12 +39,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/titlePlaylistTv"
+            android:layout_alignStart="@+id/titlePlaylistTv"
             android:text="Tat ca 29 bai"
             android:textColor="@color/white"
             android:textSize="@dimen/name_size"
-            android:layout_alignStart="@+id/titlePlaylistTv"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
     </RelativeLayout>
 
 

@@ -5,6 +5,7 @@ import com.example.appmusictest.model.Song;
 import com.example.appmusictest.model.api.AlbumsResponse;
 import com.example.appmusictest.model.api.ApiResponse;
 import com.example.appmusictest.model.api.AuthorsResponse;
+import com.example.appmusictest.model.api.CreatePlaylistResponse;
 import com.example.appmusictest.model.api.LoginResponse;
 import com.example.appmusictest.model.api.PlaylistsResponse;
 import com.example.appmusictest.model.api.RegisterResponse;
@@ -26,22 +27,14 @@ public interface DataService {
     @GET("/albums")
     Call<AlbumsResponse> getAllAlbums();
 
+    @GET("/randomauthors")
+    Call<AuthorsResponse> getAuthorRandom();
+
 
     @FormUrlEncoded
     @POST("/listsong")
     Call<List<Song>> getSongByPlaylist(@Field("idPlaylist") String idPlaylist);
-//    @GET("playlistforcurrentday.php")
-//    Call<List<Playlist>> getPlaylistCurrentDay();
-//
-//    @FormUrlEncoded
-//    @POST("listsong.php")
-//    Call<List<Song>> getSongByPlaylist(@Field("idPlaylist") String idPlaylist);
 
-//    @POST("/register'")
-//    Call<RegisterResponse> performUserSignUp(@Body RegisterRequest registerRequest);
-//
-//    @POST("/login'")
-//    Call<LoginResponse> performUserLoginIn(@Body LoginRequest loginRequest);
 
     @FormUrlEncoded
     @POST("/register")
@@ -117,10 +110,19 @@ public interface DataService {
 
     @FormUrlEncoded
     @POST("/createplaylist")
-    Call<ApiResponse> createPlaylist(@Field("idUser") String idUser, @Field("title") String title, @Field("artUrl") String artUrl);
+    Call<CreatePlaylistResponse> createPlaylist(@Field("idUser") String idUser, @Field("title") String title, @Field("artUrl") String artUrl);
 
     @FormUrlEncoded
     @POST("/search")
     Call<SearchResponse> search(@Field("text") String text);
+
+    @FormUrlEncoded
+    @POST("/addsongtoplaylist")
+    Call<ApiResponse> addSongToPlaylist(@Field("idUser") String idUser, @Field("idSong") String idSong, @Field("idPlaylist") String idPlaylist);
+
+    @FormUrlEncoded
+    @POST("/getsongauthors")
+    Call<AuthorsResponse> getSongAuthor(@Field("idSong") String idSong);
+
 
 }

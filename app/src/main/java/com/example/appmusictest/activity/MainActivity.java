@@ -18,11 +18,13 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.appmusictest.MyApplication;
 import com.example.appmusictest.R;
 import com.example.appmusictest.SessionManager;
 import com.example.appmusictest.adapter.AlbumSuggestAdapter;
@@ -46,13 +48,16 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Field;
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText searchEt;
     private RelativeLayout songFavRl, playlistFavRl, albumFavRl, authorFavRl;
     private TextView numberSongTv,numberPlaylistTv,numberAlbumTv,numberAuthorTv;
+    private RelativeLayout playlistSugRl,albumSugRl,authorSugRl;
     private ImageButton logOutIb;
+    private ImageView showMorePlIv, showMoreAlIv;
     private ScrollView viewSv;
     private ArrayList<Playlist> playlists, favPlaylist,showPlaylist;
     private ArrayList<Album> albums, favAlbums, showAlbum;
@@ -67,11 +72,12 @@ public class MainActivity extends AppCompatActivity {
     private MyProgress myProgress;
     private boolean getDataSuccess = false;
     private static String idUser = "";
-    private int numberSuggest = 4;
+
 
     public static String getIdUser() {
         return idUser;
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,35 +109,40 @@ public class MainActivity extends AppCompatActivity {
         });
         songFavRl.setOnClickListener(v -> {
             Intent intent = new Intent(this, FavoriteSongActivity.class);
-//            Bundle bundle = new Bundle();
-//            bundle.putParcelableArrayList("favSongs", favSongs);
-//            intent.putExtras(bundle);
             startActivity(intent);
         });
         playlistFavRl.setOnClickListener(v -> {
             Intent intent = new Intent(this, FavoritePlaylistActivity.class);
-//            Bundle bundle = new Bundle();
-//            bundle.putParcelableArrayList("favPlaylists", favPlaylist);
-//            intent.putExtras(bundle);
             startActivity(intent);
         });
         albumFavRl.setOnClickListener(v -> {
             Intent intent = new Intent(this, FavoriteAlbumActivity.class);
-//            Bundle bundle = new Bundle();
-//            bundle.putParcelableArrayList("favAlbums", favAlbums);
-//            intent.putExtras(bundle);
             startActivity(intent);
         });
         authorFavRl.setOnClickListener(v -> {
             Intent intent = new Intent(this, FavoriteAuthorActivity.class);
-//            Bundle bundle = new Bundle();
-//            bundle.putParcelableArrayList("favAuthors", favAuthors);
-//            intent.putExtras(bundle);
             startActivity(intent);
         });
 
         logOutIb.setOnClickListener(v -> sessionManager.logOutSession());
-
+        playlistSugRl.setOnClickListener(v -> {
+            if (!playlists.isEmpty()) {
+                Intent intent = new Intent(this, ShowMorePlaylistActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("playlists", playlists);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+        albumSugRl.setOnClickListener(v -> {
+            if (!albums.isEmpty()) {
+                Intent intent = new Intent(this, ShowMorePlaylistActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("albums", albums);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initView() {
@@ -149,6 +160,11 @@ public class MainActivity extends AppCompatActivity {
         numberAlbumTv = findViewById(R.id.numberAlbumTv);
         authorSgRv = findViewById(R.id.authorSuggestRv);
         numberAuthorTv = findViewById(R.id.numberAuthorTv);
+        playlistSugRl = findViewById(R.id.playlistSugRl);
+        albumSugRl = findViewById(R.id.albumSugRl);
+        authorSugRl = findViewById(R.id.authorSugRl);
+        showMorePlIv = findViewById(R.id.showMorePlIv);
+        showMoreAlIv = findViewById(R.id.showMoreAlIv);
     }
 
     private void getData() {
@@ -272,6 +288,7 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             numberSongTv.setText(String.valueOf(favSongs.size()));
                         }
+                        Log.d(TAG, "number fav song: "  + favSongs.size());
                     }
                 }
                 myProgress.dismiss();
@@ -288,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
     private void getDataAuthor() {
         authors = new ArrayList<>();
         DataService dataService = ApiService.getService();
-        Call<AuthorsResponse> callback = dataService.getFavAuthor(idUser);
+        Call<AuthorsResponse> callback = dataService.getAuthorRandom();
         callback.enqueue(new Callback<AuthorsResponse>() {
             @Override
             public void onResponse(@NonNull Call<AuthorsResponse> call, @NonNull Response<AuthorsResponse> response) {
@@ -296,9 +313,12 @@ public class MainActivity extends AppCompatActivity {
                     if (response.body().getErrCode().equals("0")) {
                         authors = response.body().getAuthors();
                         FavoriteAuthorActivity.setFavAuthor(authors);
-                        showAuthor = new ArrayList<>(authors.subList(0,  Math.min(authors.size(), numberSuggest)));
+//                        showAuthor = new ArrayList<>(authors.subList(0,  Math.min(authors.size(), MyApplication.NUMBER_SUGGEST)));
                         authorSuggestAdapter = new AuthorSuggestAdapter(authors, MainActivity.this);
                         authorSgRv.setAdapter(authorSuggestAdapter);
+                        if (authors.isEmpty()) {
+                            authorSugRl.setVisibility(View.GONE);
+                        }
                         myProgress.dismiss();
                     }
                 }
@@ -326,9 +346,15 @@ public class MainActivity extends AppCompatActivity {
                 if (response.code() == 200) {
                     if (response.body().getErrCode().equals("0")) {
                         albums = response.body().getAlbums();
-                        showAlbum = new ArrayList<>(albums.subList(0,  Math.min(albums.size(), numberSuggest)));
+                        showAlbum = new ArrayList<>(albums.subList(0,  Math.min(albums.size(), MyApplication.NUMBER_SUGGEST)));
                         albumSuggestAdapter = new AlbumSuggestAdapter(showAlbum, albums, MainActivity.this, false);
                         albumSgRv.setAdapter(albumSuggestAdapter);
+                        if (albums.isEmpty()) {
+                            albumSugRl.setVisibility(View.GONE);
+                        }
+                        if (albums.size() <= MyApplication.NUMBER_SUGGEST) {
+                            showMorePlIv.setVisibility(View.GONE);
+                        }
                         myProgress.dismiss();
                     }
                 }
@@ -355,9 +381,15 @@ public class MainActivity extends AppCompatActivity {
 
                 playlists = (ArrayList<Playlist>) response.body();
                 assert playlists != null;
-                showPlaylist = new ArrayList<>(playlists.subList(0,  Math.min(playlists.size(), numberSuggest)));
+                showPlaylist = new ArrayList<>(playlists.subList(0,  Math.min(playlists.size(), MyApplication.NUMBER_SUGGEST)));
                 playlistSuggestAdapter = new PlaylistSuggestAdapter(showPlaylist,playlists, MainActivity.this, false);
                 playlistSgRv.setAdapter(playlistSuggestAdapter);
+                if (playlists.isEmpty()) {
+                    playlistSugRl.setVisibility(View.GONE);
+                }
+                if (playlists.size() <= MyApplication.NUMBER_SUGGEST) {
+                    showMoreAlIv.setVisibility(View.GONE);
+                }
                 getDataSuccess = true;
                 if (getDataSuccess) myProgress.dismiss();
             }

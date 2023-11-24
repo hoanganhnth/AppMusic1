@@ -4,15 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.LoginActivity"
     android:background="@color/background"
-    >
+    tools:context=".activity.LoginActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:background="@drawable/shape_toolbar1"
-        >
+        android:background="@drawable/shape_toolbar1">
 
         <ImageView
             android:id="@+id/iconIv"
@@ -26,35 +24,36 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Please Login"
             android:layout_below="@+id/iconIv"
-            android:textColor="@color/white"
-            android:textSize="30dp"
             android:layout_centerHorizontal="true"
-            />
+            android:text="Please Login"
+            android:textColor="@color/white"
+            android:textSize="30dp" />
     </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
         android:layout_marginTop="225dp"
+        android:layout_marginEnd="30dp"
 
         >
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
             >
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/emailTil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:hintEnabled="false"
                 android:layout_marginBottom="10dp"
                 app:boxBackgroundMode="none"
-                >
+                app:hintEnabled="false">
+
                 <EditText
                     android:id="@+id/emailLoginEt"
                     android:layout_width="match_parent"
@@ -62,23 +61,22 @@
                     android:background="@drawable/shape_edittext2"
                     android:drawableStart="@drawable/ic_email"
                     android:drawablePadding="10dp"
+                    android:hint="Email"
                     android:inputType="textEmailAddress"
                     android:padding="10dp"
-                    android:textSize="@dimen/name_size"
                     android:textColor="@color/textColor"
                     android:textColorHint="@color/grayEt"
-                    android:hint="Email"/>
+                    android:textSize="@dimen/name_size" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/passwordTil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:hintEnabled="false"
                 android:layout_below="@+id/emailTil"
-                app:passwordToggleEnabled="true"
                 app:boxBackgroundMode="none"
-                >
+                app:hintEnabled="false"
+                app:passwordToggleEnabled="true">
 
                 <EditText
                     android:id="@+id/passwordLoginEt"
@@ -88,38 +86,39 @@
                     android:drawableStart="@drawable/ic_lock"
                     android:drawablePadding="10dp"
                     android:hint="Password"
-                    android:textSize="@dimen/name_size"
                     android:inputType="textPassword"
                     android:padding="10dp"
                     android:textColor="@color/textColor"
-                    android:textColorHint="@color/grayEt" />
+                    android:textColorHint="@color/grayEt"
+                    android:textSize="@dimen/name_size" />
             </com.google.android.material.textfield.TextInputLayout>
+
             <TextView
+                android:id="@+id/forgotTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/forgotTv"
-                android:text="Forgot Password?"
-                android:padding="5dp"
-                android:textColor="@color/textColor"
-                android:textSize="@dimen/name_size"
+                android:layout_below="@id/passwordTil"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="5dp"
-                android:layout_below="@id/passwordTil" />
+                android:padding="5dp"
+                android:text="Forgot Password?"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/name_size" />
 
             <TextView
                 android:id="@+id/loginBtn1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
                 android:layout_below="@+id/forgotTv"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/shape_button3"
-                android:text="LOGIN"
-                android:textStyle="bold"
                 android:clickable="true"
                 android:gravity="center"
-                android:textSize="@dimen/name_size"
+                android:padding="10dp"
+                android:text="LOGIN"
                 android:textColor="@color/white"
-                android:layout_marginTop="20dp"
+                android:textSize="@dimen/name_size"
+                android:textStyle="bold"
 
                 />
         </RelativeLayout>
@@ -131,10 +130,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="@string/new_user_sign_up"
         android:layout_centerHorizontal="true"
         android:padding="10dp"
-        android:textSize="@dimen/name_size"
-        android:textColor="@color/textColor"/>
+        android:text="@string/new_user_sign_up"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/name_size" />
 
 </RelativeLayout>

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,6 +13,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -113,8 +115,12 @@ public class PlaylistAlbumDetailActivity extends AppCompatActivity {
                 .into(imgPlIv);
         favoriteIb.setOnClickListener(v -> {
             if (FavoritePlaylistActivity.isInFav(playlist)) {
-                FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),playlist.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_PLAYLIST, playlist);
-                favoriteIb.setImageResource(R.drawable.ic_favorite_gray);
+                if (playlist.getIdUser().equals(MainActivity.getIdUser())) {
+                    showDialogDelete(playlist);
+                } else {
+                    FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),playlist.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_PLAYLIST, playlist);
+                    favoriteIb.setImageResource(R.drawable.ic_favorite_gray);
+                }
             } else {
                 FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),playlist.getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_PLAYLIST, playlist);
                 favoriteIb.setImageResource(R.drawable.ic_favorite_purple);
@@ -123,7 +129,37 @@ public class PlaylistAlbumDetailActivity extends AppCompatActivity {
 
         Log.d(TAG, "playlist SETVIEW");
     }
+    private void showDialogDelete(Playlist playlist) {
+        AlertDialog dialog;
+        TextView titleDialogDeleteTv,contentDialogTv,submitBtn,cancelBtn;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.custom_dialog_delete,null);
 
+        titleDialogDeleteTv = view.findViewById(R.id.titleDialogDeleteTv);
+        contentDialogTv = view.findViewById(R.id.contentDialogTv);
+        submitBtn = view.findViewById(R.id.submitBtn);
+        cancelBtn = view.findViewById(R.id.cancelBtn);
+
+
+        titleDialogDeleteTv.setText(playlist.getTitle());
+        contentDialogTv.setText(R.string.delete_playlist_title);
+
+        builder.setView(view);
+        builder.setCancelable(true);
+        dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+
+
+        submitBtn.setOnClickListener(v -> {
+
+            FavoriteHelper.actionWithFav(this, MainActivity.getIdUser(),playlist.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_PLAYLIST, playlist);
+            FavoritePlaylistActivity.removePlaylist(playlist);
+            dialog.dismiss();
+            onBackPressed();
+        });
+        cancelBtn.setOnClickListener(v -> dialog.dismiss());
+    }
     private void showDialog() {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -141,7 +177,7 @@ public class PlaylistAlbumDetailActivity extends AppCompatActivity {
             namePlaylist.setText(playlist.getTitle());
             Glide.with(this)
                     .load(playlist.getArtUrl())
-                    .placeholder(R.mipmap.ic_launcher_round)
+                    .placeholder(R.mipmap.music_player_icon)
                     .into(imgIv);
             if (FavoritePlaylistActivity.isInFav(playlist)) {
                 addFavTv.setText(R.string.delete_fav_title);
@@ -154,8 +190,12 @@ public class PlaylistAlbumDetailActivity extends AppCompatActivity {
                     FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),playlist.getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_PLAYLIST, playlist);
                     favoriteIb.setImageResource(R.drawable.ic_favorite_purple);
                 } else {
-                    FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),playlist.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_PLAYLIST, playlist);
-                    favoriteIb.setImageResource(R.drawable.ic_favorite_gray);
+                    if (playlist.getIdUser().equals(MainActivity.getIdUser())) {
+                        showDialogDelete(playlist);
+                    } else {
+                        FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),playlist.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_PLAYLIST, playlist);
+                        favoriteIb.setImageResource(R.drawable.ic_favorite_gray);
+                    }
                 }
                 dialog.dismiss();
             });
@@ -163,7 +203,7 @@ public class PlaylistAlbumDetailActivity extends AppCompatActivity {
             namePlaylist.setText(album.getTitle());
             Glide.with(this)
                     .load(album.getArtUrl())
-                    .placeholder(R.mipmap.ic_launcher_round)
+                    .placeholder(R.mipmap.music_player_icon_round)
                     .into(imgIv);
             if (FavoriteAlbumActivity.isInFav(album)) {
                 addFavTv.setText(R.string.delete_fav_title);
@@ -189,7 +229,8 @@ public class PlaylistAlbumDetailActivity extends AppCompatActivity {
             dialog.dismiss();
         });
         addPlaySongsLn.setOnClickListener(v -> {
-            Toast.makeText(this, "Tính năng đang trong quá trình phát triển", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.add_list_play_notification, Toast.LENGTH_SHORT).show();
+            MusicPlayerActivity.currentSongs.addAll(songArrayList);
             dialog.dismiss();
         });
 

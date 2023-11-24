@@ -72,19 +72,19 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         if (name.isEmpty()) {
-            Toast.makeText(this, "Enter your name", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Tên đăng nhập bỏ trống", Toast.LENGTH_SHORT).show();
         }
         else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(this, "Invalid Email Pattern...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Email không đúng định dạng", Toast.LENGTH_SHORT).show();
         }
         else if (password.isEmpty()) {
-            Toast.makeText(this, "Enter password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Mật khẩu bỏ trống", Toast.LENGTH_SHORT).show();
         }
         else if (passwordCf.isEmpty()) {
-            Toast.makeText(this, "Confirm password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Hãy xác nhận lại mật khẩu", Toast.LENGTH_SHORT).show();
         }
         else if (!password.equals(passwordCf)) {
-            Toast.makeText(this, "Password doesn't match...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Mật khẩu xác nhận không trùng khớp", Toast.LENGTH_SHORT).show();
         }
         else {
             createUserAccount();

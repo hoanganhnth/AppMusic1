@@ -72,8 +72,9 @@ public class FavoriteSongActivity extends AppCompatActivity {
             onBackPressed();
         });
         buttonShuffleTv.setOnClickListener(v -> {
+            Log.d(TAG, "SHUFFLE");
             Intent intent = new Intent(this, MusicPlayerActivity.class);
-            intent.putExtra("class","FavoriteSongActivity");
+            intent.putExtra("class","ShuffleFavoriteSongActivity");
             intent.putExtra("index", 0);
             startActivity(intent);
         });
@@ -87,6 +88,7 @@ public class FavoriteSongActivity extends AppCompatActivity {
             numberSongTv.setVisibility(View.VISIBLE);
             numberSongTv.setText("Tất cả " + favSongs.size() + " bài hát");
         }
+        songAdapter.notifyDataSetChanged();
     }
 
 
@@ -126,5 +128,11 @@ public class FavoriteSongActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateUi();
     }
 }

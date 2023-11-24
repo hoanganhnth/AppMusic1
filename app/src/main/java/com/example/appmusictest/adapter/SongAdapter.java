@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -49,7 +50,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     @NonNull
     @Override
     public SongAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_songs,parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_songs, parent, false);
         return new ViewHolder(view);
     }
 
@@ -67,14 +68,22 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(holder.itemView.getContext(), MusicPlayerActivity.class);
             if (songArrayList.get(position).getId().equals(MusicPlayerActivity.nowPlayingId)) {
-                intent.putExtra("index", MusicPlayerActivity.songPosition);
-                intent.putExtra("class", "NowPlaying");
-            } else if (context.getClass().getSimpleName().equals("FavoriteSongActivity")){
-                intent.putExtra("index", position);
-                intent.putExtra("class", "FavoriteSongActivity");
+                Bundle bundle = new Bundle();
+                bundle.putInt("index", MusicPlayerActivity.songPosition);
+                bundle.putString("class", "NowPlaying");
+                intent.putExtras(bundle);
+            } else if (context.getClass().getSimpleName().equals("FavoriteSongActivity")) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("index", position);
+                bundle.putString("class", "FavoriteSongActivity");
+                intent.putExtras(bundle);
             } else {
-                intent.putExtra("index", position);
-                intent.putExtra("class", "SongAdapter");
+                Bundle bundle = new Bundle();
+                bundle.putInt("index", position);
+                bundle.putString("class", "SongAdapter");
+                bundle.putParcelableArrayList("songs", songArrayList);
+                intent.putExtras(bundle);
+
             }
 
             holder.itemView.getContext().startActivity(intent);
@@ -104,29 +113,29 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         authorSong.setText(songArrayList.get(pos).getNameAuthor());
         ShapeableImageView imgIv = dialog.findViewById(R.id.imgDlIv);
         Glide.with(context)
-                        .load(songArrayList.get(pos).getArtUrl())
-                                .into(imgIv);
-        addPlaySongsLn.setOnClickListener( v -> {
+                .load(songArrayList.get(pos).getArtUrl())
+                .into(imgIv);
+        addPlaySongsLn.setOnClickListener(v -> {
             Toast.makeText(context, R.string.add_list_play_notification, Toast.LENGTH_SHORT).show();
             addSongToCurrentSongs(pos);
             dialog.dismiss();
         });
 
-        addPlayNextLn.setOnClickListener( v -> {
+        addPlayNextLn.setOnClickListener(v -> {
             Toast.makeText(context, R.string.add_play_next_notification, Toast.LENGTH_SHORT).show();
             addSongToNextSong(pos);
             dialog.dismiss();
         });
 
-        addFavLn.setOnClickListener( v -> {
+        addFavLn.setOnClickListener(v -> {
             if (!FavoriteSongActivity.isInFav(songArrayList.get(pos))) {
-                FavoriteHelper.actionWithFav(context,MainActivity.getIdUser(),songArrayList.get(pos).getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_SONG, songArrayList.get(pos));
+                FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(), songArrayList.get(pos).getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_SONG, songArrayList.get(pos));
 
             } else {
                 if (context.getClass().getSimpleName().equals(FavoriteSongActivity.class.getSimpleName())) {
                     showDeleteDialog(context, pos);
                 } else {
-                    FavoriteHelper.actionWithFav(context,MainActivity.getIdUser(),songArrayList.get(pos).getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_SONG, songArrayList.get(pos));
+                    FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(), songArrayList.get(pos).getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_SONG, songArrayList.get(pos));
                 }
             }
             dialog.dismiss();
@@ -138,7 +147,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         });
 
         dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
@@ -150,29 +159,29 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         dialog.setContentView(R.layout.bottom_layout_add_to_playlist);
         RelativeLayout addPlaylistRl = dialog.findViewById(R.id.addPlaylistRl);
         RecyclerView playlistFavRv = dialog.findViewById(R.id.playlistFavRv);
-        PlaylistAddAdapter playlistAdapter = new PlaylistAddAdapter(FavoritePlaylistActivity.getFavPlaylists(), context);
+        PlaylistAddAdapter playlistAdapter = new PlaylistAddAdapter(FavoritePlaylistActivity.getPlaylistByUser(), context, songArrayList.get(pos).getId());
         playlistFavRv.setAdapter(playlistAdapter);
         addPlaylistRl.setOnClickListener(v -> {
             dialog.dismiss();
             showCreatePlaylistDialog(context);
         });
         dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
     private void showCreatePlaylistDialog(Context context) {
-        MyCreatePlaylistDialog myCreatePlaylistDialog = new MyCreatePlaylistDialog(context,null);
+        MyCreatePlaylistDialog myCreatePlaylistDialog = new MyCreatePlaylistDialog(context, null);
         myCreatePlaylistDialog.show();
     }
 
     private void showDeleteDialog(Context context, int pos) {
         AlertDialog dialog;
-        TextView titleDialogDeleteTv,contentDialogTv,submitBtn,cancelBtn;
+        TextView titleDialogDeleteTv, contentDialogTv, submitBtn, cancelBtn;
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        View viewDialog = LayoutInflater.from(context).inflate(R.layout.custom_dialog_delete,null);
+        View viewDialog = LayoutInflater.from(context).inflate(R.layout.custom_dialog_delete, null);
         titleDialogDeleteTv = viewDialog.findViewById(R.id.titleDialogDeleteTv);
         contentDialogTv = viewDialog.findViewById(R.id.contentDialogTv);
         submitBtn = viewDialog.findViewById(R.id.submitBtn);
@@ -189,7 +198,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         dialog.show();
 
         submitBtn.setOnClickListener(v -> {
-            FavoriteHelper.actionWithFav(context,MainActivity.getIdUser(),songArrayList.get(pos).getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_SONG, songArrayList.get(pos));
+            FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(), songArrayList.get(pos).getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_SONG, songArrayList.get(pos));
             songArrayList.remove(pos);
             notifyItemRemoved(pos);
             notifyItemRangeChanged(pos, songArrayList.size() - pos);
@@ -224,6 +233,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         private TextView nameSong, authorSong;
         private ImageButton moreIv;
         private ShapeableImageView imgIv;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             nameSong = itemView.findViewById(R.id.nameSongTv);

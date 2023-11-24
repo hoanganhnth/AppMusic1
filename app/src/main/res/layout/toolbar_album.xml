@@ -21,9 +21,8 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/backIb"
         android:layout_centerInParent="true"
-        >
+        android:layout_toEndOf="@id/backIb">
 
         <TextView
             android:id="@+id/titleAlbumTv"
@@ -40,12 +39,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/titleAlbumTv"
+            android:layout_alignStart="@+id/titleAlbumTv"
             android:text="Tat ca 29 album"
             android:textColor="@color/white"
             android:textSize="@dimen/name_size"
-            android:layout_alignStart="@+id/titleAlbumTv"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
     </RelativeLayout>
 
 

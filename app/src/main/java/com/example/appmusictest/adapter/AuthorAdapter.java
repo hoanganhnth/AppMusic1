@@ -50,10 +50,7 @@ public class AuthorAdapter extends RecyclerView.Adapter<AuthorAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Author model = arrayList.get(position);
         holder.authorTv.setText(model.getName());
-        Glide.with(context)
-                .load(model.getArtUrl())
-                .placeholder(R.mipmap.music_player_icon_round)
-                .into(holder.authorIv);
+        Glide.with(context).load(model.getArtUrl()).placeholder(R.mipmap.music_player_icon_round).into(holder.authorIv);
 
         holder.itemView.setOnClickListener(v -> {
 
@@ -72,21 +69,22 @@ public class AuthorAdapter extends RecyclerView.Adapter<AuthorAdapter.ViewHolder
         holder.authorFvIb.setOnClickListener(v -> {
             if (!FavoriteAuthorActivity.isInFav(model)) {
 
-                FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),model.getId(), FavoriteHelper.TYPE_ADD, TYPE_AUTHOR, model);
+                FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(), model.getId(), FavoriteHelper.TYPE_ADD, TYPE_AUTHOR, model);
                 holder.authorFvIb.setImageResource(R.drawable.ic_favorite_purple);
-            } else if (activity.equals(FavoriteAuthorActivity.class.getSimpleName())){
+            } else if (activity.equals(FavoriteAuthorActivity.class.getSimpleName())) {
                 showDialog(position, model);
             } else {
                 holder.authorFvIb.setImageResource(R.drawable.ic_favorite_gray);
-                FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),model.getId(), FavoriteHelper.TYPE_DELETE, TYPE_AUTHOR, model);
+                FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(), model.getId(), FavoriteHelper.TYPE_DELETE, TYPE_AUTHOR, model);
             }
         });
     }
+
     private void showDialog(int pos, Author author) {
         AlertDialog dialog;
-        TextView titleDialogDeleteTv,contentDialogTv,submitBtn,cancelBtn;
+        TextView titleDialogDeleteTv, contentDialogTv, submitBtn, cancelBtn;
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        View view = LayoutInflater.from(context).inflate(R.layout.custom_dialog_delete,null);
+        View view = LayoutInflater.from(context).inflate(R.layout.custom_dialog_delete, null);
 
         titleDialogDeleteTv = view.findViewById(R.id.titleDialogDeleteTv);
         contentDialogTv = view.findViewById(R.id.contentDialogTv);
@@ -108,16 +106,14 @@ public class AuthorAdapter extends RecyclerView.Adapter<AuthorAdapter.ViewHolder
 
         submitBtn.setOnClickListener(v -> {
 
-            FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),author.getId(), FavoriteHelper.TYPE_DELETE, TYPE_AUTHOR, author);
+            FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(), author.getId(), FavoriteHelper.TYPE_DELETE, TYPE_AUTHOR, author);
             arrayList.remove(pos);
             notifyItemRemoved(pos);
-            notifyItemRangeChanged(pos, arrayList.size() - pos) ;
+            notifyItemRangeChanged(pos, arrayList.size() - pos);
             dialog.dismiss();
         });
         cancelBtn.setOnClickListener(v -> dialog.dismiss());
     }
-
-
 
 
     @Override
@@ -129,6 +125,7 @@ public class AuthorAdapter extends RecyclerView.Adapter<AuthorAdapter.ViewHolder
         TextView authorTv;
         CircleImageView authorIv;
         ImageButton authorFvIb;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             authorIv = itemView.findViewById(R.id.authorIv);

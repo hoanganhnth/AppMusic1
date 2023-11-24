@@ -4,41 +4,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <RelativeLayout
         android:id="@+id/albumSugRl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
         android:layout_marginStart="20dp"
-        >
+        android:layout_marginBottom="10dp">
+
         <TextView
             android:id="@+id/albumSugTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="15dp"
             android:text="Album hot"
             android:textColor="@color/textColor"
             android:textSize="@dimen/title_size"
-            android:textStyle="bold"
-            android:layout_marginBottom="15dp"
-            android:layout_centerVertical="true"/>
-        <ImageButton
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/showMoreAlIv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_see_all"
-            android:background="@android:color/transparent"
-            android:layout_toEndOf="@id/albumSugTv"
             android:layout_centerVertical="true"
-            />
+            android:layout_toEndOf="@id/albumSugTv"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_see_all" />
     </RelativeLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/albumSuggestRv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/albumSugRl"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/row_playlist_suggest"
         tools:itemCount="2"
-        android:layout_below="@id/albumSugRl"
-        />
+        tools:listitem="@layout/row_playlist_suggest" />
 
 </RelativeLayout>

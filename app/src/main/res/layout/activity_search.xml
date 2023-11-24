@@ -12,72 +12,78 @@
         android:id="@+id/backIb"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@drawable/ic_back_gr"
-        android:scaleType="fitXY"
-        android:background="@android:color/transparent"
+        android:layout_alignStart="@id/searchEt"
         android:layout_alignParentStart="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
+        android:background="@android:color/transparent"
         android:contentDescription="@string/back_btn"
-        android:layout_alignStart="@id/searchEt"
-        />
-
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_back_gr" />
     <EditText
         android:id="@+id/searchEt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="15dp"
+        android:layout_alignParentTop="true"
         android:layout_marginStart="50dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/shape_edittext1"
+        android:drawableEnd="@drawable/ic_search"
         android:elevation="4dp"
         android:hint="@string/search_main_activity_hint"
-        android:padding="10dp"
-        android:textColorHint="@color/hint_text_color"
-        android:drawableEnd="@drawable/ic_search"
         android:imeOptions="actionSearch"
-        android:singleLine="true"
         android:inputType="textNoSuggestions"
-        android:textSize="@dimen/name_size"
+        android:padding="10dp"
+        android:singleLine="true"
         android:textColor="@color/textColor"
+        android:textColorHint="@color/hint_text_color"
+        android:textSize="@dimen/name_size"
 
         />
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/searchEt"
-            app:tabMode="scrollable"
-            android:layout_marginStart="40dp"
-            android:layout_marginBottom="10dp"
-            app:tabTextAppearance="@style/CustomTabTextAppearance"
-            android:background="@android:color/transparent"
-            />
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/searchEt"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="10dp"
+        android:background="@android:color/transparent"
+        app:tabMode="scrollable"
+        app:tabTextAppearance="@style/CustomTabTextAppearance" />
+
     <View
         android:id="@+id/seView"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/tabLayout"
         android:background="@color/edittext_color"
-        android:elevation="3dp"/>
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPaper"
+        android:elevation="3dp" />
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/seView"
-        android:layout_marginTop="10dp"
-        />
+        android:scrollbars="none">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPaper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="60dp" />
+    </ScrollView>
+
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/playingFragment"
+        android:name="com.example.appmusictest.fragment.NowPlayingFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-       android:layout_alignParentBottom="true"
-        android:name="com.example.appmusictest.fragment.NowPlayingFragment"
-        tools:layout="@layout/fragment_now_playing"
-        />
+        android:layout_alignParentBottom="true"
+        tools:layout="@layout/fragment_now_playing" />
 
 
 </RelativeLayout>

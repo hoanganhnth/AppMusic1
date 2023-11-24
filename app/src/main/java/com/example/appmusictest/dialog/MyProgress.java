@@ -25,7 +25,7 @@ public class MyProgress {
         View view = LayoutInflater.from(context).inflate(R.layout.custom_dialog_progress2, null);
         progressBar = view.findViewById(R.id.progress_bar);
 
-        objectAnimator = ObjectAnimator.ofFloat(progressBar, "rotation", 0f,360f);
+        objectAnimator = ObjectAnimator.ofFloat(progressBar, "rotation", 0f, 360f);
         objectAnimator.setDuration(1500);
         objectAnimator.setRepeatCount(ValueAnimator.INFINITE);
         objectAnimator.start();
@@ -50,7 +50,6 @@ public class MyProgress {
             dialog.dismiss();
         }
     }
-
 
 
 }

@@ -8,18 +8,32 @@
 
     <include
         android:id="@+id/toolbarMorePlaylist"
-        layout="@layout/toolbar_show_more"
-        />
+        layout="@layout/toolbar_show_more" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/showMorePlaylistRv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/toolbarMorePlaylist"
-        tools:listitem="@layout/row_playlist_suggest"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:layout_centerHorizontal="true"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        />
+        android:scrollbars="none">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/showMorePlaylistRv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="80dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            tools:itemCount="2"
+            tools:listitem="@layout/row_playlist_suggest" />
+    </ScrollView>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/playingFragment"
+        android:name="com.example.appmusictest.fragment.NowPlayingFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        tools:layout="@layout/fragment_now_playing" />
 </RelativeLayout>

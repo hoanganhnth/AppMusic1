@@ -21,6 +21,7 @@ import com.example.appmusictest.activity.MainActivity;
 import com.example.appmusictest.adapter.PlaylistAdapter;
 import com.example.appmusictest.model.Playlist;
 import com.example.appmusictest.model.api.ApiResponse;
+import com.example.appmusictest.model.api.CreatePlaylistResponse;
 import com.example.appmusictest.service.ApiService;
 import com.example.appmusictest.service.DataService;
 
@@ -31,10 +32,11 @@ import retrofit2.Response;
 public class MyCreatePlaylistDialog {
     private AlertDialog dialog;
     private EditText playlistEt;
-    private TextView submitBtn,cancelBtn;
+    private TextView submitBtn, cancelBtn;
+
     public MyCreatePlaylistDialog(Context context, PlaylistAdapter adapter) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        View view = LayoutInflater.from(context).inflate(R.layout.custom_dialog_add,null);
+        View view = LayoutInflater.from(context).inflate(R.layout.custom_dialog_add, null);
         playlistEt = view.findViewById(R.id.playlistEt);
         submitBtn = view.findViewById(R.id.submitBtn);
         cancelBtn = view.findViewById(R.id.cancelBtn);
@@ -75,15 +77,14 @@ public class MyCreatePlaylistDialog {
 
     private void createDataServer(Context context, String title, PlaylistAdapter adapter) {
         DataService dataService = ApiService.getService();
-        Call<ApiResponse> callback = dataService.createPlaylist(MainActivity.getIdUser(), title, "");
-        callback.enqueue(new Callback<ApiResponse>() {
+        Call<CreatePlaylistResponse> callback = dataService.createPlaylist(MainActivity.getIdUser(), title, "");
+        callback.enqueue(new Callback<CreatePlaylistResponse>() {
             @Override
-            public void onResponse(@NonNull Call<ApiResponse> call, @NonNull Response<ApiResponse> response) {
+            public void onResponse(@NonNull Call<CreatePlaylistResponse> call, @NonNull Response<CreatePlaylistResponse> response) {
                 if (response.code() == 200) {
                     assert response.body() != null;
                     if (response.body().getErrCode().equals("0")) {
-//                        FavoritePlaylistActivity.addPlaylist(new Playlist("100", playlistEt.getText().toString(),"", ""));
-
+                        FavoritePlaylistActivity.addPlaylist(new Playlist(response.body().getIdPlaylist(), playlistEt.getText().toString(), "", MainActivity.getIdUser()));
                         if (adapter != null) {
                             adapter.notifyItemInserted(FavoritePlaylistActivity.getSize() - 1);
                         }
@@ -94,7 +95,7 @@ public class MyCreatePlaylistDialog {
             }
 
             @Override
-            public void onFailure(@NonNull Call<ApiResponse> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<CreatePlaylistResponse> call, @NonNull Throwable t) {
 
             }
         });

@@ -3,5 +3,5 @@
     <dimen name="title_size">18sp</dimen>
     <dimen name="name_size">14sp</dimen>
     <dimen name="sub_name_size">12sp</dimen>
-    <dimen name="big_size">50sp</dimen>
+    <dimen name="big_size">40sp</dimen>
 </resources>

@@ -28,7 +28,7 @@ public class MyProgressDialog {
         titleDialog = view.findViewById(R.id.titleDialog);
         messageDialog = view.findViewById(R.id.messageDialog);
 
-        objectAnimator = ObjectAnimator.ofFloat(progressBar, "rotation", 0f,360f);
+        objectAnimator = ObjectAnimator.ofFloat(progressBar, "rotation", 0f, 360f);
         objectAnimator.setDuration(1500);
         objectAnimator.setRepeatCount(ValueAnimator.INFINITE);
         objectAnimator.start();

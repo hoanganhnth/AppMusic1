@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".fragment.ListPlayFragment">
+    android:background="@drawable/shape_dialog_1"
+    android:padding="20dp">
+
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/listPlayRv"
+        android:id="@+id/authorsRv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/row_songs" />
-
+        tools:listitem="@layout/row_author" />
 
 </RelativeLayout>

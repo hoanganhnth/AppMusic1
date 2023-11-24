@@ -34,6 +34,7 @@ public class ListPlayAdapter extends RecyclerView.Adapter<ListPlayAdapter.ViewHo
         positionPlaying = newPosition;
         notifyDataSetChanged();
     }
+
     @NonNull
     @Override
     public ListPlayAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -49,18 +50,18 @@ public class ListPlayAdapter extends RecyclerView.Adapter<ListPlayAdapter.ViewHo
                 .load(currentSongs.get(position).getArtUrl())
                 .into(holder.imgIV);
         if (position == positionPlaying) {
-            holder.itemView.setBackground(ContextCompat.getDrawable(holder.itemView.getContext(),R.drawable.shape_button1));
-            holder.nameSongTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),R.color.white));
-            holder.authorSongTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),R.color.white));
+            holder.itemView.setBackground(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.shape_button1));
+            holder.nameSongTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.white));
+            holder.authorSongTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.white));
             Log.d(TAG, "song number " + position + " ís playing");
         } else {
 //            holder.rowRl.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(),R.color.background));
             holder.itemView.setBackground(null);
-            holder.nameSongTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),R.color.textColor));
-            holder.authorSongTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),R.color.textColor));
+            holder.nameSongTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.textColor));
+            holder.authorSongTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.textColor));
         }
         holder.itemView.setOnClickListener(v -> {
-            if (MusicPlayerActivity.musicPlayerService != null)  {
+            if (MusicPlayerActivity.musicPlayerService != null) {
                 MusicPlayerActivity.musicPlayerService.playMusicFromUrl(currentSongs.get(position).getPathUrl());
                 MusicPlayerActivity.songPosition = holder.getAdapterPosition();
                 setCurrentlyPlayingPosition(holder.getAdapterPosition());
@@ -78,6 +79,7 @@ public class ListPlayAdapter extends RecyclerView.Adapter<ListPlayAdapter.ViewHo
         private TextView nameSongTv, authorSongTv;
         private ShapeableImageView imgIV;
         private ImageButton moreIv;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             nameSongTv = itemView.findViewById(R.id.nameSongTv);

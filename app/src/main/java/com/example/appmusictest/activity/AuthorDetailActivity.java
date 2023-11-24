@@ -16,8 +16,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.appmusictest.FavoriteHelper;
+import com.example.appmusictest.MyApplication;
 import com.example.appmusictest.R;
 import com.example.appmusictest.adapter.AlbumAdapter;
+import com.example.appmusictest.adapter.AlbumSuggestAdapter;
 import com.example.appmusictest.adapter.SongAdapter;
 import com.example.appmusictest.dialog.MyProgress;
 import com.example.appmusictest.model.Album;
@@ -43,7 +45,7 @@ public class AuthorDetailActivity extends AppCompatActivity {
     private Author author;
     private RecyclerView listSongRv,listAlbumRv;
     private SongAdapter songAdapter;
-    private AlbumAdapter albumAdapter;
+    private AlbumSuggestAdapter albumAdapter;
     private static ArrayList<Song> songArrayList;
     private ArrayList<Album> albumArrayList;
     private static final String TAG = "Author_Detail_Acti";
@@ -123,7 +125,8 @@ public class AuthorDetailActivity extends AppCompatActivity {
                     assert response.body() != null;
                     if (response.body().getErrCode().equals("0")) {
                         albumArrayList = response.body().getAlbums();
-                        albumAdapter = new AlbumAdapter(albumArrayList, AuthorDetailActivity.this);
+                        ArrayList<Album> showAlbum = new ArrayList<>(albumArrayList.subList(0,  Math.min(albumArrayList.size(), MyApplication.NUMBER_SUGGEST)));
+                        albumAdapter = new AlbumSuggestAdapter(showAlbum, albumArrayList, AuthorDetailActivity.this, false);
                         listAlbumRv.setAdapter(albumAdapter);
                         if (albumArrayList.isEmpty()) {
                             listAlbumTv.setVisibility(View.GONE);

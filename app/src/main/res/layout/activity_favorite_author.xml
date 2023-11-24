@@ -4,37 +4,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.FavoriteAuthorActivity"
-    android:background="@color/fav_author_color">
+    android:background="@color/fav_author_color"
+    tools:context=".activity.FavoriteAuthorActivity">
+
     <include
         android:id="@+id/toolbarView"
-        layout="@layout/toolbar_author"/>
+        layout="@layout/toolbar_author" />
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbarView"
+        android:layout_marginTop="10dp"
         android:background="@drawable/fav_view"
-        android:layout_marginTop="10dp">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/authorFavRv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:layout_marginBottom="80dp"
-            />
-    </RelativeLayout>
+        android:scrollbars="none">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/authorFavRv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="80dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        </RelativeLayout>
+    </ScrollView>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/playingFragment"
+        android:name="com.example.appmusictest.fragment.NowPlayingFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:name="com.example.appmusictest.fragment.NowPlayingFragment"
-        tools:layout="@layout/fragment_now_playing"
-        />
+        tools:layout="@layout/fragment_now_playing" />
 </RelativeLayout>

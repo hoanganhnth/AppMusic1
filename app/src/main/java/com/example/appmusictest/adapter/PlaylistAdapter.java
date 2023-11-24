@@ -1,7 +1,6 @@
 package com.example.appmusictest.adapter;
 
 
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -48,7 +47,6 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
     @Override
     public PlaylistAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.row_playlist, parent, false);
-        Log.d(TAG, "ViewHolder");
         return new ViewHolder(view);
     }
 
@@ -78,22 +76,22 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
         }
         holder.rowFvIb.setOnClickListener(v -> {
             if (!FavoritePlaylistActivity.isInFav(model)) {
-                FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),model.getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_PLAYLIST, model);
+                FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(), model.getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_PLAYLIST, model);
                 holder.rowFvIb.setImageResource(R.drawable.ic_favorite_purple);
-            } else if (activity.equals(FavoritePlaylistActivity.class.getSimpleName())){
+            } else if (activity.equals(FavoritePlaylistActivity.class.getSimpleName())) {
                 showDialog(position, model);
             } else {
                 holder.rowFvIb.setImageResource(R.drawable.ic_favorite_gray);
-                FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),model.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_PLAYLIST, model);
+                FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(), model.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_PLAYLIST, model);
             }
         });
     }
 
     private void showDialog(int pos, Playlist playlist) {
         AlertDialog dialog;
-        TextView titleDialogDeleteTv,contentDialogTv,submitBtn,cancelBtn;
+        TextView titleDialogDeleteTv, contentDialogTv, submitBtn, cancelBtn;
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        View view = LayoutInflater.from(context).inflate(R.layout.custom_dialog_delete,null);
+        View view = LayoutInflater.from(context).inflate(R.layout.custom_dialog_delete, null);
 
         titleDialogDeleteTv = view.findViewById(R.id.titleDialogDeleteTv);
         contentDialogTv = view.findViewById(R.id.contentDialogTv);
@@ -113,7 +111,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
 
         submitBtn.setOnClickListener(v -> {
 
-            FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(),playlist.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_PLAYLIST, playlist);
+            FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(), playlist.getId(), FavoriteHelper.TYPE_DELETE, MyApplication.TYPE_PLAYLIST, playlist);
 
             arrayList.remove(pos);
             notifyItemRemoved(pos);
@@ -132,6 +130,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
         TextView rowTv;
         ShapeableImageView rowIv;
         ImageButton rowFvIb;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             rowIv = itemView.findViewById(R.id.rowIv);

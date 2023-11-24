@@ -20,15 +20,11 @@ public class Song implements Parcelable {
     @SerializedName("nameAuthor")
     @Expose
     private String nameAuthor;
-    @SerializedName("idAlbum")
-    @Expose
-    private String idAlbum;
+
     @SerializedName("idCategory")
     @Expose
     private String idCategory;
-    @SerializedName("idPlaylist")
-    @Expose
-    private String idPlaylist;
+
     @SerializedName("artUrl")
     @Expose
     private String artUrl;
@@ -36,49 +32,14 @@ public class Song implements Parcelable {
     @Expose
     private String pathUrl;
 
-    public Song(String id, String title, String nameAuthor, String idAlbum, String idCategory, String idPlaylist, String artUrl, String pathUrl) {
-        this.id = id;
-        this.title = title;
-        this.nameAuthor = nameAuthor;
-        this.idAlbum = idAlbum;
-        this.idCategory = idCategory;
-        this.idPlaylist = idPlaylist;
-        this.artUrl = artUrl;
-        this.pathUrl = pathUrl;
-    }
-
-    public Song() {
-    }
 
     protected Song(Parcel in) {
         id = in.readString();
         title = in.readString();
         nameAuthor = in.readString();
-        idAlbum = in.readString();
         idCategory = in.readString();
-        idPlaylist = in.readString();
         artUrl = in.readString();
         pathUrl = in.readString();
-    }
-
-    public static final Creator<Song> CREATOR = new Creator<Song>() {
-        @Override
-        public Song createFromParcel(Parcel in) {
-            return new Song(in);
-        }
-
-        @Override
-        public Song[] newArray(int size) {
-            return new Song[size];
-        }
-    };
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -97,28 +58,12 @@ public class Song implements Parcelable {
         this.nameAuthor = nameAuthor;
     }
 
-    public String getIdAlbum() {
-        return idAlbum;
-    }
-
-    public void setIdAlbum(String idAlbum) {
-        this.idAlbum = idAlbum;
-    }
-
     public String getIdCategory() {
         return idCategory;
     }
 
     public void setIdCategory(String idCategory) {
         this.idCategory = idCategory;
-    }
-
-    public String getIdPlaylist() {
-        return idPlaylist;
-    }
-
-    public void setIdPlaylist(String idPlaylist) {
-        this.idPlaylist = idPlaylist;
     }
 
     public String getArtUrl() {
@@ -137,6 +82,26 @@ public class Song implements Parcelable {
         this.pathUrl = pathUrl;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public static final Creator<Song> CREATOR = new Creator<Song>() {
+        @Override
+        public Song createFromParcel(Parcel in) {
+            return new Song(in);
+        }
+
+        @Override
+        public Song[] newArray(int size) {
+            return new Song[size];
+        }
+    };
+
     @Override
     public int describeContents() {
         return 0;
@@ -147,9 +112,7 @@ public class Song implements Parcelable {
         dest.writeString(id);
         dest.writeString(title);
         dest.writeString(nameAuthor);
-        dest.writeString(idAlbum);
         dest.writeString(idCategory);
-        dest.writeString(idPlaylist);
         dest.writeString(artUrl);
         dest.writeString(pathUrl);
     }

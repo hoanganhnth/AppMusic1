@@ -1,38 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginStart="15dp">
-
+    android:layout_marginStart="5dp">
 
 
     <RelativeLayout
         android:id="@+id/showMoreAlbumRl"
         android:layout_width="wrap_content"
         android:layout_height="140dp"
+        android:layout_marginEnd="15dp"
         android:gravity="center"
         android:visibility="visible"
-        android:layout_marginEnd="15dp"
 
         >
-        <ImageButton
-            android:id="@+id/showMoreAlbumIb"
+
+        <ImageView
+            android:id="@+id/showMoreAlbumIv"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
             android:background="@drawable/shape_show_more"
             android:elevation="5dp"
-            android:src="@drawable/ic_show_more"
-            android:layout_centerHorizontal="true"/>
+            android:padding="5dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_show_more" />
+
         <TextView
             android:id="@+id/showMoreAlbumTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/showMoreAlbumIb"
+            android:layout_below="@id/showMoreAlbumIv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
             android:text="@string/show_more_tittle"
             android:textSize="15dp"
-            android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true"
 
             />
     </RelativeLayout>

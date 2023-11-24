@@ -63,6 +63,7 @@ public class AuthorSuggestAdapter extends RecyclerView.Adapter<AuthorSuggestAdap
     public static class ViewHolder extends RecyclerView.ViewHolder {
         CircleImageView imgSuggestCiv;
         TextView titleSuggestTv;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imgSuggestCiv = itemView.findViewById(R.id.imgSuggestCiv);

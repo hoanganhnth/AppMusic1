@@ -30,9 +30,10 @@ public class FavoriteHelper {
     public static boolean isInFavSong() {
         return true;
     }
+
     public static void actionWithFav(Context context, String idUser, String id, boolean actionAdd, int type, Object ob) {
         DataService dataService = ApiService.getService();
-        Call<ApiResponse> callback ;
+        Call<ApiResponse> callback;
         switch (type) {
             case MyApplication.TYPE_PLAYLIST:
                 if (actionAdd) {

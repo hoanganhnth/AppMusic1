@@ -92,4 +92,14 @@ public class FavoriteAuthorActivity extends AppCompatActivity {
         if (favAuthor == null) favAuthor = new ArrayList<>();
         return favAuthor.size();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateUi();
+    }
+
+    private void updateUi() {
+        adapter.notifyDataSetChanged();
+    }
 }

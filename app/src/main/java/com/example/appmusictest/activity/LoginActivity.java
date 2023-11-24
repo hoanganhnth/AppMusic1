@@ -57,10 +57,10 @@ public class LoginActivity extends AppCompatActivity {
         email = emailLoginEt.getText().toString();
         password = passwordLoginEt.getText().toString();
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(this, "Invalid email format", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Email không đúng định dạng", Toast.LENGTH_SHORT).show();
         }
         else if (password.isEmpty()) {
-            Toast.makeText(this, "Enter password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Mật khẩu bỏ trống", Toast.LENGTH_SHORT).show();
         }
         else {
             loginUser();

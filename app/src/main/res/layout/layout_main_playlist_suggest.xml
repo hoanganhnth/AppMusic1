@@ -3,42 +3,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+    android:layout_height="wrap_content">
+
     <RelativeLayout
+        android:id="@+id/playlistSugRl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/playlistSugRl"
-        android:layout_marginBottom="10dp"
-        >
+        android:layout_marginBottom="10dp">
+
         <TextView
             android:id="@+id/playlistSugTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="15dp"
             android:text="Playlist gợi ý"
             android:textColor="@color/textColor"
             android:textSize="@dimen/title_size"
-            android:textStyle="bold"
-            android:layout_marginBottom="15dp"
-            android:layout_marginStart="20dp"
-            android:layout_centerVertical="true"/>
-        <ImageButton
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/showMorePlIv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/playlistSugTv"
-            android:src="@drawable/ic_see_all"
-            android:background="@android:color/transparent"
             android:layout_centerVertical="true"
-            />
+            android:layout_toEndOf="@id/playlistSugTv"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_see_all" />
     </RelativeLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/playlistSuggestRv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/playlistSugRl"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/row_playlist_suggest"
-        android:layout_below="@id/playlistSugRl"
-        />
+        tools:listitem="@layout/row_playlist_suggest" />
 
 </RelativeLayout>

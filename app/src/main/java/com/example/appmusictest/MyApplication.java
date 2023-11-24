@@ -15,6 +15,7 @@ public class MyApplication extends Application {
     public static final int TYPE_ALBUM = 2;
     public static final int TYPE_SONG = 3;
     public static final int TYPE_AUTHOR = 4;
+    public static final int NUMBER_SUGGEST = 4;
 
 
     @Override

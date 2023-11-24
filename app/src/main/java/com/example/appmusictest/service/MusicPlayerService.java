@@ -33,6 +33,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.example.appmusictest.MyApplication;
 import com.example.appmusictest.NotificationReceiver;
 import com.example.appmusictest.R;
+import com.example.appmusictest.activity.MainActivity;
 import com.example.appmusictest.activity.SearchActivity;
 import com.example.appmusictest.activity.MusicPlayerActivity;
 import com.example.appmusictest.utilities.TimeFormatterUtility;
@@ -122,7 +123,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
 
     public void showNotification(int playPauseBtn) {
         Log.d(TAG, "show notification");
-        Intent intent = new Intent(getBaseContext(), SearchActivity.class);
+        Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         int flag;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

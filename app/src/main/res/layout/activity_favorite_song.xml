@@ -10,12 +10,18 @@
         android:id="@+id/toolbarView"
         layout="@layout/toolbar_song"/>
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scrollbars="none"
         android:layout_below="@id/toolbarView"
+        android:layout_marginTop="10dp"
         android:background="@drawable/fav_view"
-        android:layout_marginTop="10dp">
+        >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
         <TextView
             android:id="@+id/buttonShuffleTv"
             android:layout_width="240dp"
@@ -30,20 +36,26 @@
             android:visibility="gone"
 
             />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/songFavRv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/buttonShuffleTv"
-            android:layout_marginTop="20dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             tools:listitem="@layout/row_songs"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:background="@android:color/transparent"
-            android:layout_marginBottom="80dp"
+            android:layout_below="@id/buttonShuffleTv"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="60dp"
+            tools:itemCount="5"
             />
-    </RelativeLayout>
+
+
+</RelativeLayout>
+    </ScrollView>
+
 
 
     <androidx.fragment.app.FragmentContainerView

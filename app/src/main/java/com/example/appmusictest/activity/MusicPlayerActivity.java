@@ -39,9 +39,15 @@ import com.example.appmusictest.FavoriteHelper;
 import com.example.appmusictest.MyApplication;
 import com.example.appmusictest.NotificationReceiver;
 import com.example.appmusictest.R;
+import com.example.appmusictest.adapter.AuthorAdapter;
 import com.example.appmusictest.adapter.PlaylistAddAdapter;
 import com.example.appmusictest.dialog.MyCreatePlaylistDialog;
 import com.example.appmusictest.fragment.ListPlayFragment;
+import com.example.appmusictest.model.Author;
+import com.example.appmusictest.model.Playlist;
+import com.example.appmusictest.model.api.AuthorsResponse;
+import com.example.appmusictest.service.ApiService;
+import com.example.appmusictest.service.DataService;
 import com.example.appmusictest.utilities.TimeFormatterUtility;
 import com.example.appmusictest.fragment.DiskFragment;
 import com.example.appmusictest.fragment.InfoSongFragment;
@@ -54,6 +60,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MusicPlayerActivity extends AppCompatActivity implements ServiceConnection {
@@ -135,10 +145,10 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
     }
 
     private void setViewData() {
-        songPosition = getIntent().getIntExtra("index", 0);
-        switch (getIntent().getStringExtra("class")) {
+        songPosition = getIntent().getExtras().getInt("index");
+        switch (getIntent().getExtras().getString("class")) {
             case "SongAdapter":
-                initServiceAndPlaylist(PlaylistAlbumDetailActivity.songArrayList,false,true);
+                initServiceAndPlaylist(getIntent().getExtras().getParcelableArrayList("songs"),false,true);
                 break;
             case "NowPlaying":
                 initServiceAndPlaylist(null,false, false);
@@ -147,14 +157,16 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
                 initServiceAndPlaylist(PlaylistAlbumDetailActivity.songArrayList, true, true);
                 break;
             case "FavoriteSongActivity":
+                initServiceAndPlaylist(FavoriteSongActivity.getFavSongs(), false, true);
+                break;
+            case "ShuffleFavoriteSongActivity":
                 initServiceAndPlaylist(FavoriteSongActivity.getFavSongs(), true, true);
                 break;
             case "AuthorDetailActivity":
                 initServiceAndPlaylist(AuthorDetailActivity.getSongArrayList(), true, true);
                 break;
-
         }
-
+        infoSongFragment.setSong(currentSongs.get(songPosition));
         backIb.setOnClickListener(v -> onBackPressed());
         playIb.setOnClickListener( v-> clickPauseOrResume());
         nextIb.setOnClickListener(v -> prevNextSong(true));
@@ -191,6 +203,9 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
             showDialog();
         });
 
+        if (FavoriteSongActivity.isInFav(currentSongs.get(songPosition))) {
+            favoriteIb.setImageResource(R.drawable.ic_favorite_purple);
+        }
         favoriteIb.setOnClickListener(v -> {
             if (!FavoriteSongActivity.isInFav(currentSongs.get(songPosition))) {
                 FavoriteHelper.actionWithFav(this,MainActivity.getIdUser(),currentSongs.get(songPosition).getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_SONG, currentSongs.get(songPosition));
@@ -306,12 +321,12 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         });
 
         seeAuthorLn.setOnClickListener( v -> {
-            Toast.makeText(this, R.string.unfinished_title, Toast.LENGTH_SHORT).show();
+            getDataAuthor();
             dialog.dismiss();
         });
 
         addPlaylistLn.setOnClickListener(v -> {
-            showAddPlaylistDialog(this, songPosition);
+            showAddPlaylistDialog();
             dialog.dismiss();
         });
 
@@ -322,17 +337,60 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
-    private void showAddPlaylistDialog(Context context, int pos) {
-        Dialog dialog = new Dialog(context);
+    private void getDataAuthor() {
+        DataService dataService = ApiService.getService();
+        Call<AuthorsResponse> callback = dataService.getSongAuthor(currentSongs.get(songPosition).getId());
+        callback.enqueue(new Callback<AuthorsResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<AuthorsResponse> call, @NonNull Response<AuthorsResponse> response) {
+                if (response.code() == 200) {
+                    if (response.body().getErrCode().equals("0")) {
+                        ArrayList<Author> authors = response.body().getAuthors();
+                        if (authors.size() == 1) {
+                            Intent intent = new Intent(MusicPlayerActivity.this, AuthorDetailActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putParcelable("author", authors.get(0));
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        } else if (authors.size() > 1) {
+                            showAuthorsDialog(authors);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<AuthorsResponse> call, @NonNull Throwable t) {
+                Log.d(TAG, "Fail to get data from server due to:" + t.getMessage() );
+            }
+        });
+    }
+
+    private void showAuthorsDialog(ArrayList<Author> authors) {
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.bottom_layout_authors);
+        RecyclerView authorsRv = dialog.findViewById(R.id.authorsRv);
+        AuthorAdapter authorAdapter = new AuthorAdapter(authors, this);
+        authorsRv.setAdapter(authorAdapter);
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
+    private void showAddPlaylistDialog() {
+        Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.bottom_layout_add_to_playlist);
         RelativeLayout addPlaylistRl = dialog.findViewById(R.id.addPlaylistRl);
         RecyclerView playlistFavRv = dialog.findViewById(R.id.playlistFavRv);
-        PlaylistAddAdapter playlistAdapter = new PlaylistAddAdapter(FavoritePlaylistActivity.getFavPlaylists(), context);
+        PlaylistAddAdapter playlistAdapter = new PlaylistAddAdapter(FavoritePlaylistActivity.getPlaylistByUser(), this, currentSongs.get(songPosition).getId());
         playlistFavRv.setAdapter(playlistAdapter);
         addPlaylistRl.setOnClickListener(v -> {
             dialog.dismiss();
-            showCreatePlaylistDialog(context);
+            showCreatePlaylistDialog(this);
         });
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);

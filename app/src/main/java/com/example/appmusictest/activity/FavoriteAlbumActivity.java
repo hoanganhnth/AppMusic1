@@ -104,4 +104,17 @@ public class FavoriteAlbumActivity extends AppCompatActivity {
         if (favAlbum == null) favAlbum = new ArrayList<>();
         return favAlbum.size();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateUi();
+    }
+
+    private void updateUi() {
+        if (!favAlbum.isEmpty()) {
+            numberAlbumTv.setText("Tất cả " + favAlbum.size() + " playlist");
+        }
+        adapter.notifyDataSetChanged();
+    }
 }

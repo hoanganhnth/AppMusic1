@@ -4,26 +4,25 @@
     android:layout_height="wrap_content"
     android:background="@color/fav_author_color"
     android:paddingBottom="5dp">
+
     <ImageButton
         android:id="@+id/backIb"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@drawable/ic_back_white"
-        android:scaleType="fitXY"
-        android:background="@android:color/transparent"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="20dp"
-        android:contentDescription="@string/back_btn"
-        android:layout_marginTop="10dp"
         android:layout_centerInParent="true"
-        />
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/back_btn"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_back_white" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/backIb"
         android:layout_centerInParent="true"
-        >
+        android:layout_toEndOf="@id/backIb">
 
         <TextView
             android:id="@+id/titleAuthorTv"
@@ -40,12 +39,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/titleAuthorTv"
+            android:layout_alignStart="@+id/titleAuthorTv"
             android:text="Tat ca 29 bai"
             android:textColor="@color/white"
             android:textSize="@dimen/name_size"
-            android:layout_alignStart="@+id/titleAuthorTv"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
     </RelativeLayout>
 
 
