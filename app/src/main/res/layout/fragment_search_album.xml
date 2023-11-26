@@ -3,27 +3,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:paddingStart="20dp"
+    android:paddingEnd="10dp"
     tools:context=".fragment.SearchAuthorsFragment">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/albumRv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/row_playlist" />
 
     <TextView
         android:id="@+id/noDataTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="Rất tiếc không có kết quả phù hợp"
+        android:text="@string/not_find_data_search_title"
         android:textColor="@color/textColor"
         android:textSize="@dimen/title_size"
         android:textStyle="bold"
-        android:visibility="gone" />
+        android:visibility="gone"
+        />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:scrollbars="none"
+        >
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/albumRv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/row_playlist"
+            android:paddingBottom="60dp"
+            />
+    </ScrollView>
+
+
+
 
 </RelativeLayout>

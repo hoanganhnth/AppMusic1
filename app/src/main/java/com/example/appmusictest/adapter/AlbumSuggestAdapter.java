@@ -65,9 +65,8 @@ public class AlbumSuggestAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
+        Album modelAlbum = arrayList.get(position);
         if (getItemViewType(position) == VIEW_TYPE_NORMAL) {
-            Album modelAlbum = arrayList.get(position);
             ((NormalViewHolder) holder).titleSuggestTv.setText(modelAlbum.getTitle());
             Glide.with(context)
                     .load(modelAlbum.getArtUrl())
@@ -81,6 +80,19 @@ public class AlbumSuggestAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 context.startActivity(intent);
             });
         } else if (getItemViewType(position) == VIEW_TYPE_END) {
+            ((EndViewHolder) holder).titleSuggestTv.setText(modelAlbum.getTitle());
+            Glide.with(context)
+                    .load(modelAlbum.getArtUrl())
+                    .placeholder(R.mipmap.music_player_icon)
+                    .into(((EndViewHolder) holder).imgSuggestIv);
+            ((EndViewHolder) holder).itemRl.setOnClickListener(v -> {
+                Intent intent = new Intent(context, PlaylistAlbumDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("album", modelAlbum);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            });
+            ((EndViewHolder) holder).showMoreAlbumRl.setVisibility(View.GONE);
             ((EndViewHolder) holder).showMoreAlbumRl.setOnClickListener(v -> {
                 Intent intent = new Intent(context, ShowMorePlaylistActivity.class);
                 Bundle bundle = new Bundle();
@@ -89,7 +101,6 @@ public class AlbumSuggestAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 context.startActivity(intent);
             });
         } else if (getItemViewType(position) == VIEW_TYPE_BIG) {
-            Album modelAlbum = arrayList.get(position);
             ((BigViewHolder) holder).titleSuggestTv.setText(modelAlbum.getTitle());
             Glide.with(context)
                     .load(modelAlbum.getArtUrl())
@@ -112,7 +123,7 @@ public class AlbumSuggestAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public int getItemViewType(int position) {
         if (bigSize) {
             return VIEW_TYPE_BIG;
-        } else if (position == arrayList.size() && arrayListAll.size() > MyApplication.NUMBER_SUGGEST) {
+        } else if (position == arrayList.size() - 1 ) {
             return VIEW_TYPE_END;
         } else {
             return VIEW_TYPE_NORMAL;
@@ -122,10 +133,7 @@ public class AlbumSuggestAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        if (bigSize || arrayListAll.size() <= MyApplication.NUMBER_SUGGEST) {
-            return arrayListAll.size();
-        }
-        return arrayList.size() + 1;
+        return arrayList.size();
     }
 
     public static class NormalViewHolder extends RecyclerView.ViewHolder {
@@ -142,11 +150,17 @@ public class AlbumSuggestAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public static class EndViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout showMoreAlbumRl;
         ImageView showMoreAlbumIv;
+        RelativeLayout itemRl;
+        TextView titleSuggestTv;
+        ShapeableImageView imgSuggestIv;
 
         public EndViewHolder(@NonNull View itemView) {
             super(itemView);
             showMoreAlbumRl = itemView.findViewById(R.id.showMoreAlbumRl);
             showMoreAlbumIv = itemView.findViewById(R.id.showMoreAlbumIv);
+            itemRl = itemView.findViewById(R.id.itemRl);
+            titleSuggestTv = itemView.findViewById(R.id.titleSuggestTv);
+            imgSuggestIv = itemView.findViewById(R.id.imgSuggestIv);
         }
     }
 

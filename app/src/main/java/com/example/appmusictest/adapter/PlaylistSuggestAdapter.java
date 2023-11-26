@@ -62,9 +62,8 @@ public class PlaylistSuggestAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-
+        Playlist modelPlaylist = arrayList.get(position);
         if (getItemViewType(position) == VIEW_TYPE_NORMAL) {
-            Playlist modelPlaylist = arrayList.get(position);
             ((NormalViewHolder) holder).titleSuggestTv.setText(modelPlaylist.getTitle());
             Glide.with(context).load(modelPlaylist.getArtUrl()).placeholder(R.mipmap.music_player_icon).into(((NormalViewHolder) holder).imgSuggestIv);
             holder.itemView.setOnClickListener(v -> {
@@ -75,6 +74,18 @@ public class PlaylistSuggestAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 context.startActivity(intent);
             });
         } else if (getItemViewType(position) == VIEW_TYPE_END) {
+            ((EndViewHolder) holder).titleSuggestTv.setText(modelPlaylist.getTitle());
+            Glide.with(context).load(modelPlaylist.getArtUrl()).placeholder(R.mipmap.music_player_icon).into(((EndViewHolder) holder).imgSuggestIv);
+            ((EndViewHolder) holder).itemRl.setOnClickListener(v -> {
+                Intent intent = new Intent(context, PlaylistAlbumDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("playlist", modelPlaylist);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            });
+            if (arrayListAll.size() <= MyApplication.NUMBER_SUGGEST) {
+                ((EndViewHolder) holder).showMoreAlbumRl.setVisibility(View.GONE);
+            }
             ((EndViewHolder) holder).showMoreAlbumRl.setOnClickListener(v -> {
                 Intent intent = new Intent(context, ShowMorePlaylistActivity.class);
                 Bundle bundle = new Bundle();
@@ -83,7 +94,6 @@ public class PlaylistSuggestAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 context.startActivity(intent);
             });
         } else if (getItemViewType(position) == VIEW_TYPE_BIG) {
-            Playlist modelPlaylist = arrayList.get(position);
             ((BigViewHolder) holder).titleSuggestTv.setText(modelPlaylist.getTitle());
             Glide.with(context).load(modelPlaylist.getArtUrl()).placeholder(R.mipmap.music_player_icon).into(((BigViewHolder) holder).imgSuggestIv);
             holder.itemView.setOnClickListener(v -> {
@@ -103,7 +113,7 @@ public class PlaylistSuggestAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public int getItemViewType(int position) {
         if (bigSize) {
             return VIEW_TYPE_BIG;
-        } else if (position == arrayList.size() && arrayListAll.size() > MyApplication.NUMBER_SUGGEST) {
+        } else if (position == arrayList.size() - 1) {
             return VIEW_TYPE_END;
         } else {
             return VIEW_TYPE_NORMAL;
@@ -112,10 +122,7 @@ public class PlaylistSuggestAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemCount() {
-        if (bigSize || arrayListAll.size() <= MyApplication.NUMBER_SUGGEST) {
-            return arrayList.size();
-        }
-        return arrayList.size() + 1;
+        return arrayList.size() ;
     }
 
     public static class NormalViewHolder extends RecyclerView.ViewHolder {
@@ -132,11 +139,17 @@ public class PlaylistSuggestAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public static class EndViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout showMoreAlbumRl;
         ImageView showMoreAlbumIv;
+        RelativeLayout itemRl;
+        TextView titleSuggestTv;
+        ShapeableImageView imgSuggestIv;
 
         public EndViewHolder(@NonNull View itemView) {
             super(itemView);
             showMoreAlbumRl = itemView.findViewById(R.id.showMoreAlbumRl);
             showMoreAlbumIv = itemView.findViewById(R.id.showMoreAlbumIv);
+            itemRl = itemView.findViewById(R.id.itemRl);
+            titleSuggestTv = itemView.findViewById(R.id.titleSuggestTv);
+            imgSuggestIv = itemView.findViewById(R.id.imgSuggestIv);
         }
     }
 

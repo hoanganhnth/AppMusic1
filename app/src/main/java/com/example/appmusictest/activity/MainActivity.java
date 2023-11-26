@@ -125,24 +125,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         logOutIb.setOnClickListener(v -> sessionManager.logOutSession());
-        playlistSugRl.setOnClickListener(v -> {
-            if (!playlists.isEmpty()) {
-                Intent intent = new Intent(this, ShowMorePlaylistActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("playlists", playlists);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });
-        albumSugRl.setOnClickListener(v -> {
-            if (!albums.isEmpty()) {
-                Intent intent = new Intent(this, ShowMorePlaylistActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("albums", albums);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });
+
+
     }
 
     private void initView() {
@@ -339,7 +323,7 @@ public class MainActivity extends AppCompatActivity {
     private void getDataAlbum() {
         albums = new ArrayList<>();
         DataService dataService = ApiService.getService();
-        Call<AlbumsResponse> callback = dataService.getAllAlbums();
+        Call<AlbumsResponse> callback = dataService.getAlbumRandom();
         callback.enqueue(new Callback<AlbumsResponse>() {
             @Override
             public void onResponse(@NonNull Call<AlbumsResponse> call, @NonNull Response<AlbumsResponse> response) {
@@ -350,10 +334,21 @@ public class MainActivity extends AppCompatActivity {
                         albumSuggestAdapter = new AlbumSuggestAdapter(showAlbum, albums, MainActivity.this, false);
                         albumSgRv.setAdapter(albumSuggestAdapter);
                         if (albums.isEmpty()) {
-                            albumSugRl.setVisibility(View.GONE);
+                            showMoreAlIv.setVisibility(View.GONE);
                         }
                         if (albums.size() <= MyApplication.NUMBER_SUGGEST) {
-                            showMorePlIv.setVisibility(View.GONE);
+                            showMoreAlIv.setVisibility(View.GONE);
+                            Log.d(TAG, "GNE");
+                        } else {
+                            albumSugRl.setOnClickListener(v -> {
+                                if (!albums.isEmpty()) {
+                                    Intent intent = new Intent(MainActivity.this, ShowMorePlaylistActivity.class);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putParcelableArrayList("albums", albums);
+                                    intent.putExtras(bundle);
+                                    startActivity(intent);
+                                }
+                            });
                         }
                         myProgress.dismiss();
                     }
@@ -389,7 +384,21 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (playlists.size() <= MyApplication.NUMBER_SUGGEST) {
                     showMoreAlIv.setVisibility(View.GONE);
+                    Log.d(TAG, "PLAYLIST:" + playlists.size());
+                } else {
+                    playlistSugRl.setOnClickListener(v -> {
+                        if (!playlists.isEmpty()) {
+                            Intent intent = new Intent(MainActivity.this, ShowMorePlaylistActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putParcelableArrayList("playlists", playlists);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        }
+                    });
                 }
+
+
+                Log.d(TAG, "PLAYLIST:" + playlists.size());
                 getDataSuccess = true;
                 if (getDataSuccess) myProgress.dismiss();
             }

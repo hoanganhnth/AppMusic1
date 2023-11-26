@@ -43,4 +43,5 @@
     <string name="followedAuthorTitle">Đã theo dõi</string>
     <string name="followAuthorTitle">Theo dõi</string>
     <string name="error_add_fav_title">Đã có lỗi trong quá trình thêm</string>
+    <string name="not_find_data_search_title">Rất tiếc không có kết quả phù hợp</string>
 </resources>

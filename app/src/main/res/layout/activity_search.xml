@@ -62,19 +62,19 @@
         android:background="@color/edittext_color"
         android:elevation="3dp" />
 
-    <ScrollView
+
+
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPaper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
         android:layout_below="@+id/seView"
-        android:scrollbars="none">
+        />
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPaper"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="60dp" />
-    </ScrollView>
+
+
 
 
     <androidx.fragment.app.FragmentContainerView

@@ -103,6 +103,7 @@ public class SearchActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH || event.getAction() == KeyEvent.KEYCODE_ENTER) {
                     String query = searchEt.getText().toString().trim();
+                    myProgress.show();
                     getDataServer(query);
                     InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     in.hideSoftInputFromWindow(searchEt.getApplicationWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS); return true;

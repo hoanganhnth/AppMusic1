@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -276,8 +277,8 @@ public class MusicPlayerActivity extends AppCompatActivity implements ServiceCon
         TextView nameSong = dialog.findViewById(R.id.nameSongTv);
         TextView addFavTv = dialog.findViewById(R.id.addFavTv);
         TextView authorSong = dialog.findViewById(R.id.authorSongTv);
-        ImageButton setTimeIb = dialog.findViewById(R.id.setTimeIb);
-        ImageButton addFavIb = dialog.findViewById(R.id.addFavIb);
+        ImageView setTimeIb = dialog.findViewById(R.id.setTimeIb);
+        ImageView addFavIb = dialog.findViewById(R.id.addFavIb);
 
         nameSong.setText(currentSongs.get(songPosition).getTitle());
         authorSong.setText(currentSongs.get(songPosition).getNameAuthor());

@@ -30,6 +30,8 @@ public interface DataService {
     @GET("/randomauthors")
     Call<AuthorsResponse> getAuthorRandom();
 
+    @GET("/randomalbums")
+    Call<AlbumsResponse> getAlbumRandom();
 
     @FormUrlEncoded
     @POST("/listsong")
