@@ -137,7 +137,8 @@
         android:layout_marginEnd="20dp"
         android:baselineAligned="false"
         android:orientation="horizontal"
-        android:padding="15dp">
+        android:padding="15dp"
+        android:visibility="gone">
 
         <LinearLayout
             android:id="@+id/numberFaLn"

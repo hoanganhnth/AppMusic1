@@ -6,6 +6,7 @@ import com.example.appmusictest.model.api.AlbumsResponse;
 import com.example.appmusictest.model.api.ApiResponse;
 import com.example.appmusictest.model.api.AuthorsResponse;
 import com.example.appmusictest.model.api.CreatePlaylistResponse;
+import com.example.appmusictest.model.api.GenreResponse;
 import com.example.appmusictest.model.api.LoginResponse;
 import com.example.appmusictest.model.api.PlaylistsResponse;
 import com.example.appmusictest.model.api.RegisterResponse;
@@ -125,6 +126,11 @@ public interface DataService {
     @FormUrlEncoded
     @POST("/getsongauthors")
     Call<AuthorsResponse> getSongAuthor(@Field("idSong") String idSong);
+
+    @FormUrlEncoded
+    @POST("/getgenre")
+    Call<GenreResponse> getGenreSong(@Field("idSong") String idSong);
+
 
 
 }

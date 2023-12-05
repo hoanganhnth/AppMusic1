@@ -11,14 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.appmusictest.R;
 import com.example.appmusictest.activity.AuthorDetailActivity;
 import com.example.appmusictest.activity.MusicPlayerActivity;
 import com.example.appmusictest.dialog.MyProgress;
 import com.example.appmusictest.model.Author;
+import com.example.appmusictest.model.Genre;
 import com.example.appmusictest.model.Song;
 import com.example.appmusictest.model.api.AuthorsResponse;
+import com.example.appmusictest.model.api.GenreResponse;
 import com.example.appmusictest.service.ApiService;
 import com.example.appmusictest.service.DataService;
 
@@ -34,6 +37,8 @@ public class InfoSongFragment extends Fragment {
     private MyProgress myProgress;
     private Song song;
     private ArrayList<Author> authors;
+//    private Genre genres;
+    private String genres;
 
     private static final String TAG = "InfoSongFragment";
     private TextView nameSongTitle,albumSongTv, authorSongTv,categorySongTv;
@@ -65,6 +70,39 @@ public class InfoSongFragment extends Fragment {
 
     private void getDataService() {
         getDataAuthor();
+        getDataGenre();
+    }
+
+    private void getDataGenre() {
+        DataService dataService = ApiService.getService();
+        Call<GenreResponse> callback = dataService.getGenreSong(song.getId());
+        callback.enqueue(new Callback<GenreResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<GenreResponse> call, @NonNull Response<GenreResponse> response) {
+                if (response.code() == 200) {
+                    if (response.body().getErrCode().equals("0")) {
+                        genres = response.body().getGenres();
+                        StringBuilder names = new StringBuilder();
+//                        for (Genre genre : genres) {
+//                            names.append(genre.getName()).append(", ");
+//                        }
+//                        if (names.length() > 0) {
+//                            names.delete(names.length() - 2, names.length());
+//                        }
+                        Log.d(TAG, "genre is " + genres);
+                        categorySongTv.setText(genres);
+                    }
+                    Toast.makeText(getContext(), response.body().getErrCode(), Toast.LENGTH_SHORT).show();
+                }
+                myProgress.dismiss();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<GenreResponse> call, @NonNull Throwable t) {
+                Log.d(TAG, "Fail to get data from server due to:" + t.getMessage() );
+                myProgress.dismiss();
+            }
+        });
     }
 
     private void getDataAuthor() {
