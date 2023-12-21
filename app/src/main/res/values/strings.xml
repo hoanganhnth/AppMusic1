@@ -37,6 +37,7 @@
     <string name="hot_playlist_title">Playlist hot</string>
     <string name="add_playlist_title">Tạo playlist</string>
     <string name="delete_playlist_title">Playlist của bạn sẽ bị xóa khỏi thư viện?</string>
+    <string name="delete_album_title">Album của bạn sẽ bị xóa khỏi thư viện?</string>
     <string name="delete_author_title">Nghệ sĩ này sẽ bị xóa khỏi thư viện?</string>
     <string name="delete_song_title">Xóa bài hát khỏi thư viện ?</string>
     <string name="add_song_to_playlist_title">Thêm vào playlist</string>

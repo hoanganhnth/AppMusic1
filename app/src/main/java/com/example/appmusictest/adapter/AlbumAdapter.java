@@ -78,7 +78,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
             if (!FavoriteAlbumActivity.isInFav(model)) {
                 FavoriteHelper.actionWithFav(context, MainActivity.getIdUser(), model.getId(), FavoriteHelper.TYPE_ADD, MyApplication.TYPE_PLAYLIST, model);
                 holder.rowFvIb.setImageResource(R.drawable.ic_favorite_purple);
-            } else if (activity.equals(FavoritePlaylistActivity.class.getSimpleName())) {
+            } else if (activity.equals(FavoriteAlbumActivity.class.getSimpleName())) {
                 showDialog(position, model);
             } else {
                 holder.rowFvIb.setImageResource(R.drawable.ic_favorite_gray);
@@ -100,7 +100,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
 
 
         titleDialogDeleteTv.setText(album.getTitle());
-        contentDialogTv.setText(R.string.delete_playlist_title);
+        contentDialogTv.setText(R.string.delete_album_title);
 
         builder.setView(view);
         builder.setCancelable(true);

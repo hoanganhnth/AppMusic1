@@ -37,16 +37,14 @@ public class FavoritePlaylistActivity extends AppCompatActivity {
     }
 
     public static ArrayList<Playlist> getPlaylistByUser() {
-        if (playlistCreateByUser == null) {
-            playlistCreateByUser = new ArrayList<>();
-            for (Playlist playlist : favPlaylists) {
-                if (playlist.getIdUser().equals(MainActivity.getIdUser())) {
-                    playlistCreateByUser.add(playlist);
-                    Log.d(TAG, playlist.getTitle());
-                }
+
+        playlistCreateByUser = new ArrayList<>();
+        for (Playlist playlist : favPlaylists) {
+            if (playlist.getIdUser().equals(MainActivity.getIdUser())) {
+                playlistCreateByUser.add(playlist);
+                Log.d(TAG, playlist.getTitle());
             }
         }
-
         return playlistCreateByUser;
     }
 

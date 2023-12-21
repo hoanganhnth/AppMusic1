@@ -67,6 +67,7 @@ public class PlaylistAddAdapter extends RecyclerView.Adapter<PlaylistAddAdapter.
 
                     assert response.body() != null;
                     Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+
                 }
 
                 @Override

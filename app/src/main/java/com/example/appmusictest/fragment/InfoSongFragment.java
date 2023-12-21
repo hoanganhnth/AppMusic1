@@ -92,7 +92,7 @@ public class InfoSongFragment extends Fragment {
                         Log.d(TAG, "genre is " + genres);
                         categorySongTv.setText(genres);
                     }
-                    Toast.makeText(getContext(), response.body().getErrCode(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), response.body().getErrCode(), Toast.LENGTH_SHORT).show();
                 }
                 myProgress.dismiss();
             }
